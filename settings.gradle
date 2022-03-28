@@ -1,0 +1,3 @@
+include ':sudoentitlementsadmin'
+rootProject.name='SudoEntitlementsAdminAndroid'
+

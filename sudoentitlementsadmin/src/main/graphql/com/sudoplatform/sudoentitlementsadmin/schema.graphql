@@ -1,0 +1,419 @@
+# An entitlement
+type Entitlement {
+  # Name of the entitlement
+  name: String!
+
+  # Optional description of the entitlement
+  description: String
+
+  # Value of the entitlement.
+  value: Int!
+}
+
+# Effective entitlements for a user
+type UserEntitlements {
+  # Version number of the user's entitlements. This is incremented every
+  # time there is a change of entitlements set or explicit entitlements
+  # for this user.
+  #
+  # For users entitled by entitlement set, the fractional part of this version
+  # specifies the version of the entitlements set itself. Entitlements set version
+  # is divided by 100000 then added to the user entitlements version
+  #
+  # This ensures that the version of user entitlements always increases mon
+  version: Float!
+
+  # Name of the entitlements set specified for this user. Will be undefined
+  # if entitlements have been specified explicitly rather than by an
+  # entitlements set name.
+  entitlementsSetName: String
+
+  # Effective entitlements for the user either obtained from the entitlements
+  # set or as specified explicitly for this user.
+  entitlements: [Entitlement!]!
+}
+
+# Sub-resource consumer of the entitlement
+# For example some entitlements are per-Sudo
+type EntitlementConsumer {
+  # ID of the consuming resource
+  id: ID!
+
+  # Issuer of the consuming resource ID e.g. sudoplatform.sudoservice for Sudos
+  issuer: String!
+}
+
+type EntitlementConsumption {
+  # Consumer of entitlement. If not present, entitlement is consumed
+  # at the user level
+  consumer: EntitlementConsumer
+
+  # Name of the entitlement
+  name: String!
+
+  # Entitled amount
+  value: Int!
+
+  # Consumed amount
+  consumed: Int!
+
+  # Available amount
+  available: Int!
+
+  # time this entitlement was first consumed
+  firstConsumedAtEpochMs: Float
+
+  # time of most recent consumption of this entitlement
+  lastConsumedAtEpochMs: Float
+}
+
+type EntitlementsConsumption {
+  # Current active entitlements for the user
+  entitlements: UserEntitlements!
+
+  # Current entitlements consumption for the user. Absence of a specific
+  # entitlement in this array implies no consumption of that entitlement.
+  consumption: [EntitlementConsumption!]!
+}
+
+input InternalGetEntitlementsForUserInput {
+  userId: ID!
+}
+
+input ConsumeBooleanEntitlementInput {
+  # Name of boolean entitlement to consume
+  entitlementName: String!
+}
+
+# A set of entitlements
+type EntitlementsSet {
+  # Time of initial creation of an entitlements set in milliseconds
+  # since epoch. Number is integral, float type provides sufficient
+  # precision.
+  createdAtEpochMs: Float!
+
+  # Time of most recent update of an entitlements set in milliseconds
+  # since epoch. Number is integral, float type provides sufficient
+  # precision.
+  updatedAtEpochMs: Float!
+
+  # Version of the entitlements set. Incremented each time an update is made.
+  version: Int!
+
+  # Name of the entitlements set.
+  name: String!
+
+  # Optional description of the entitlements set.
+  description: String
+
+  # Entitlements conferred by this entitlements set.
+  entitlements: [Entitlement!]!
+}
+
+# Pagination connection for use when listing entitlements sets
+type EntitlementsSetsConnection {
+  items: [EntitlementsSet!]!
+  nextToken: String
+}
+
+# Definition of a single transition within an entitlements sequence
+type EntitlementsSequenceTransition {
+  # Name of entitlements set
+  entitlementsSetName: String!
+
+  # ISO8601 period string - if not specified then this transition
+  # is the final state for all users on the sequence.
+  duration: String
+}
+
+# Definition of a sequence of entitlements sets through which a user will transition
+type EntitlementsSequence {
+  # Name of the entitlements sequence
+  name: String!
+
+  # Description of the entitlements sequence
+  description: String
+
+  # Time of initial creation of an entitlements sequence in milliseconds
+  # since epoch. Number is integral, float type provides sufficient
+  # precision.
+  createdAtEpochMs: Float!
+
+  # Time of most recent update of an entitlements sequence in milliseconds
+  # since epoch. Number is integral, float type provides sufficient
+  # precision.
+  updatedAtEpochMs: Float!
+
+  # Version of the entitlements sequence. Incremented each time an update is made.
+  version: Int!
+
+  # Sequence of transitions a user will go through in order. Must not be empty.
+  transitions: [EntitlementsSequenceTransition!]!
+}
+
+# possible values for user account state
+enum AccountStates {
+  ACTIVE
+  LOCKED
+}
+
+# Effective entitlements for an external user
+type ExternalUserEntitlements {
+  # Time of initial creation of user entitlements mapping in milliseconds
+  # since epoch. Number is integral, float type provides sufficient
+  # precision.
+  createdAtEpochMs: Float!
+
+  # Time of last updates of user entitlements mapping in milliseconds
+  # since epoch. Number is integral, float type provides sufficient
+  # precision.
+  updatedAtEpochMs: Float!
+
+  # Version number of the user's entitlements. This is incremented every
+  # time there is a change of entitlements sequence, entitlements set or
+  # explicit entitlements for this user.
+  #
+  # For users entitled by entitlement set, the fractional part of this version
+  # specifies the version of the entitlements set itself. Entitlements set version
+  # is divided by 100000 then added to the user entitlements version
+  #
+  # For users entitled by entitlement sequence, the version is calculated as:
+  #
+  #   user entitlements version
+  # + (sum of versions of all entitlements sets referenced by the sequence) / 100 000
+  # + version of the entitlements sequence / 1 000 000 000
+  #
+  # This ensures that the version of user entitlements always increases monotonically
+  version: Float!
+
+  # External IDP identifier identifying the user
+  externalId: String!
+
+  # Sudo Platform owner. This value matches the subject in identity
+  # tokens used to authenticate to Sudo Platform services.
+  owner: String
+
+  # User Account State. ACTIVE or LOCKED, according to the user's identity service
+  # account state
+  accountState: AccountStates
+
+  # Name of the effective entitlements set specified for this user.
+  # Will be undefined if entitlements have been specified explicitly rather than
+  # by an entitlements set or entitlements sequence.
+  entitlementsSetName: String
+
+  # Name of the entitlements sequence specified for this user. Will be undefined
+  # if entitlements have been specified explicitly or by entitlements set
+  # rather than by an entitlements sequence name.
+  entitlementsSequenceName: String
+
+  # Effective entitlements for the user either obtained from the effective
+  # entitlements set or as specified explicitly for this user.
+  entitlements: [Entitlement!]!
+
+  # Milliseconds since epoch from when user's transitions should
+  # be calculated. Defaults to current time.
+  # Is a Float only for precision. Must be an integral value.
+  transitionsRelativeToEpochMs: Float
+}
+
+# An aggregated list of entitlement consumption information for an external user.
+type ExternalEntitlementsConsumption {
+  # User's active entitlements
+  entitlements: ExternalUserEntitlements!
+  # User's entitlement consumption
+  consumption: [EntitlementConsumption!]!
+}
+
+# Input representing an entitlement
+input EntitlementInput {
+  # Name of the entitlement
+  name: String!
+
+  # Description, if any, of the entitlement as specified by the entitlements
+  #  administrator.
+  description: String
+
+  # Value of the entitlement.
+  value: Int!
+}
+
+# Pagination connection for use when listing entitlements sequences
+type EntitlementsSequencesConnection {
+  items: [EntitlementsSequence!]!
+  nextToken: String
+}
+
+# Entitled user.
+type EntitledUser {
+  externalId: String!
+}
+
+# Input for the setEntitlementsSet mutation
+input SetEntitlementsSetInput {
+  name: String!
+  description: String
+  entitlements: [EntitlementInput!]!
+}
+
+# Input for the addEntitlementsSet mutation
+input AddEntitlementsSetInput {
+  name: String!
+  description: String
+  entitlements: [EntitlementInput!]!
+}
+
+# Input for the getEntitlementsSet query
+input GetEntitlementsSetInput {
+  name: String!
+}
+
+# Input for the removeEntitlementsSet mutation
+input RemoveEntitlementsSetInput {
+  name: String!
+}
+
+# Input for the applyEntitlementsSetToUser mutation
+input ApplyEntitlementsSetToUserInput {
+  externalId: String!
+  entitlementsSetName: String!
+}
+
+# Input for the applyEntitlementsSequenceToUser mutation
+input ApplyEntitlementsSequenceToUserInput {
+  externalId: String!
+  entitlementsSequenceName: String!
+
+  # Milliseconds since epoch from when user's transitions should
+  # be calculated. Defaults to current time.
+  # Is a Float only for precision. Must be an integral value.
+  transitionsRelativeToEpochMs: Float
+}
+
+# Input for the applyEntitlementsToUser mutation
+input ApplyEntitlementsToUserInput {
+  externalId: String!
+  entitlements: [EntitlementInput!]!
+}
+
+# Input for the getEntitlementsForUser query
+input GetEntitlementsForUserInput {
+  externalId: String!
+}
+
+# Input of a single transition within an entitlements sequence
+input EntitlementsSequenceTransitionInput {
+  # Name of entitlements set
+  entitlementsSetName: String!
+
+  # ISO8601 period string - if not specified then this transition
+  # is the final state for all users on the sequence.
+  duration: String
+}
+
+# Input for the getEntitlementsSequence query
+input GetEntitlementsSequenceInput {
+  name: String!
+}
+
+# Input for the addEntitlementsSequence mutation
+input AddEntitlementsSequenceInput {
+  # Name of the entitlements sequence
+  name: String!
+
+  # Description of the entitlements sequence
+  description: String
+
+  # Sequence of transitions a user will go through in order. Must not be empty.
+  transitions: [EntitlementsSequenceTransitionInput!]!
+}
+
+# Input for the setEntitlementsSequence mutation
+input SetEntitlementsSequenceInput {
+  # Name of the entitlements sequence
+  name: String!
+
+  # Description of the entitlements sequence
+  description: String
+
+  # Sequence of transitions a user will go through in order. Must not be empty.
+  transitions: [EntitlementsSequenceTransitionInput!]!
+}
+
+# Input for the removeEntitlementsSequence mutation
+input RemoveEntitlementsSequenceInput {
+  name: String!
+}
+
+# Input for the removeEntitledUser mutation
+input RemoveEntitledUserInput {
+  externalId: String!
+}
+
+type Query {
+  # Gets an entitlement set.
+  getEntitlementsSet(input: GetEntitlementsSetInput!): EntitlementsSet
+
+  # Retrieves all entitlements sets.
+  listEntitlementsSets(nextToken: String): EntitlementsSetsConnection!
+
+  # Gets an entitlement sequence.
+  getEntitlementsSequence(
+    input: GetEntitlementsSequenceInput!
+  ): EntitlementsSequence
+
+  # Retrieves all entitlements sequences.
+  listEntitlementsSequences(nextToken: String): EntitlementsSequencesConnection!
+
+  # Retrieve effective entitlements for a given external user.
+  getEntitlementsForUser(
+    input: GetEntitlementsForUserInput!
+  ): ExternalEntitlementsConsumption!
+}
+
+type Mutation {
+  # Adds an entitlement set
+  addEntitlementsSet(input: AddEntitlementsSetInput!): EntitlementsSet!
+
+  # Change the entitlements conferred by an entitlements set.
+  setEntitlementsSet(input: SetEntitlementsSetInput!): EntitlementsSet!
+
+  # Remove an entitlements set. Any users configured against this entitlements
+  # set will become unentitled.
+  removeEntitlementsSet(input: RemoveEntitlementsSetInput!): EntitlementsSet
+
+  # Adds an entitlement sequence
+  addEntitlementsSequence(
+    input: AddEntitlementsSequenceInput!
+  ): EntitlementsSequence!
+
+  # Replace the definition of an entitlements sequence
+  setEntitlementsSequence(
+    input: SetEntitlementsSequenceInput!
+  ): EntitlementsSequence!
+
+  # Remove an entitlements sequence. Any users configured against this entitlements
+  # sequence will become unentitled.
+  removeEntitlementsSequence(
+    input: RemoveEntitlementsSequenceInput!
+  ): EntitlementsSequence
+
+  # Apply an entitlement set with the specified name to a user.
+  applyEntitlementsSetToUser(
+    input: ApplyEntitlementsSetToUserInput!
+  ): ExternalUserEntitlements!
+
+  # Apply an entitlement sequence with the specified name to a user.
+  applyEntitlementsSequenceToUser(
+    input: ApplyEntitlementsSequenceToUserInput!
+  ): ExternalUserEntitlements!
+
+  # Apply entitlements to a user without using a named entitlements set.
+  applyEntitlementsToUser(
+    input: ApplyEntitlementsToUserInput!
+  ): ExternalUserEntitlements!
+
+  # Remove an entitled user. Entitlements and consumption records related
+  # to the specified user will be removed.
+  removeEntitledUser(input: RemoveEntitledUserInput!): EntitledUser
+}

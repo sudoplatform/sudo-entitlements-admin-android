@@ -1,0 +1,235 @@
+# this is an auto generated file. This will be overwritten
+query GetEntitlementsSet($input: GetEntitlementsSetInput!) {
+  getEntitlementsSet(input: $input) {
+    createdAtEpochMs
+    updatedAtEpochMs
+    version
+    name
+    description
+    entitlements {
+      name
+      description
+      value
+    }
+  }
+}
+query ListEntitlementsSets($nextToken: String) {
+  listEntitlementsSets(nextToken: $nextToken) {
+    items {
+      createdAtEpochMs
+      updatedAtEpochMs
+      version
+      name
+      description
+      entitlements {
+        name
+        description
+        value
+      }
+    }
+    nextToken
+  }
+}
+query GetEntitlementsSequence($input: GetEntitlementsSequenceInput!) {
+  getEntitlementsSequence(input: $input) {
+    name
+    description
+    createdAtEpochMs
+    updatedAtEpochMs
+    version
+    transitions {
+      entitlementsSetName
+      duration
+    }
+  }
+}
+query ListEntitlementsSequences($nextToken: String) {
+  listEntitlementsSequences(nextToken: $nextToken) {
+    items {
+      name
+      description
+      createdAtEpochMs
+      updatedAtEpochMs
+      version
+      transitions {
+        entitlementsSetName
+        duration
+      }
+    }
+    nextToken
+  }
+}
+query GetEntitlementsForUser($input: GetEntitlementsForUserInput!) {
+  getEntitlementsForUser(input: $input) {
+    entitlements {
+      createdAtEpochMs
+      updatedAtEpochMs
+      version
+      externalId
+      owner
+      accountState
+      entitlementsSetName
+      entitlementsSequenceName
+      entitlements {
+        name
+        description
+        value
+      }
+      transitionsRelativeToEpochMs
+    }
+    consumption {
+      consumer {
+        id
+        issuer
+      }
+      name
+      value
+      consumed
+      available
+      firstConsumedAtEpochMs
+      lastConsumedAtEpochMs
+    }
+  }
+}
+mutation AddEntitlementsSet($input: AddEntitlementsSetInput!) {
+  addEntitlementsSet(input: $input) {
+    createdAtEpochMs
+    updatedAtEpochMs
+    version
+    name
+    description
+    entitlements {
+      name
+      description
+      value
+    }
+  }
+}
+mutation SetEntitlementsSet($input: SetEntitlementsSetInput!) {
+  setEntitlementsSet(input: $input) {
+    createdAtEpochMs
+    updatedAtEpochMs
+    version
+    name
+    description
+    entitlements {
+      name
+      description
+      value
+    }
+  }
+}
+mutation RemoveEntitlementsSet($input: RemoveEntitlementsSetInput!) {
+  removeEntitlementsSet(input: $input) {
+    createdAtEpochMs
+    updatedAtEpochMs
+    version
+    name
+    description
+    entitlements {
+      name
+      description
+      value
+    }
+  }
+}
+mutation AddEntitlementsSequence($input: AddEntitlementsSequenceInput!) {
+  addEntitlementsSequence(input: $input) {
+    name
+    description
+    createdAtEpochMs
+    updatedAtEpochMs
+    version
+    transitions {
+      entitlementsSetName
+      duration
+    }
+  }
+}
+mutation SetEntitlementsSequence($input: SetEntitlementsSequenceInput!) {
+  setEntitlementsSequence(input: $input) {
+    name
+    description
+    createdAtEpochMs
+    updatedAtEpochMs
+    version
+    transitions {
+      entitlementsSetName
+      duration
+    }
+  }
+}
+mutation RemoveEntitlementsSequence($input: RemoveEntitlementsSequenceInput!) {
+  removeEntitlementsSequence(input: $input) {
+    name
+    description
+    createdAtEpochMs
+    updatedAtEpochMs
+    version
+    transitions {
+      entitlementsSetName
+      duration
+    }
+  }
+}
+mutation ApplyEntitlementsSetToUser($input: ApplyEntitlementsSetToUserInput!) {
+  applyEntitlementsSetToUser(input: $input) {
+    createdAtEpochMs
+    updatedAtEpochMs
+    version
+    externalId
+    owner
+    accountState
+    entitlementsSetName
+    entitlementsSequenceName
+    entitlements {
+      name
+      description
+      value
+    }
+    transitionsRelativeToEpochMs
+  }
+}
+mutation ApplyEntitlementsSequenceToUser(
+  $input: ApplyEntitlementsSequenceToUserInput!
+) {
+  applyEntitlementsSequenceToUser(input: $input) {
+    createdAtEpochMs
+    updatedAtEpochMs
+    version
+    externalId
+    owner
+    accountState
+    entitlementsSetName
+    entitlementsSequenceName
+    entitlements {
+      name
+      description
+      value
+    }
+    transitionsRelativeToEpochMs
+  }
+}
+mutation ApplyEntitlementsToUser($input: ApplyEntitlementsToUserInput!) {
+  applyEntitlementsToUser(input: $input) {
+    createdAtEpochMs
+    updatedAtEpochMs
+    version
+    externalId
+    owner
+    accountState
+    entitlementsSetName
+    entitlementsSequenceName
+    entitlements {
+      name
+      description
+      value
+    }
+    transitionsRelativeToEpochMs
+  }
+}
+mutation RemoveEntitledUser($input: RemoveEntitledUserInput!) {
+  removeEntitledUser(input: $input) {
+    externalId
+  }
+}

@@ -17,8 +17,11 @@ import com.sudoplatform.sudoentitlementsadmin.type.AccountStates
 import com.sudoplatform.sudoentitlementsadmin.type.AddEntitlementsSequenceInput
 import com.sudoplatform.sudoentitlementsadmin.type.AddEntitlementsSetInput
 import com.sudoplatform.sudoentitlementsadmin.type.ApplyEntitlementsSequenceToUserInput
+import com.sudoplatform.sudoentitlementsadmin.type.ApplyEntitlementsSequenceToUsersInput
 import com.sudoplatform.sudoentitlementsadmin.type.ApplyEntitlementsSetToUserInput
+import com.sudoplatform.sudoentitlementsadmin.type.ApplyEntitlementsSetToUsersInput
 import com.sudoplatform.sudoentitlementsadmin.type.ApplyEntitlementsToUserInput
+import com.sudoplatform.sudoentitlementsadmin.type.ApplyEntitlementsToUsersInput
 import com.sudoplatform.sudoentitlementsadmin.type.EntitlementInput
 import com.sudoplatform.sudoentitlementsadmin.type.EntitlementsSequenceTransitionInput
 import com.sudoplatform.sudoentitlementsadmin.type.GetEntitlementsForUserInput
@@ -30,6 +33,9 @@ import com.sudoplatform.sudoentitlementsadmin.type.RemoveEntitlementsSetInput
 import com.sudoplatform.sudoentitlementsadmin.type.SetEntitlementsSequenceInput
 import com.sudoplatform.sudoentitlementsadmin.type.SetEntitlementsSetInput
 import com.sudoplatform.sudoentitlementsadmin.types.AccountState
+import com.sudoplatform.sudoentitlementsadmin.types.ApplyEntitlementsOperation
+import com.sudoplatform.sudoentitlementsadmin.types.ApplyEntitlementsSequenceOperation
+import com.sudoplatform.sudoentitlementsadmin.types.ApplyEntitlementsSetOperation
 import com.sudoplatform.sudoentitlementsadmin.types.EntitledUser
 import com.sudoplatform.sudoentitlementsadmin.types.Entitlement
 import com.sudoplatform.sudoentitlementsadmin.types.EntitlementConsumption
@@ -39,6 +45,7 @@ import com.sudoplatform.sudoentitlementsadmin.types.EntitlementsSet
 import com.sudoplatform.sudoentitlementsadmin.types.ListOutput
 import com.sudoplatform.sudoentitlementsadmin.types.UserEntitlements
 import com.sudoplatform.sudoentitlementsadmin.types.UserEntitlementsConsumption
+import com.sudoplatform.sudoentitlementsadmin.types.UserEntitlementsResult
 import com.sudoplatform.sudologging.Logger
 import org.json.JSONObject
 import java.util.Date
@@ -207,7 +214,23 @@ interface SudoEntitlementsAdminClient {
     ): UserEntitlements
 
     /**
-     * Apply entitlements directly to a user.
+     * Apply entitlements to users.
+     *
+     * If a record for that user's entitlements does not yet exist it will be created.
+     *
+     * Equivalent to calling applyEntitlementsToUser for each operation
+     *
+     * @param operations Array of ApplyEntitlemetnsOperations to perform
+     *
+     * @returns Array of results
+     */
+    @Throws(SudoEntitlementsAdminException::class)
+    suspend fun applyEntitlementsToUsers(
+        operations: List<ApplyEntitlementsOperation>,
+    ): List<UserEntitlementsResult>
+
+    /**
+     * Apply entitlements set to a user.
      *
      * If a record for that user's entitlements does not yet exist it will be created.
      *
@@ -221,6 +244,22 @@ interface SudoEntitlementsAdminClient {
         externalId: String,
         entitlementSetName: String
     ): UserEntitlements
+
+    /**
+     * Apply entitlements sets to users.
+     *
+     * If a record for that user's entitlements does not yet exist it will be created.
+     *
+     * Equivalent to calling applyEntitlementsSetToUser for each operation
+     *
+     * @param operations Array of ApplyEntitlementsSetOperations to perform
+     *
+     * @returns Array of results
+     */
+    @Throws(SudoEntitlementsAdminException::class)
+    suspend fun applyEntitlementsSetToUsers(
+        operations: List<ApplyEntitlementsSetOperation>,
+    ): List<UserEntitlementsResult>
 
     /**
      * Get an entitlements sequence
@@ -310,6 +349,22 @@ interface SudoEntitlementsAdminClient {
     ): UserEntitlements
 
     /**
+     * Apply entitlements sequences to users.
+     *
+     * If a record for that user's entitlements does not yet exist it will be created.
+     *
+     * Equivalent to calling applyEntitlementsSequenceToUser for each operation
+     *
+     * @param operations Array of ApplyEntitlementsSetOperations to perform
+     *
+     * @returns Array of results
+     */
+    @Throws(SudoEntitlementsAdminException::class)
+    suspend fun applyEntitlementsSequenceToUsers(
+        operations: List<ApplyEntitlementsSequenceOperation>,
+    ): List<UserEntitlementsResult>
+
+    /**
      * Remove an entitled user. Entitlements and consumption records related
      * to the specified user will be removed.
      *
@@ -395,7 +450,7 @@ class DefaultSudoEntitlementsAdminClient(
             throw response.errors().first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data()?.getEntitlementsSet
+        val output = response.data()?.getEntitlementsSet?.fragments()?.entitlementsSet()
         return if (output != null) EntitlementsSet(
             Date(output.createdAtEpochMs().toLong()),
             Date(
@@ -405,8 +460,9 @@ class DefaultSudoEntitlementsAdminClient(
             output.version(),
             output.name(),
             output.description(),
-            output.entitlements.map {
-                Entitlement(it.name(), it.description(), it.value())
+            output.entitlements().map {
+                val entitlement = it.fragments().entitlement()
+                Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
             }
         ) else null
     }
@@ -434,7 +490,7 @@ class DefaultSudoEntitlementsAdminClient(
             throw response.errors().first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data()?.addEntitlementsSet
+        val output = response.data()?.addEntitlementsSet?.fragments()?.entitlementsSet()
             ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
 
         return EntitlementsSet(
@@ -446,8 +502,9 @@ class DefaultSudoEntitlementsAdminClient(
             output.version(),
             output.name(),
             output.description(),
-            output.entitlements.map {
-                Entitlement(it.name(), it.description(), it.value())
+            output.entitlements().map {
+                val entitlement = it.fragments().entitlement()
+                Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
             }
         )
     }
@@ -469,17 +526,19 @@ class DefaultSudoEntitlementsAdminClient(
         val output = response.data()?.listEntitlementsSets
             ?: throw SudoEntitlementsAdminException.FailedException("Query completed successfully but result was missing.")
 
-        val items = output.items.map { item ->
+        val items = output.items.map {
+            val entitlementsSet = it.fragments().entitlementsSet()
             EntitlementsSet(
-                Date(item.createdAtEpochMs().toLong()),
+                Date(entitlementsSet.createdAtEpochMs().toLong()),
                 Date(
-                    item
+                    entitlementsSet
                         .updatedAtEpochMs().toLong()
                 ),
-                item.version(),
-                item.name(),
-                item.description(),
-                item.entitlements.map { entitlement ->
+                entitlementsSet.version(),
+                entitlementsSet.name(),
+                entitlementsSet.description(),
+                entitlementsSet.entitlements().map {
+                    val entitlement = it.fragments().entitlement()
                     Entitlement(
                         entitlement.name(),
                         entitlement.description(),
@@ -505,48 +564,54 @@ class DefaultSudoEntitlementsAdminClient(
             throw response.errors().first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data()?.getEntitlementsForUser
-        return if (output != null) UserEntitlementsConsumption(
+        val output = response.data()?.getEntitlementsForUser?.fragments()?.externalEntitlementsConsumption
+        if (output == null) {
+            return null
+        }
+        val entitlements = output.entitlements().fragments().externalUserEntitlements()
+        return UserEntitlementsConsumption(
             UserEntitlements(
-                Date(output.entitlements().createdAtEpochMs().toLong()),
+                Date(entitlements.createdAtEpochMs().toLong()),
                 Date(
-                    output.entitlements()
+                    entitlements
                         .updatedAtEpochMs().toLong()
                 ),
-                output.entitlements().version(),
-                output.entitlements().externalId(),
-                output.entitlements().owner(),
-                output.entitlements().entitlementsSetName(),
-                output.entitlements().entitlementsSequenceName(),
-                output.entitlements().entitlements.map {
-                    Entitlement(it.name(), it.description(), it.value())
+                entitlements.version(),
+                entitlements.externalId(),
+                entitlements.owner(),
+                entitlements.entitlementsSetName(),
+                entitlements.entitlementsSequenceName(),
+                entitlements.entitlements().map {
+                    val entitlement = it.fragments().entitlement()
+                    Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
                 },
-                output.entitlements()
+                entitlements
                     .transitionsRelativeToEpochMs()?.let {
                         Date(
                             it.toLong()
                         )
                     },
-                if (output.entitlements()
+                if (entitlements
                     .accountState() == AccountStates.ACTIVE
                 ) AccountState.ACTIVE else AccountState.LOCKED
             ),
-            output.consumption.map {
+            output.consumption().map {
+                val consumption = it.fragments().entitlementConsumption()
                 EntitlementConsumption(
-                    it.name(), it.value(), it.available(), it.consumed(),
-                    it.firstConsumedAtEpochMs()?.let { at ->
+                    consumption.name(), consumption.value(), consumption.available(), consumption.consumed(),
+                    consumption.firstConsumedAtEpochMs()?.let { at ->
                         Date(
                             at.toLong()
                         )
                     },
-                    it.lastConsumedAtEpochMs()?.let { at ->
+                    consumption.lastConsumedAtEpochMs()?.let { at ->
                         Date(
                             at.toLong()
                         )
                     }
                 )
             }
-        ) else null
+        )
     }
 
     override suspend fun setEntitlementsSet(
@@ -572,7 +637,7 @@ class DefaultSudoEntitlementsAdminClient(
             throw response.errors().first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data()?.setEntitlementsSet
+        val output = response.data()?.setEntitlementsSet?.fragments()?.entitlementsSet()
             ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
 
         return EntitlementsSet(
@@ -584,8 +649,9 @@ class DefaultSudoEntitlementsAdminClient(
             output.version(),
             output.name(),
             output.description(),
-            output.entitlements.map {
-                Entitlement(it.name(), it.description(), it.value())
+            output.entitlements().map {
+                val entitlement = it.fragments().entitlement()
+                Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
             }
         )
     }
@@ -602,7 +668,7 @@ class DefaultSudoEntitlementsAdminClient(
             throw response.errors().first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data()?.removeEntitlementsSet
+        val output = response.data()?.removeEntitlementsSet?.fragments()?.entitlementsSet()
         return if (output != null) EntitlementsSet(
             Date(output.createdAtEpochMs().toLong()),
             Date(
@@ -612,8 +678,9 @@ class DefaultSudoEntitlementsAdminClient(
             output.version(),
             output.name(),
             output.description(),
-            output.entitlements.map {
-                Entitlement(it.name(), it.description(), it.value())
+            output.entitlements().map {
+                val entitlement = it.fragments().entitlement()
+                Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
             }
         ) else null
     }
@@ -642,7 +709,7 @@ class DefaultSudoEntitlementsAdminClient(
             throw response.errors().first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data()?.applyEntitlementsToUser
+        val output = response.data()?.applyEntitlementsToUser?.fragments()?.externalUserEntitlements()
             ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
 
         return UserEntitlements(
@@ -656,8 +723,9 @@ class DefaultSudoEntitlementsAdminClient(
             output.owner(),
             output.entitlementsSetName(),
             output.entitlementsSequenceName(),
-            output.entitlements.map {
-                Entitlement(it.name(), it.description(), it.value())
+            output.entitlements().map {
+                val entitlement = it.fragments().entitlement()
+                Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
             },
             output
                 .transitionsRelativeToEpochMs()?.let {
@@ -667,6 +735,73 @@ class DefaultSudoEntitlementsAdminClient(
                 },
             if (output.accountState() == AccountStates.ACTIVE) AccountState.ACTIVE else AccountState.LOCKED
         )
+    }
+
+    override suspend fun applyEntitlementsToUsers(operations: List<ApplyEntitlementsOperation>): List<UserEntitlementsResult> {
+        this.logger.info("Applying entitlements to users.")
+
+        val input =
+            ApplyEntitlementsToUsersInput.builder()
+                .operations(
+                    operations.map {
+                        ApplyEntitlementsToUserInput.builder()
+                            .externalId(it.externalId)
+                            .entitlements(
+                                it.entitlements.map {
+                                    EntitlementInput.builder().name(it.name).description(it.description)
+                                        .value(it.value).build()
+                                }
+                            ).build()
+                    }
+                )
+                .build()
+
+        val response =
+            this.graphQLClient.mutate(
+                ApplyEntitlementsToUsersMutation.builder().input(input).build()
+            )
+                .enqueue()
+
+        if (response.hasErrors()) {
+            throw response.errors().first().toSudoEntitlementsAdminException()
+        }
+
+        val output = response.data()?.applyEntitlementsToUsers
+            ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
+
+        return output.map {
+            val userEntitlements = it.asExternalUserEntitlements()?.fragments()?.externalUserEntitlements()
+            val error = it.asExternalUserEntitlementsError()?.fragments()?.externalUserEntitlementsError()
+            if (userEntitlements != null) {
+                UserEntitlementsResult.Success(
+                    value = UserEntitlements(
+                        createdAt = Date(userEntitlements.createdAtEpochMs().toLong()),
+                        updatedAt = Date(userEntitlements.updatedAtEpochMs().toLong()),
+                        version = userEntitlements.version(),
+                        externalId = userEntitlements.externalId(),
+                        owner = userEntitlements.owner(),
+                        entitlementsSequenceName = userEntitlements.entitlementsSequenceName(),
+                        entitlementsSetName = userEntitlements.entitlementsSetName(),
+                        entitlements = userEntitlements.entitlements().map {
+                            val entitlement = it.fragments().entitlement()
+                            Entitlement(name = entitlement.name(), description = entitlement.description(), value = entitlement.value())
+                        },
+                        transitionsRelativeTo = userEntitlements.transitionsRelativeToEpochMs()?.let {
+                            Date(it.toLong())
+                        },
+                        accountState = if (userEntitlements.accountState() == AccountStates.ACTIVE) AccountState.ACTIVE else AccountState.LOCKED,
+                    )
+                )
+            } else if (error != null) {
+                UserEntitlementsResult.Failure(
+                    error = SudoEntitlementsAdminException.sudoEntitlementsAdminException(
+                        error.error()
+                    )
+                )
+            } else {
+                UserEntitlementsResult.Failure(SudoEntitlementsAdminException.FailedException("Unknown result type ${it.__typename}"))
+            }
+        }
     }
 
     override suspend fun applyEntitlementsSetToUser(
@@ -689,7 +824,7 @@ class DefaultSudoEntitlementsAdminClient(
             throw response.errors().first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data()?.applyEntitlementsSetToUser
+        val output = response.data()?.applyEntitlementsSetToUser?.fragments()?.externalUserEntitlements()
             ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
 
         return UserEntitlements(
@@ -703,8 +838,9 @@ class DefaultSudoEntitlementsAdminClient(
             output.owner(),
             output.entitlementsSetName(),
             output.entitlementsSequenceName(),
-            output.entitlements.map {
-                Entitlement(it.name(), it.description(), it.value())
+            output.entitlements().map {
+                val entitlement = it.fragments().entitlement()
+                Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
             },
             output
                 .transitionsRelativeToEpochMs()?.let {
@@ -714,6 +850,69 @@ class DefaultSudoEntitlementsAdminClient(
                 },
             if (output.accountState() == AccountStates.ACTIVE) AccountState.ACTIVE else AccountState.LOCKED
         )
+    }
+
+    override suspend fun applyEntitlementsSetToUsers(operations: List<ApplyEntitlementsSetOperation>): List<UserEntitlementsResult> {
+        this.logger.info("Applying entitlements sets to users.")
+
+        val input =
+            ApplyEntitlementsSetToUsersInput.builder()
+                .operations(
+                    operations.map {
+                        ApplyEntitlementsSetToUserInput.builder()
+                            .externalId(it.externalId)
+                            .entitlementsSetName(it.entitlementsSetName)
+                            .build()
+                    }
+                )
+                .build()
+
+        val response =
+            this.graphQLClient.mutate(
+                ApplyEntitlementsSetToUsersMutation.builder().input(input).build()
+            )
+                .enqueue()
+
+        if (response.hasErrors()) {
+            throw response.errors().first().toSudoEntitlementsAdminException()
+        }
+
+        val output = response.data()?.applyEntitlementsSetToUsers
+            ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
+
+        return output.map {
+            val userEntitlements = it.asExternalUserEntitlements()?.fragments()?.externalUserEntitlements()
+            val error = it.asExternalUserEntitlementsError()?.fragments()?.externalUserEntitlementsError()
+            if (userEntitlements != null) {
+                UserEntitlementsResult.Success(
+                    value = UserEntitlements(
+                        createdAt = Date(userEntitlements.createdAtEpochMs().toLong()),
+                        updatedAt = Date(userEntitlements.updatedAtEpochMs().toLong()),
+                        version = userEntitlements.version(),
+                        externalId = userEntitlements.externalId(),
+                        owner = userEntitlements.owner(),
+                        entitlementsSequenceName = userEntitlements.entitlementsSequenceName(),
+                        entitlementsSetName = userEntitlements.entitlementsSetName(),
+                        entitlements = userEntitlements.entitlements().map {
+                            val entitlement = it.fragments().entitlement()
+                            Entitlement(name = entitlement.name(), description = entitlement.description(), value = entitlement.value())
+                        },
+                        transitionsRelativeTo = userEntitlements.transitionsRelativeToEpochMs()?.let {
+                            Date(it.toLong())
+                        },
+                        accountState = if (userEntitlements.accountState() == AccountStates.ACTIVE) AccountState.ACTIVE else AccountState.LOCKED,
+                    )
+                )
+            } else if (error != null) {
+                UserEntitlementsResult.Failure(
+                    error = SudoEntitlementsAdminException.sudoEntitlementsAdminException(
+                        error.error()
+                    )
+                )
+            } else {
+                UserEntitlementsResult.Failure(SudoEntitlementsAdminException.FailedException("Unknown result type ${it.__typename}"))
+            }
+        }
     }
 
     override suspend fun getEntitlementsSequence(name: String): EntitlementsSequence? {
@@ -729,7 +928,7 @@ class DefaultSudoEntitlementsAdminClient(
             throw response.errors().first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data()?.getEntitlementsSequence
+        val output = response.data()?.getEntitlementsSequence?.fragments()?.entitlementsSequence()
         return if (output != null) EntitlementsSequence(
             Date(output.createdAtEpochMs().toLong()),
             Date(
@@ -739,8 +938,9 @@ class DefaultSudoEntitlementsAdminClient(
             output.version(),
             output.name(),
             output.description(),
-            output.transitions.map {
-                EntitlementsSequenceTransition(it.entitlementsSetName(), it.duration())
+            output.transitions().map {
+                val transition = it.fragments().entitlementsSequenceTransition()
+                EntitlementsSequenceTransition(transition.entitlementsSetName(), transition.duration())
             }
         ) else null
     }
@@ -759,21 +959,23 @@ class DefaultSudoEntitlementsAdminClient(
             throw response.errors().first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data()?.listEntitlementsSequences
+        val output = response.data()?.listEntitlementsSequences?.fragments()?.entitlementsSequencesConnection()
             ?: throw SudoEntitlementsAdminException.FailedException("Query completed successfully but result was missing.")
 
-        val items = output.items.map { item ->
+        val items = output.items().map {
+            val sequence = it.fragments().entitlementsSequence()
             EntitlementsSequence(
-                Date(item.createdAtEpochMs().toLong()),
+                Date(sequence.createdAtEpochMs().toLong()),
                 Date(
-                    item
+                    sequence
                         .updatedAtEpochMs().toLong()
                 ),
-                item.version(),
-                item.name(),
-                item.description(),
-                item.transitions.map {
-                    EntitlementsSequenceTransition(it.entitlementsSetName(), it.duration())
+                sequence.version(),
+                sequence.name(),
+                sequence.description(),
+                sequence.transitions().map {
+                    val transition = it.fragments().entitlementsSequenceTransition()
+                    EntitlementsSequenceTransition(transition.entitlementsSetName(), transition.duration())
                 }
             )
         }
@@ -806,7 +1008,7 @@ class DefaultSudoEntitlementsAdminClient(
             throw response.errors().first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data()?.addEntitlementsSequence
+        val output = response.data()?.addEntitlementsSequence?.fragments()?.entitlementsSequence()
             ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
 
         return EntitlementsSequence(
@@ -818,8 +1020,9 @@ class DefaultSudoEntitlementsAdminClient(
             output.version(),
             output.name(),
             output.description(),
-            output.transitions.map {
-                EntitlementsSequenceTransition(it.entitlementsSetName(), it.duration())
+            output.transitions().map {
+                val transition = it.fragments().entitlementsSequenceTransition()
+                EntitlementsSequenceTransition(transition.entitlementsSetName(), transition.duration())
             }
         )
     }
@@ -849,7 +1052,7 @@ class DefaultSudoEntitlementsAdminClient(
             throw response.errors().first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data()?.setEntitlementsSequence
+        val output = response.data()?.setEntitlementsSequence?.fragments()?.entitlementsSequence()
             ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
 
         return EntitlementsSequence(
@@ -861,8 +1064,9 @@ class DefaultSudoEntitlementsAdminClient(
             output.version(),
             output.name(),
             output.description(),
-            output.transitions.map {
-                EntitlementsSequenceTransition(it.entitlementsSetName(), it.duration())
+            output.transitions().map {
+                val transition = it.fragments().entitlementsSequenceTransition()
+                EntitlementsSequenceTransition(transition.entitlementsSetName(), transition.duration())
             }
         )
     }
@@ -881,7 +1085,7 @@ class DefaultSudoEntitlementsAdminClient(
             throw response.errors().first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data()?.removeEntitlementsSequence
+        val output = response.data()?.removeEntitlementsSequence?.fragments()?.entitlementsSequence()
         return if (output != null) EntitlementsSequence(
             Date(output.createdAtEpochMs().toLong()),
             Date(
@@ -891,8 +1095,9 @@ class DefaultSudoEntitlementsAdminClient(
             output.version(),
             output.name(),
             output.description(),
-            output.transitions.map {
-                EntitlementsSequenceTransition(it.entitlementsSetName(), it.duration())
+            output.transitions().map {
+                val transition = it.fragments().entitlementsSequenceTransition()
+                EntitlementsSequenceTransition(transition.entitlementsSetName(), transition.duration())
             }
         ) else null
     }
@@ -918,7 +1123,7 @@ class DefaultSudoEntitlementsAdminClient(
             throw response.errors().first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data()?.applyEntitlementsSequenceToUser
+        val output = response.data()?.applyEntitlementsSequenceToUser?.fragments()?.externalUserEntitlements()
             ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
 
         return UserEntitlements(
@@ -932,8 +1137,9 @@ class DefaultSudoEntitlementsAdminClient(
             output.owner(),
             output.entitlementsSetName(),
             output.entitlementsSequenceName(),
-            output.entitlements.map {
-                Entitlement(it.name(), it.description(), it.value())
+            output.entitlements().map {
+                val entitlement = it.fragments().entitlement()
+                Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
             },
             output
                 .transitionsRelativeToEpochMs()?.let {
@@ -943,6 +1149,69 @@ class DefaultSudoEntitlementsAdminClient(
                 },
             if (output.accountState() == AccountStates.ACTIVE) AccountState.ACTIVE else AccountState.LOCKED
         )
+    }
+
+    override suspend fun applyEntitlementsSequenceToUsers(operations: List<ApplyEntitlementsSequenceOperation>): List<UserEntitlementsResult> {
+        this.logger.info("Applying entitlements sequences to users.")
+
+        val input =
+            ApplyEntitlementsSequenceToUsersInput.builder()
+                .operations(
+                    operations.map {
+                        ApplyEntitlementsSequenceToUserInput.builder()
+                            .externalId(it.externalId)
+                            .entitlementsSequenceName(it.entitlementsSequenceName)
+                            .build()
+                    }
+                )
+                .build()
+
+        val response =
+            this.graphQLClient.mutate(
+                ApplyEntitlementsSequenceToUsersMutation.builder().input(input).build()
+            )
+                .enqueue()
+
+        if (response.hasErrors()) {
+            throw response.errors().first().toSudoEntitlementsAdminException()
+        }
+
+        val output = response.data()?.applyEntitlementsSequenceToUsers
+            ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
+
+        return output.map {
+            val userEntitlements = it.asExternalUserEntitlements()?.fragments()?.externalUserEntitlements()
+            val error = it.asExternalUserEntitlementsError()?.fragments()?.externalUserEntitlementsError()
+            if (userEntitlements != null) {
+                UserEntitlementsResult.Success(
+                    value = UserEntitlements(
+                        createdAt = Date(userEntitlements.createdAtEpochMs().toLong()),
+                        updatedAt = Date(userEntitlements.updatedAtEpochMs().toLong()),
+                        version = userEntitlements.version(),
+                        externalId = userEntitlements.externalId(),
+                        owner = userEntitlements.owner(),
+                        entitlementsSequenceName = userEntitlements.entitlementsSequenceName(),
+                        entitlementsSetName = userEntitlements.entitlementsSetName(),
+                        entitlements = userEntitlements.entitlements().map {
+                            val entitlement = it.fragments().entitlement()
+                            Entitlement(name = entitlement.name(), description = entitlement.description(), value = entitlement.value())
+                        },
+                        transitionsRelativeTo = userEntitlements.transitionsRelativeToEpochMs()?.let {
+                            Date(it.toLong())
+                        },
+                        accountState = if (userEntitlements.accountState() == AccountStates.ACTIVE) AccountState.ACTIVE else AccountState.LOCKED,
+                    )
+                )
+            } else if (error != null) {
+                UserEntitlementsResult.Failure(
+                    error = SudoEntitlementsAdminException.sudoEntitlementsAdminException(
+                        error.error()
+                    )
+                )
+            } else {
+                UserEntitlementsResult.Failure(SudoEntitlementsAdminException.FailedException("Unknown result type ${it.__typename}"))
+            }
+        }
     }
 
     override suspend fun removeEntitledUser(externalId: String): EntitledUser? {

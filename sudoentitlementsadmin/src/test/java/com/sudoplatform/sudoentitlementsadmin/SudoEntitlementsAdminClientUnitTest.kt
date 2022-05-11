@@ -15,12 +15,16 @@ import com.amazonaws.mobileconnectors.appsync.AppSyncQueryCall
 import com.apollographql.apollo.GraphQLCall
 import com.apollographql.apollo.api.Error
 import com.apollographql.apollo.api.Operation
+import com.sudoplatform.sudoentitlementsadmin.fragment.ExternalUserEntitlementsError
 import com.sudoplatform.sudoentitlementsadmin.type.AccountStates
 import com.sudoplatform.sudoentitlementsadmin.type.AddEntitlementsSequenceInput
 import com.sudoplatform.sudoentitlementsadmin.type.AddEntitlementsSetInput
 import com.sudoplatform.sudoentitlementsadmin.type.ApplyEntitlementsSequenceToUserInput
+import com.sudoplatform.sudoentitlementsadmin.type.ApplyEntitlementsSequenceToUsersInput
 import com.sudoplatform.sudoentitlementsadmin.type.ApplyEntitlementsSetToUserInput
+import com.sudoplatform.sudoentitlementsadmin.type.ApplyEntitlementsSetToUsersInput
 import com.sudoplatform.sudoentitlementsadmin.type.ApplyEntitlementsToUserInput
+import com.sudoplatform.sudoentitlementsadmin.type.ApplyEntitlementsToUsersInput
 import com.sudoplatform.sudoentitlementsadmin.type.EntitlementInput
 import com.sudoplatform.sudoentitlementsadmin.type.EntitlementsSequenceTransitionInput
 import com.sudoplatform.sudoentitlementsadmin.type.GetEntitlementsSequenceInput
@@ -30,8 +34,12 @@ import com.sudoplatform.sudoentitlementsadmin.type.RemoveEntitlementsSetInput
 import com.sudoplatform.sudoentitlementsadmin.type.SetEntitlementsSequenceInput
 import com.sudoplatform.sudoentitlementsadmin.type.SetEntitlementsSetInput
 import com.sudoplatform.sudoentitlementsadmin.types.AccountState
+import com.sudoplatform.sudoentitlementsadmin.types.ApplyEntitlementsOperation
+import com.sudoplatform.sudoentitlementsadmin.types.ApplyEntitlementsSequenceOperation
+import com.sudoplatform.sudoentitlementsadmin.types.ApplyEntitlementsSetOperation
 import com.sudoplatform.sudoentitlementsadmin.types.Entitlement
 import com.sudoplatform.sudoentitlementsadmin.types.EntitlementsSequenceTransition
+import com.sudoplatform.sudoentitlementsadmin.types.UserEntitlementsResult
 import com.sudoplatform.sudologging.Logger
 import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
@@ -51,6 +59,11 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
+import com.sudoplatform.sudoentitlementsadmin.fragment.Entitlement as GraphQLEntitlement
+import com.sudoplatform.sudoentitlementsadmin.fragment.EntitlementsSequence as GraphQLEntitlementsSequence
+import com.sudoplatform.sudoentitlementsadmin.fragment.EntitlementsSequenceTransition as GraphQLEntitlementsSequenceTransition
+import com.sudoplatform.sudoentitlementsadmin.fragment.EntitlementsSet as GraphQLEntitlementsSet
+import com.sudoplatform.sudoentitlementsadmin.fragment.ExternalUserEntitlements as GraphQLExternalUserEntitlements
 
 @RunWith(PowerMockRunner::class)
 @PrepareForTest(DefaultSudoEntitlementsAdminClient::class, Log::class)
@@ -117,19 +130,29 @@ class SudoEntitlementsAdminClientUnitTest {
                 GetEntitlementsSetQuery.Data(
                     GetEntitlementsSetQuery.GetEntitlementsSet(
                         "GetEntitlementsSet",
-                        1.0,
-                        2.0,
-                        1,
-                        "dummy_name",
-                        "dummy_description",
-                        listOf(
-                            GetEntitlementsSetQuery.Entitlement(
-                                "Entitlement",
-                                "dummy_entitlement",
+                        GetEntitlementsSetQuery.GetEntitlementsSet.Fragments(
+                            GraphQLEntitlementsSet(
+                                "EntitlementsSet",
+                                1.0,
+                                2.0,
+                                1,
+                                "dummy_name",
                                 "dummy_description",
-                                1
-                            )
-                        ),
+                                mutableListOf(
+                                    GraphQLEntitlementsSet.Entitlement(
+                                        "Entitlement",
+                                        GraphQLEntitlementsSet.Entitlement.Fragments(
+                                            GraphQLEntitlement(
+                                                "Entitlement",
+                                                "dummy_entitlement",
+                                                "dummy_description",
+                                                1
+                                            )
+                                        )
+                                    )
+                                )
+                            ),
+                        )
                     )
                 )
             ).build()
@@ -194,17 +217,27 @@ class SudoEntitlementsAdminClientUnitTest {
                 AddEntitlementsSetMutation.Data(
                     AddEntitlementsSetMutation.AddEntitlementsSet(
                         "AddEntitlementsSet",
-                        1.0,
-                        2.0,
-                        1,
-                        "dummy_name",
-                        "dummy_description",
-                        listOf(
-                            AddEntitlementsSetMutation.Entitlement(
-                                "Entitlement",
-                                "dummy_entitlement",
+                        AddEntitlementsSetMutation.AddEntitlementsSet.Fragments(
+                            GraphQLEntitlementsSet(
+                                "EntitlementsSet",
+                                1.0,
+                                2.0,
+                                1,
+                                "dummy_name",
                                 "dummy_description",
-                                1
+                                mutableListOf(
+                                    GraphQLEntitlementsSet.Entitlement(
+                                        "Entitlement",
+                                        GraphQLEntitlementsSet.Entitlement.Fragments(
+                                            GraphQLEntitlement(
+                                                "Entitlement",
+                                                "dummy_entitlement",
+                                                "dummy_description",
+                                                1
+                                            )
+                                        )
+                                    )
+                                )
                             )
                         ),
                     )
@@ -281,17 +314,27 @@ class SudoEntitlementsAdminClientUnitTest {
                 SetEntitlementsSetMutation.Data(
                     SetEntitlementsSetMutation.SetEntitlementsSet(
                         "SetEntitlementsSet",
-                        1.0,
-                        2.0,
-                        1,
-                        "dummy_name",
-                        "dummy_description",
-                        listOf(
-                            SetEntitlementsSetMutation.Entitlement(
-                                "Entitlement",
-                                "dummy_entitlement",
+                        SetEntitlementsSetMutation.SetEntitlementsSet.Fragments(
+                            GraphQLEntitlementsSet(
+                                "EntitlementsSet",
+                                1.0,
+                                2.0,
+                                1,
+                                "dummy_name",
                                 "dummy_description",
-                                1
+                                mutableListOf(
+                                    GraphQLEntitlementsSet.Entitlement(
+                                        "Entitlement",
+                                        GraphQLEntitlementsSet.Entitlement.Fragments(
+                                            GraphQLEntitlement(
+                                                "Entitlement",
+                                                "dummy_entitlement",
+                                                "dummy_description",
+                                                1
+                                            )
+                                        )
+                                    )
+                                )
                             )
                         ),
                     )
@@ -362,17 +405,27 @@ class SudoEntitlementsAdminClientUnitTest {
                 RemoveEntitlementsSetMutation.Data(
                     RemoveEntitlementsSetMutation.RemoveEntitlementsSet(
                         "RemoveEntitlementsSet",
-                        1.0,
-                        2.0,
-                        1,
-                        "dummy_name",
-                        "dummy_description",
-                        listOf(
-                            RemoveEntitlementsSetMutation.Entitlement(
-                                "Entitlement",
-                                "dummy_entitlement",
+                        RemoveEntitlementsSetMutation.RemoveEntitlementsSet.Fragments(
+                            GraphQLEntitlementsSet(
+                                "EntitlementsSet",
+                                1.0,
+                                2.0,
+                                1,
+                                "dummy_name",
                                 "dummy_description",
-                                1
+                                mutableListOf(
+                                    GraphQLEntitlementsSet.Entitlement(
+                                        "Entitlement",
+                                        GraphQLEntitlementsSet.Entitlement.Fragments(
+                                            GraphQLEntitlement(
+                                                "Entitlement",
+                                                "dummy_entitlement",
+                                                "dummy_description",
+                                                1
+                                            )
+                                        )
+                                    )
+                                )
                             )
                         ),
                     )
@@ -436,23 +489,33 @@ class SudoEntitlementsAdminClientUnitTest {
                 ApplyEntitlementsSetToUserMutation.Data(
                     ApplyEntitlementsSetToUserMutation.ApplyEntitlementsSetToUser(
                         "ApplyEntitlementsSetToUser",
-                        1.0,
-                        2.0,
-                        1.0,
-                        "dummy_external_id",
-                        "dummy_owner",
-                        AccountStates.ACTIVE,
-                        "dummy_name",
-                        null,
-                        listOf(
-                            ApplyEntitlementsSetToUserMutation.Entitlement(
-                                "Entitlement",
-                                "dummy_entitlement",
-                                "dummy_description",
-                                1
+                        ApplyEntitlementsSetToUserMutation.ApplyEntitlementsSetToUser.Fragments(
+                            GraphQLExternalUserEntitlements(
+                                "ExternalUserEntitlements",
+                                1.0,
+                                2.0,
+                                1.0,
+                                "dummy_external_id",
+                                "dummy_owner",
+                                AccountStates.ACTIVE,
+                                "dummy_name",
+                                null,
+                                mutableListOf(
+                                    GraphQLExternalUserEntitlements.Entitlement(
+                                        "Entitlement",
+                                        GraphQLExternalUserEntitlements.Entitlement.Fragments(
+                                            GraphQLEntitlement(
+                                                "Entitlement",
+                                                "dummy_entitlement",
+                                                "dummy_description",
+                                                1
+                                            )
+                                        )
+                                    )
+                                ),
+                                null
                             )
-                        ),
-                        null
+                        )
                     )
                 )
             ).build()
@@ -490,6 +553,159 @@ class SudoEntitlementsAdminClientUnitTest {
     }
 
     @Test
+    fun testApplyEntitlementsSetToUsers() = runBlocking {
+        val call: AppSyncMutationCall<ApplyEntitlementsSetToUsersMutation> = mock()
+        whenever(
+            this@SudoEntitlementsAdminClientUnitTest.graphQLClient.mutate<ApplyEntitlementsSetToUsersMutation.Data, ApplyEntitlementsSetToUsersMutation, Operation.Variables>(
+                any()
+            )
+        ).thenReturn(call)
+
+        whenever(
+            call.enqueue(
+                any()
+            )
+        ).thenAnswer {
+            val mutation = ApplyEntitlementsSetToUsersMutation.builder()
+                .input(
+                    ApplyEntitlementsSetToUsersInput.builder()
+                        .operations(
+                            listOf(
+                                ApplyEntitlementsSetToUserInput.builder()
+                                    .externalId("dummy_external_id")
+                                    .entitlementsSetName("dummy_name")
+                                    .build(),
+                                ApplyEntitlementsSetToUserInput.builder()
+                                    .externalId("error_external_id")
+                                    .entitlementsSetName("error_name")
+                                    .build()
+                            )
+                        ).build()
+                ).build()
+
+            val builder =
+                com.apollographql.apollo.api.Response.builder<ApplyEntitlementsSetToUsersMutation.Data>(
+                    mutation
+                )
+            val response = builder.data(
+                ApplyEntitlementsSetToUsersMutation.Data(
+                    listOf(
+                        ApplyEntitlementsSetToUsersMutation.ApplyEntitlementsSetToUser(
+                            "ExternalUserEntitlements",
+                            ApplyEntitlementsSetToUsersMutation.AsExternalUserEntitlements(
+                                "ExternalUserEntitlements",
+                                ApplyEntitlementsSetToUsersMutation.AsExternalUserEntitlements.Fragments(
+                                    GraphQLExternalUserEntitlements(
+                                        "ExternalUserEntitlements",
+                                        1.0,
+                                        2.0,
+                                        1.0,
+                                        "dummy_external_id",
+                                        "dummy_owner",
+                                        AccountStates.ACTIVE,
+                                        "dummy_name",
+                                        null,
+                                        mutableListOf(
+                                            GraphQLExternalUserEntitlements.Entitlement(
+                                                "Entitlement",
+                                                GraphQLExternalUserEntitlements.Entitlement.Fragments(
+                                                    GraphQLEntitlement(
+                                                        "Entitlement",
+                                                        "dummy_entitlement",
+                                                        "dummy_description",
+                                                        1
+                                                    )
+                                                )
+                                            )
+                                        ),
+                                        null
+                                    )
+                                )
+                            ),
+                            null,
+                        ),
+                        ApplyEntitlementsSetToUsersMutation.ApplyEntitlementsSetToUser(
+                            "ExternalUserEntitlementsError",
+                            null,
+                            ApplyEntitlementsSetToUsersMutation.AsExternalUserEntitlementsError(
+                                "ExternalUserEntitlementsError",
+                                ApplyEntitlementsSetToUsersMutation.AsExternalUserEntitlementsError.Fragments(
+                                    ExternalUserEntitlementsError(
+                                        "ExternalUserEntitlementsError",
+                                        "sudoplatform.entitlements.EntitlementsSetNotFoundError"
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            ).build()
+
+            @Suppress("UNCHECKED_CAST")
+            (it.arguments[0] as GraphQLCall.Callback<ApplyEntitlementsSetToUsersMutation.Data>).onResponse(
+                response
+            )
+        }
+
+        val results =
+            this@SudoEntitlementsAdminClientUnitTest.client.applyEntitlementsSetToUsers(
+                listOf(
+                    ApplyEntitlementsSetOperation("dummy_external_id", "dummy_name"),
+                    ApplyEntitlementsSetOperation("error_external_id", "error_name"),
+                )
+            )
+
+        verify(this@SudoEntitlementsAdminClientUnitTest.graphQLClient).mutate<ApplyEntitlementsSetToUsersMutation.Data, ApplyEntitlementsSetToUsersMutation, ApplyEntitlementsSetToUsersMutation.Variables>(
+            check {
+                assertEquals("dummy_external_id", it.variables().input().operations()[0].externalId())
+                assertEquals("dummy_name", it.variables().input().operations()[0].entitlementsSetName())
+                assertEquals("error_external_id", it.variables().input().operations()[1].externalId())
+                assertEquals("error_name", it.variables().input().operations()[1].entitlementsSetName())
+            }
+        )
+
+        assertEquals(2, results.size)
+        val results0 = results[0]
+        val results1 = results[1]
+
+        when (results0) {
+            is UserEntitlementsResult.Success -> {
+                val userEntitlements = results0.value
+                assertEquals(AccountState.ACTIVE, userEntitlements.accountState)
+                assertEquals("dummy_name", userEntitlements.entitlementsSetName)
+                assertEquals(1.0, userEntitlements.version, 0.0)
+                assertEquals("dummy_owner", userEntitlements.owner)
+                assertNull(userEntitlements.entitlementsSequenceName)
+                assertNull(userEntitlements.transitionsRelativeTo)
+                assertEquals(1L, userEntitlements.createdAt.time)
+                assertEquals(2L, userEntitlements.updatedAt.time)
+                val entitlement = userEntitlements.entitlements.first()
+                assertEquals("dummy_entitlement", entitlement.name)
+                assertEquals("dummy_description", entitlement.description)
+                assertEquals(1, entitlement.value)
+            }
+            else -> {
+                fail("results[0] is not of expected type but ${results[0].javaClass}")
+            }
+        }
+
+        when (results1) {
+            is UserEntitlementsResult.Failure -> {
+                val error = results1.error
+                when (error) {
+                    is SudoEntitlementsAdminException.EntitlementsSetNotFoundException -> {}
+                    else -> {
+                        fail("Error not mapped correctly")
+                    }
+                }
+            }
+            else -> {
+                fail("results[1] is not of expected type but ${results[1].javaClass}")
+            }
+        }
+    }
+
+    @Test
     fun testGetEntitlementsSequence() = runBlocking {
         val call: AppSyncQueryCall<GetEntitlementsSequenceQuery> = mock()
         whenever(
@@ -516,16 +732,26 @@ class SudoEntitlementsAdminClientUnitTest {
                 GetEntitlementsSequenceQuery.Data(
                     GetEntitlementsSequenceQuery.GetEntitlementsSequence(
                         "GetEntitlementsSequence",
-                        "dummy_name",
-                        "dummy_description",
-                        1.0,
-                        2.0,
-                        1,
-                        listOf(
-                            GetEntitlementsSequenceQuery.Transition(
-                                "Transition",
-                                "dummy_entitlements_set",
-                                "dummy_duration",
+                        GetEntitlementsSequenceQuery.GetEntitlementsSequence.Fragments(
+                            GraphQLEntitlementsSequence(
+                                "GetEntitlementsSequence",
+                                "dummy_name",
+                                "dummy_description",
+                                1.0,
+                                2.0,
+                                1,
+                                mutableListOf(
+                                    GraphQLEntitlementsSequence.Transition(
+                                        "Transition",
+                                        GraphQLEntitlementsSequence.Transition.Fragments(
+                                            GraphQLEntitlementsSequenceTransition(
+                                                "Transition",
+                                                "dummy_entitlements_set",
+                                                "dummy_duration",
+                                            )
+                                        )
+                                    )
+                                )
                             )
                         ),
                     )
@@ -592,16 +818,26 @@ class SudoEntitlementsAdminClientUnitTest {
                 AddEntitlementsSequenceMutation.Data(
                     AddEntitlementsSequenceMutation.AddEntitlementsSequence(
                         "AddEntitlementsSequence",
-                        "dummy_name",
-                        "dummy_description",
-                        1.0,
-                        2.0,
-                        1,
-                        listOf(
-                            AddEntitlementsSequenceMutation.Transition(
-                                "Transition",
-                                "dummy_entitlements_set",
-                                "dummy_duration",
+                        AddEntitlementsSequenceMutation.AddEntitlementsSequence.Fragments(
+                            GraphQLEntitlementsSequence(
+                                "AddEntitlementsSequence",
+                                "dummy_name",
+                                "dummy_description",
+                                1.0,
+                                2.0,
+                                1,
+                                mutableListOf(
+                                    GraphQLEntitlementsSequence.Transition(
+                                        "Transition",
+                                        GraphQLEntitlementsSequence.Transition.Fragments(
+                                            GraphQLEntitlementsSequenceTransition(
+                                                "Transition",
+                                                "dummy_entitlements_set",
+                                                "dummy_duration",
+                                            )
+                                        )
+                                    )
+                                )
                             )
                         ),
                     )
@@ -677,16 +913,26 @@ class SudoEntitlementsAdminClientUnitTest {
                 SetEntitlementsSequenceMutation.Data(
                     SetEntitlementsSequenceMutation.SetEntitlementsSequence(
                         "SetEntitlementsSequence",
-                        "dummy_name",
-                        "dummy_description",
-                        1.0,
-                        2.0,
-                        1,
-                        listOf(
-                            SetEntitlementsSequenceMutation.Transition(
-                                "Transition",
-                                "dummy_entitlements_set",
-                                "dummy_duration",
+                        SetEntitlementsSequenceMutation.SetEntitlementsSequence.Fragments(
+                            GraphQLEntitlementsSequence(
+                                "SetEntitlementsSequence",
+                                "dummy_name",
+                                "dummy_description",
+                                1.0,
+                                2.0,
+                                1,
+                                mutableListOf(
+                                    GraphQLEntitlementsSequence.Transition(
+                                        "Transition",
+                                        GraphQLEntitlementsSequence.Transition.Fragments(
+                                            GraphQLEntitlementsSequenceTransition(
+                                                "Transition",
+                                                "dummy_entitlements_set",
+                                                "dummy_duration",
+                                            )
+                                        )
+                                    )
+                                )
                             )
                         ),
                     )
@@ -755,16 +1001,26 @@ class SudoEntitlementsAdminClientUnitTest {
                 RemoveEntitlementsSequenceMutation.Data(
                     RemoveEntitlementsSequenceMutation.RemoveEntitlementsSequence(
                         "RemoveEntitlementsSequence",
-                        "dummy_name",
-                        "dummy_description",
-                        1.0,
-                        2.0,
-                        1,
-                        listOf(
-                            RemoveEntitlementsSequenceMutation.Transition(
-                                "Transition",
-                                "dummy_entitlements_set",
-                                "dummy_duration",
+                        RemoveEntitlementsSequenceMutation.RemoveEntitlementsSequence.Fragments(
+                            GraphQLEntitlementsSequence(
+                                "RemoveEntitlementsSequence",
+                                "dummy_name",
+                                "dummy_description",
+                                1.0,
+                                2.0,
+                                1,
+                                mutableListOf(
+                                    GraphQLEntitlementsSequence.Transition(
+                                        "Transition",
+                                        GraphQLEntitlementsSequence.Transition.Fragments(
+                                            GraphQLEntitlementsSequenceTransition(
+                                                "Transition",
+                                                "dummy_entitlements_set",
+                                                "dummy_duration",
+                                            )
+                                        )
+                                    )
+                                )
                             )
                         ),
                     )
@@ -827,23 +1083,33 @@ class SudoEntitlementsAdminClientUnitTest {
                 ApplyEntitlementsSequenceToUserMutation.Data(
                     ApplyEntitlementsSequenceToUserMutation.ApplyEntitlementsSequenceToUser(
                         "ApplyEntitlementsSequenceToUser",
-                        1.0,
-                        2.0,
-                        1.0,
-                        "dummy_external_id",
-                        "dummy_owner",
-                        AccountStates.ACTIVE,
-                        null,
-                        "dummy_name",
-                        listOf(
-                            ApplyEntitlementsSequenceToUserMutation.Entitlement(
-                                "Entitlement",
-                                "dummy_entitlement",
-                                "dummy_description",
-                                1
+                        ApplyEntitlementsSequenceToUserMutation.ApplyEntitlementsSequenceToUser.Fragments(
+                            GraphQLExternalUserEntitlements(
+                                "ExternalUserEntitlements",
+                                1.0,
+                                2.0,
+                                1.0,
+                                "dummy_external_id",
+                                "dummy_owner",
+                                AccountStates.ACTIVE,
+                                null,
+                                "dummy_name",
+                                mutableListOf(
+                                    GraphQLExternalUserEntitlements.Entitlement(
+                                        "Entitlement",
+                                        GraphQLExternalUserEntitlements.Entitlement.Fragments(
+                                            GraphQLEntitlement(
+                                                "Entitlement",
+                                                "dummy_entitlement",
+                                                "dummy_description",
+                                                1
+                                            )
+                                        )
+                                    )
+                                ),
+                                1.0
                             )
-                        ),
-                        1.0
+                        )
                     )
                 )
             ).build()
@@ -881,6 +1147,159 @@ class SudoEntitlementsAdminClientUnitTest {
     }
 
     @Test
+    fun testApplyEntitlementsSequenceToUsers() = runBlocking {
+        val call: AppSyncMutationCall<ApplyEntitlementsSequenceToUsersMutation> = mock()
+        whenever(
+            this@SudoEntitlementsAdminClientUnitTest.graphQLClient.mutate<ApplyEntitlementsSequenceToUsersMutation.Data, ApplyEntitlementsSequenceToUsersMutation, Operation.Variables>(
+                any()
+            )
+        ).thenReturn(call)
+
+        whenever(
+            call.enqueue(
+                any()
+            )
+        ).thenAnswer {
+            val mutation = ApplyEntitlementsSequenceToUsersMutation.builder()
+                .input(
+                    ApplyEntitlementsSequenceToUsersInput.builder()
+                        .operations(
+                            listOf(
+                                ApplyEntitlementsSequenceToUserInput.builder()
+                                    .externalId("dummy_external_id")
+                                    .entitlementsSequenceName("dummy_name")
+                                    .build(),
+                                ApplyEntitlementsSequenceToUserInput.builder()
+                                    .externalId("error_external_id")
+                                    .entitlementsSequenceName("error_name")
+                                    .build()
+                            )
+                        ).build()
+                ).build()
+
+            val builder =
+                com.apollographql.apollo.api.Response.builder<ApplyEntitlementsSequenceToUsersMutation.Data>(
+                    mutation
+                )
+            val response = builder.data(
+                ApplyEntitlementsSequenceToUsersMutation.Data(
+                    listOf(
+                        ApplyEntitlementsSequenceToUsersMutation.ApplyEntitlementsSequenceToUser(
+                            "ExternalUserEntitlements",
+                            ApplyEntitlementsSequenceToUsersMutation.AsExternalUserEntitlements(
+                                "ExternalUserEntitlements",
+                                ApplyEntitlementsSequenceToUsersMutation.AsExternalUserEntitlements.Fragments(
+                                    GraphQLExternalUserEntitlements(
+                                        "ExternalUserEntitlements",
+                                        1.0,
+                                        2.0,
+                                        1.0,
+                                        "dummy_external_id",
+                                        "dummy_owner",
+                                        AccountStates.ACTIVE,
+                                        "dummy_name",
+                                        "dummy_name",
+                                        mutableListOf(
+                                            GraphQLExternalUserEntitlements.Entitlement(
+                                                "Entitlement",
+                                                GraphQLExternalUserEntitlements.Entitlement.Fragments(
+                                                    GraphQLEntitlement(
+                                                        "Entitlement",
+                                                        "dummy_entitlement",
+                                                        "dummy_description",
+                                                        1
+                                                    )
+                                                )
+                                            )
+                                        ),
+                                        null
+                                    )
+                                )
+                            ),
+                            null,
+                        ),
+                        ApplyEntitlementsSequenceToUsersMutation.ApplyEntitlementsSequenceToUser(
+                            "ExternalUserEntitlementsError",
+                            null,
+                            ApplyEntitlementsSequenceToUsersMutation.AsExternalUserEntitlementsError(
+                                "ExternalUserEntitlementsError",
+                                ApplyEntitlementsSequenceToUsersMutation.AsExternalUserEntitlementsError.Fragments(
+                                    ExternalUserEntitlementsError(
+                                        "ExternalUserEntitlementsError",
+                                        "sudoplatform.entitlements.EntitlementsSequenceNotFoundError"
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            ).build()
+
+            @Suppress("UNCHECKED_CAST")
+            (it.arguments[0] as GraphQLCall.Callback<ApplyEntitlementsSequenceToUsersMutation.Data>).onResponse(
+                response
+            )
+        }
+
+        val results =
+            this@SudoEntitlementsAdminClientUnitTest.client.applyEntitlementsSequenceToUsers(
+                listOf(
+                    ApplyEntitlementsSequenceOperation("dummy_external_id", "dummy_name"),
+                    ApplyEntitlementsSequenceOperation("error_external_id", "error_name"),
+                )
+            )
+
+        verify(this@SudoEntitlementsAdminClientUnitTest.graphQLClient).mutate<ApplyEntitlementsSequenceToUsersMutation.Data, ApplyEntitlementsSequenceToUsersMutation, ApplyEntitlementsSequenceToUsersMutation.Variables>(
+            check {
+                assertEquals("dummy_external_id", it.variables().input().operations()[0].externalId())
+                assertEquals("dummy_name", it.variables().input().operations()[0].entitlementsSequenceName())
+                assertEquals("error_external_id", it.variables().input().operations()[1].externalId())
+                assertEquals("error_name", it.variables().input().operations()[1].entitlementsSequenceName())
+            }
+        )
+
+        assertEquals(2, results.size)
+        val results0 = results[0]
+        val results1 = results[1]
+
+        when (results0) {
+            is UserEntitlementsResult.Success -> {
+                val userEntitlements = results0.value
+                assertEquals(AccountState.ACTIVE, userEntitlements.accountState)
+                assertEquals("dummy_name", userEntitlements.entitlementsSetName)
+                assertEquals(1.0, userEntitlements.version, 0.0)
+                assertEquals("dummy_owner", userEntitlements.owner)
+                assertEquals("dummy_name", userEntitlements.entitlementsSequenceName)
+                assertNull(userEntitlements.transitionsRelativeTo)
+                assertEquals(1L, userEntitlements.createdAt.time)
+                assertEquals(2L, userEntitlements.updatedAt.time)
+                val entitlement = userEntitlements.entitlements.first()
+                assertEquals("dummy_entitlement", entitlement.name)
+                assertEquals("dummy_description", entitlement.description)
+                assertEquals(1, entitlement.value)
+            }
+            else -> {
+                fail("results[0] is not of expected type but ${results[0].javaClass}")
+            }
+        }
+
+        when (results1) {
+            is UserEntitlementsResult.Failure -> {
+                val error = results1.error
+                when (error) {
+                    is SudoEntitlementsAdminException.EntitlementsSequenceNotFoundException -> {}
+                    else -> {
+                        fail("Error not mapped correctly")
+                    }
+                }
+            }
+            else -> {
+                fail("results[1] is not of expected type but ${results[1].javaClass}")
+            }
+        }
+    }
+
+    @Test
     fun testApplyEntitlementsToUser() = runBlocking {
         val call: AppSyncMutationCall<ApplyEntitlementsToUserMutation> = mock()
         whenever(
@@ -913,23 +1332,33 @@ class SudoEntitlementsAdminClientUnitTest {
                 ApplyEntitlementsToUserMutation.Data(
                     ApplyEntitlementsToUserMutation.ApplyEntitlementsToUser(
                         "ApplyEntitlementsToUser",
-                        1.0,
-                        2.0,
-                        1.0,
-                        "dummy_external_id",
-                        "dummy_owner",
-                        AccountStates.LOCKED,
-                        null,
-                        null,
-                        listOf(
-                            ApplyEntitlementsToUserMutation.Entitlement(
-                                "Entitlement",
-                                "dummy_entitlement",
-                                "dummy_description",
-                                1
+                        ApplyEntitlementsToUserMutation.ApplyEntitlementsToUser.Fragments(
+                            GraphQLExternalUserEntitlements(
+                                "ExternalUserEntitlements",
+                                1.0,
+                                2.0,
+                                1.0,
+                                "dummy_external_id",
+                                "dummy_owner",
+                                AccountStates.LOCKED,
+                                null,
+                                null,
+                                mutableListOf(
+                                    GraphQLExternalUserEntitlements.Entitlement(
+                                        "Entitlement",
+                                        GraphQLExternalUserEntitlements.Entitlement.Fragments(
+                                            GraphQLEntitlement(
+                                                "Entitlement",
+                                                "dummy_entitlement",
+                                                "dummy_description",
+                                                1
+                                            )
+                                        )
+                                    )
+                                ),
+                                null
                             )
-                        ),
-                        null
+                        )
                     )
                 )
             ).build()
@@ -971,10 +1400,10 @@ class SudoEntitlementsAdminClientUnitTest {
     }
 
     @Test
-    fun testErrorHandling() = runBlocking {
-        val call: AppSyncMutationCall<RemoveEntitlementsSetMutation> = mock()
+    fun testApplyEntitlementsToUsers() = runBlocking {
+        val call: AppSyncMutationCall<ApplyEntitlementsToUsersMutation> = mock()
         whenever(
-            this@SudoEntitlementsAdminClientUnitTest.graphQLClient.mutate<RemoveEntitlementsSetMutation.Data, RemoveEntitlementsSetMutation, Operation.Variables>(
+            this@SudoEntitlementsAdminClientUnitTest.graphQLClient.mutate<ApplyEntitlementsToUsersMutation.Data, ApplyEntitlementsToUsersMutation, Operation.Variables>(
                 any()
             )
         ).thenReturn(call)
@@ -984,359 +1413,219 @@ class SudoEntitlementsAdminClientUnitTest {
                 any()
             )
         ).thenAnswer {
-            val mutation = RemoveEntitlementsSetMutation.builder()
+            val mutation = ApplyEntitlementsToUsersMutation.builder()
                 .input(
-                    RemoveEntitlementsSetInput.builder().name("dummy_name").build()
+                    ApplyEntitlementsToUsersInput.builder()
+                        .operations(
+                            listOf(
+                                ApplyEntitlementsToUserInput.builder()
+                                    .externalId("dummy_external_id")
+                                    .entitlements(
+                                        listOf(
+                                            EntitlementInput.builder().name("dummy_entitlement")
+                                                .description("dummy_description").value(1).build()
+                                        )
+                                    )
+                                    .build(),
+                                ApplyEntitlementsToUserInput.builder()
+                                    .externalId("error_external_id")
+                                    .entitlements(
+                                        listOf(
+                                            EntitlementInput.builder().name("error_entitlement")
+                                                .description("error_description").value(1).build()
+                                        )
+                                    )
+                                    .build(),
+                            )
+                        ).build()
                 ).build()
 
             val builder =
-                com.apollographql.apollo.api.Response.builder<RemoveEntitlementsSetMutation.Data>(
+                com.apollographql.apollo.api.Response.builder<ApplyEntitlementsToUsersMutation.Data>(
                     mutation
                 )
-            val response = builder.errors(
-                listOf(
-                    Error(
-                        null,
-                        null,
-                        mapOf("errorType" to "sudoplatform.DecodingError")
+            val response = builder.data(
+                ApplyEntitlementsToUsersMutation.Data(
+                    listOf(
+                        ApplyEntitlementsToUsersMutation.ApplyEntitlementsToUser(
+                            "ExternalUserEntitlements",
+                            ApplyEntitlementsToUsersMutation.AsExternalUserEntitlements(
+                                "ExternalUserEntitlements",
+                                ApplyEntitlementsToUsersMutation.AsExternalUserEntitlements.Fragments(
+                                    GraphQLExternalUserEntitlements(
+                                        "ExternalUserEntitlements",
+                                        1.0,
+                                        2.0,
+                                        1.0,
+                                        "dummy_external_id",
+                                        "dummy_owner",
+                                        AccountStates.ACTIVE,
+                                        "dummy_owner",
+                                        null,
+                                        mutableListOf(
+                                            GraphQLExternalUserEntitlements.Entitlement(
+                                                "Entitlement",
+                                                GraphQLExternalUserEntitlements.Entitlement.Fragments(
+                                                    GraphQLEntitlement(
+                                                        "Entitlement",
+                                                        "dummy_entitlement",
+                                                        "dummy_description",
+                                                        1
+                                                    )
+                                                )
+                                            )
+                                        ),
+                                        null
+                                    )
+                                )
+                            ),
+                            null,
+                        ),
+                        ApplyEntitlementsToUsersMutation.ApplyEntitlementsToUser(
+                            "ExternalUserEntitlementsError",
+                            null,
+                            ApplyEntitlementsToUsersMutation.AsExternalUserEntitlementsError(
+                                "ExternalUserEntitlementsError",
+                                ApplyEntitlementsToUsersMutation.AsExternalUserEntitlementsError.Fragments(
+                                    ExternalUserEntitlementsError(
+                                        "ExternalUserEntitlementsError",
+                                        "sudoplatform.entitlements.InvalidEntitlementsError"
+                                    )
+                                )
+                            )
+                        )
                     )
                 )
             ).build()
 
             @Suppress("UNCHECKED_CAST")
-            (it.arguments[0] as GraphQLCall.Callback<RemoveEntitlementsSetMutation.Data>).onResponse(
+            (it.arguments[0] as GraphQLCall.Callback<ApplyEntitlementsToUsersMutation.Data>).onResponse(
                 response
             )
         }
 
-        try {
-            this@SudoEntitlementsAdminClientUnitTest.client.removeEntitlementsSet(
-                "dummy_name"
+        val results =
+            this@SudoEntitlementsAdminClientUnitTest.client.applyEntitlementsToUsers(
+                listOf(
+                    ApplyEntitlementsOperation("dummy_external_id", listOf(Entitlement("dummy_name", "dummy_description", 1))),
+                    ApplyEntitlementsOperation("error_external_id", listOf(Entitlement("error_name", "error_description", 1)))
+                )
             )
-        } catch (e: SudoEntitlementsAdminException.InvalidInputException) {
-            // Expected exception thrown.
-        } catch (e: Throwable) {
-            fail("Expected exception not thrown.")
+
+        verify(this@SudoEntitlementsAdminClientUnitTest.graphQLClient).mutate<ApplyEntitlementsToUsersMutation.Data, ApplyEntitlementsToUsersMutation, ApplyEntitlementsToUsersMutation.Variables>(
+            check {
+                assertEquals("dummy_external_id", it.variables().input().operations()[0].externalId())
+                assertEquals("dummy_name", it.variables().input().operations()[0].entitlements()[0].name())
+                assertEquals("error_external_id", it.variables().input().operations()[1].externalId())
+                assertEquals("error_name", it.variables().input().operations()[1].entitlements()[0].name())
+            }
+        )
+
+        assertEquals(2, results.size)
+        val results0 = results[0]
+        val results1 = results[1]
+
+        when (results0) {
+            is UserEntitlementsResult.Success -> {
+                val userEntitlements = results0.value
+                assertEquals(AccountState.ACTIVE, userEntitlements.accountState)
+                assertEquals("dummy_owner", userEntitlements.entitlementsSetName)
+                assertEquals(1.0, userEntitlements.version, 0.0)
+                assertEquals("dummy_owner", userEntitlements.owner)
+                assertNull(userEntitlements.entitlementsSequenceName)
+                assertNull(userEntitlements.transitionsRelativeTo)
+                assertEquals(1L, userEntitlements.createdAt.time)
+                assertEquals(2L, userEntitlements.updatedAt.time)
+                val entitlement = userEntitlements.entitlements.first()
+                assertEquals("dummy_entitlement", entitlement.name)
+                assertEquals("dummy_description", entitlement.description)
+                assertEquals(1, entitlement.value)
+            }
+            else -> {
+                fail("results[0] is not of expected type but ${results[0].javaClass}")
+            }
         }
 
+        when (results1) {
+            is UserEntitlementsResult.Failure -> {
+                val error = results1.error
+                when (error) {
+                    is SudoEntitlementsAdminException.InvalidEntitlementsException -> {}
+                    else -> {
+                        fail("Error not mapped correctly")
+                    }
+                }
+            }
+            else -> {
+                fail("results[1] is not of expected type but ${results[1].javaClass}")
+            }
+        }
+    }
+
+    @Test
+    fun testErrorHandling() = runBlocking {
+        val call: AppSyncMutationCall<RemoveEntitlementsSetMutation> = mock()
         whenever(
-            call.enqueue(
+            this@SudoEntitlementsAdminClientUnitTest.graphQLClient.mutate<RemoveEntitlementsSetMutation.Data, RemoveEntitlementsSetMutation, Operation.Variables>(
                 any()
             )
-        ).thenAnswer {
-            val mutation = RemoveEntitlementsSetMutation.builder()
-                .input(
-                    RemoveEntitlementsSetInput.builder().name("dummy_name").build()
+        ).thenReturn(call)
+
+        val expectedErrors = mapOf(
+            "sudoplatform.DecodingError" to SudoEntitlementsAdminException.InvalidInputException().javaClass,
+            "sudoplatform.InvalidArgumentError" to SudoEntitlementsAdminException.InvalidInputException().javaClass,
+            "sudoplatform.LimitExceededError" to SudoEntitlementsAdminException.LimitExceededException().javaClass,
+            "sudoplatform.ServiceError" to SudoEntitlementsAdminException.InternalServerException().javaClass,
+            "sudoplatform.entitlements.AlreadyUpdatedError" to SudoEntitlementsAdminException.AlreadyUpdatedException().javaClass,
+            "sudoplatform.entitlements.AlreadyUpdatedError" to SudoEntitlementsAdminException.AlreadyUpdatedException().javaClass,
+            "sudoplatform.entitlements.BulkOperationDuplicateUsersError" to SudoEntitlementsAdminException.BulkOperationDuplicateUsersException().javaClass,
+            "sudoplatform.entitlements.EntitlementsSetImmutableError" to SudoEntitlementsAdminException.EntitlementsSetImmutableException().javaClass,
+            "sudoplatform.entitlements.EntitlementsSetInUseError" to SudoEntitlementsAdminException.EntitlementsSetInUseException().javaClass,
+            "sudoplatform.entitlements.EntitlementsSetNotFoundError" to SudoEntitlementsAdminException.EntitlementsSetNotFoundException().javaClass,
+            "sudoplatform.entitlements.EntitlementsSequenceAlreadyExistsError" to SudoEntitlementsAdminException.EntitlementsSequenceAlreadyExistsException().javaClass,
+            "sudoplatform.entitlements.EntitlementsSequenceNotFoundError" to SudoEntitlementsAdminException.EntitlementsSequenceNotFoundException().javaClass,
+            "sudoplatform.entitlements.EntitlementsSequenceUpdateInProgressError" to SudoEntitlementsAdminException.EntitlementsSequenceUpdateInProgressException().javaClass,
+            "sudoplatform.entitlements.InvalidEntitlementsError" to SudoEntitlementsAdminException.InvalidEntitlementsException().javaClass,
+        )
+
+        for (entry in expectedErrors) {
+            whenever(
+                call.enqueue(
+                    any()
+                )
+            ).thenAnswer {
+                val mutation = RemoveEntitlementsSetMutation.builder()
+                    .input(
+                        RemoveEntitlementsSetInput.builder().name("dummy_name").build()
+                    ).build()
+
+                val builder =
+                    com.apollographql.apollo.api.Response.builder<RemoveEntitlementsSetMutation.Data>(
+                        mutation
+                    )
+                val response = builder.errors(
+                    listOf(
+                        Error(
+                            null,
+                            null,
+                            mapOf("errorType" to entry.key)
+                        )
+                    )
                 ).build()
 
-            val builder =
-                com.apollographql.apollo.api.Response.builder<RemoveEntitlementsSetMutation.Data>(
-                    mutation
+                @Suppress("UNCHECKED_CAST")
+                (it.arguments[0] as GraphQLCall.Callback<RemoveEntitlementsSetMutation.Data>).onResponse(
+                    response
                 )
-            val response = builder.errors(
-                listOf(
-                    Error(
-                        null,
-                        null,
-                        mapOf("errorType" to "sudoplatform.ServiceError")
-                    )
+            }
+
+            try {
+                this@SudoEntitlementsAdminClientUnitTest.client.removeEntitlementsSet(
+                    "dummy_name"
                 )
-            ).build()
-
-            @Suppress("UNCHECKED_CAST")
-            (it.arguments[0] as GraphQLCall.Callback<RemoveEntitlementsSetMutation.Data>).onResponse(
-                response
-            )
-        }
-
-        try {
-            this@SudoEntitlementsAdminClientUnitTest.client.removeEntitlementsSet(
-                "dummy_name"
-            )
-        } catch (e: SudoEntitlementsAdminException.InternalServerException) {
-            // Expected exception thrown.
-        } catch (e: Throwable) {
-            fail("Expected exception not thrown.")
-        }
-
-        whenever(
-            call.enqueue(
-                any()
-            )
-        ).thenAnswer {
-            val mutation = RemoveEntitlementsSetMutation.builder()
-                .input(
-                    RemoveEntitlementsSetInput.builder().name("dummy_name").build()
-                ).build()
-
-            val builder =
-                com.apollographql.apollo.api.Response.builder<RemoveEntitlementsSetMutation.Data>(
-                    mutation
-                )
-            val response = builder.errors(
-                listOf(
-                    Error(
-                        null,
-                        null,
-                        mapOf("errorType" to "sudoplatform.InvalidArgumentError")
-                    )
-                )
-            ).build()
-
-            @Suppress("UNCHECKED_CAST")
-            (it.arguments[0] as GraphQLCall.Callback<RemoveEntitlementsSetMutation.Data>).onResponse(
-                response
-            )
-        }
-
-        try {
-            this@SudoEntitlementsAdminClientUnitTest.client.removeEntitlementsSet(
-                "dummy_name"
-            )
-        } catch (e: SudoEntitlementsAdminException.InvalidInputException) {
-            // Expected exception thrown.
-        } catch (e: Throwable) {
-            fail("Expected exception not thrown.")
-        }
-
-        whenever(
-            call.enqueue(
-                any()
-            )
-        ).thenAnswer {
-            val mutation = RemoveEntitlementsSetMutation.builder()
-                .input(
-                    RemoveEntitlementsSetInput.builder().name("dummy_name").build()
-                ).build()
-
-            val builder =
-                com.apollographql.apollo.api.Response.builder<RemoveEntitlementsSetMutation.Data>(
-                    mutation
-                )
-            val response = builder.errors(
-                listOf(
-                    Error(
-                        null,
-                        null,
-                        mapOf("errorType" to "sudoplatform.entitlements.EntitlementsSetInUse")
-                    )
-                )
-            ).build()
-
-            @Suppress("UNCHECKED_CAST")
-            (it.arguments[0] as GraphQLCall.Callback<RemoveEntitlementsSetMutation.Data>).onResponse(
-                response
-            )
-        }
-
-        try {
-            this@SudoEntitlementsAdminClientUnitTest.client.removeEntitlementsSet(
-                "dummy_name"
-            )
-        } catch (e: SudoEntitlementsAdminException.EntitlementsSetInUseException) {
-            // Expected exception thrown.
-        } catch (e: Throwable) {
-            fail("Expected exception not thrown.")
-        }
-
-        whenever(
-            call.enqueue(
-                any()
-            )
-        ).thenAnswer {
-            val mutation = RemoveEntitlementsSetMutation.builder()
-                .input(
-                    RemoveEntitlementsSetInput.builder().name("dummy_name").build()
-                ).build()
-
-            val builder =
-                com.apollographql.apollo.api.Response.builder<RemoveEntitlementsSetMutation.Data>(
-                    mutation
-                )
-            val response = builder.errors(
-                listOf(
-                    Error(
-                        null,
-                        null,
-                        mapOf("errorType" to "sudoplatform.entitlements.EntitlementsSequenceNotFoundError")
-                    )
-                )
-            ).build()
-
-            @Suppress("UNCHECKED_CAST")
-            (it.arguments[0] as GraphQLCall.Callback<RemoveEntitlementsSetMutation.Data>).onResponse(
-                response
-            )
-        }
-
-        try {
-            this@SudoEntitlementsAdminClientUnitTest.client.removeEntitlementsSet(
-                "dummy_name"
-            )
-        } catch (e: SudoEntitlementsAdminException.EntitlementsSequenceNotFoundException) {
-            // Expected exception thrown.
-        } catch (e: Throwable) {
-            fail("Expected exception not thrown.")
-        }
-
-        whenever(
-            call.enqueue(
-                any()
-            )
-        ).thenAnswer {
-            val mutation = RemoveEntitlementsSetMutation.builder()
-                .input(
-                    RemoveEntitlementsSetInput.builder().name("dummy_name").build()
-                ).build()
-
-            val builder =
-                com.apollographql.apollo.api.Response.builder<RemoveEntitlementsSetMutation.Data>(
-                    mutation
-                )
-            val response = builder.errors(
-                listOf(
-                    Error(
-                        null,
-                        null,
-                        mapOf("errorType" to "sudoplatform.entitlements.EntitlementsSetNotFoundError")
-                    )
-                )
-            ).build()
-
-            @Suppress("UNCHECKED_CAST")
-            (it.arguments[0] as GraphQLCall.Callback<RemoveEntitlementsSetMutation.Data>).onResponse(
-                response
-            )
-        }
-
-        try {
-            this@SudoEntitlementsAdminClientUnitTest.client.removeEntitlementsSet(
-                "dummy_name"
-            )
-        } catch (e: SudoEntitlementsAdminException.EntitlementsSetNotFoundException) {
-            // Expected exception thrown.
-        } catch (e: Throwable) {
-            fail("Expected exception not thrown.")
-        }
-
-        whenever(
-            call.enqueue(
-                any()
-            )
-        ).thenAnswer {
-            val mutation = RemoveEntitlementsSetMutation.builder()
-                .input(
-                    RemoveEntitlementsSetInput.builder().name("dummy_name").build()
-                ).build()
-
-            val builder =
-                com.apollographql.apollo.api.Response.builder<RemoveEntitlementsSetMutation.Data>(
-                    mutation
-                )
-            val response = builder.errors(
-                listOf(
-                    Error(
-                        null,
-                        null,
-                        mapOf("errorType" to "sudoplatform.entitlements.EntitlementsSetAlreadyExistsError")
-                    )
-                )
-            ).build()
-
-            @Suppress("UNCHECKED_CAST")
-            (it.arguments[0] as GraphQLCall.Callback<RemoveEntitlementsSetMutation.Data>).onResponse(
-                response
-            )
-        }
-
-        try {
-            this@SudoEntitlementsAdminClientUnitTest.client.removeEntitlementsSet(
-                "dummy_name"
-            )
-        } catch (e: SudoEntitlementsAdminException.EntitlementsSetAlreadyExistsException) {
-            // Expected exception thrown.
-        } catch (e: Throwable) {
-            fail("Expected exception not thrown.")
-        }
-
-        whenever(
-            call.enqueue(
-                any()
-            )
-        ).thenAnswer {
-            val mutation = RemoveEntitlementsSetMutation.builder()
-                .input(
-                    RemoveEntitlementsSetInput.builder().name("dummy_name").build()
-                ).build()
-
-            val builder =
-                com.apollographql.apollo.api.Response.builder<RemoveEntitlementsSetMutation.Data>(
-                    mutation
-                )
-            val response = builder.errors(
-                listOf(
-                    Error(
-                        null,
-                        null,
-                        mapOf("errorType" to "sudoplatform.entitlements.EntitlementsSequenceAlreadyExistsError")
-                    )
-                )
-            ).build()
-
-            @Suppress("UNCHECKED_CAST")
-            (it.arguments[0] as GraphQLCall.Callback<RemoveEntitlementsSetMutation.Data>).onResponse(
-                response
-            )
-        }
-
-        try {
-            this@SudoEntitlementsAdminClientUnitTest.client.removeEntitlementsSet(
-                "dummy_name"
-            )
-        } catch (e: SudoEntitlementsAdminException.EntitlementsSequenceAlreadyExistsException) {
-            // Expected exception thrown.
-        } catch (e: Throwable) {
-            fail("Expected exception not thrown.")
-        }
-
-        whenever(
-            call.enqueue(
-                any()
-            )
-        ).thenAnswer {
-            val mutation = RemoveEntitlementsSetMutation.builder()
-                .input(
-                    RemoveEntitlementsSetInput.builder().name("dummy_name").build()
-                ).build()
-
-            val builder =
-                com.apollographql.apollo.api.Response.builder<RemoveEntitlementsSetMutation.Data>(
-                    mutation
-                )
-            val response = builder.errors(
-                listOf(
-                    Error(
-                        null,
-                        null,
-                        mapOf("errorType" to "sudoplatform.entitlements.EntitlementsSetImmutableError")
-                    )
-                )
-            ).build()
-
-            @Suppress("UNCHECKED_CAST")
-            (it.arguments[0] as GraphQLCall.Callback<RemoveEntitlementsSetMutation.Data>).onResponse(
-                response
-            )
-        }
-
-        try {
-            this@SudoEntitlementsAdminClientUnitTest.client.removeEntitlementsSet(
-                "dummy_name"
-            )
-        } catch (e: SudoEntitlementsAdminException.EntitlementsSetImmutableException) {
-            // Expected exception thrown.
-        } catch (e: Throwable) {
-            fail("Expected exception not thrown.")
+            } catch (e: Throwable) {
+                assertEquals(entry.key, e.javaClass, entry.value)
+            }
         }
 
         return@runBlocking

@@ -34,7 +34,7 @@ data class EntitlementsSet(
      * or the user's subject ID if the user's entitlements are specified
      * explicitly rather than by entitlements set name.
      */
-    val name: String?,
+    val name: String,
 
     /**
      * Description, if any, of the entitlements set as specified by the entitlements

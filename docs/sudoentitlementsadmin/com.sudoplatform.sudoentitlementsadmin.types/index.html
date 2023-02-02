@@ -1,253 +1,285 @@
+<!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>com.sudoplatform.sudoentitlementsadmin.types</title>
-<link href="../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
-const savedDarkMode = storage ? JSON.parse(storage) : false
-if(savedDarkMode === true){
-    document.getElementsByTagName("html")[0].classList.add("theme-dark")
-}</script>
-<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async="async"></script><link href="../../styles/style.css" rel="Stylesheet"><link href="../../styles/jetbrains-mono.css" rel="Stylesheet"><link href="../../styles/main.css" rel="Stylesheet"><link href="../../styles/prism.css" rel="Stylesheet"><link href="../../styles/logo-styles.css" rel="Stylesheet"><script type="text/javascript" src="../../scripts/clipboard.js" async="async"></script><script type="text/javascript" src="../../scripts/navigation-loader.js" async="async"></script><script type="text/javascript" src="../../scripts/platform-content-handler.js" async="async"></script><script type="text/javascript" src="../../scripts/main.js" defer="defer"></script><script type="text/javascript" src="../../scripts/prism.js" async="async"></script>  </head>
-  <body>
-    <div class="navigation-wrapper" id="navigation-wrapper">
-      <div id="leftToggler"><span class="icon-toggler"></span></div>
-      <div class="library-name"><a href="../../index.html">sudoentitlementsadmin</a></div>
-      <div></div>
-      <div class="pull-right d-flex"><button id="theme-toggle-button"><span id="theme-toggle"></span></button>
-        <div id="searchBar"></div>
-      </div>
+    <link href="../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../";</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+            <a href="../../index.html">
+                    <span>sudoentitlementsadmin</span>
+            </a>
     </div>
-    <div id="container">
-      <div id="leftColumn">
+    <div>
+    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
         <div id="sideMenu"></div>
-      </div>
-      <div id="main">
-        <div class="main-content" id="content" pageIds="sudoentitlementsadmin::com.sudoplatform.sudoentitlementsadmin.types////PointingToDeclaration//-1846338308">
-          <div class="breadcrumbs"><a href="../../index.html">sudoentitlementsadmin</a>/<a href="index.html">com.sudoplatform.sudoentitlementsadmin.types</a></div>
-          <div class="cover ">
-            <h1 class="cover"><span><span>Package</span></span> <span>com.</span><wbr></wbr><span>sudoplatform.</span><wbr></wbr><span>sudoentitlementsadmin.</span><wbr></wbr><span>types</span></h1>
-          </div>
-          <div class="tabbedcontent">
-            <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button></div>
-            <div class="tabs-section-body">
-              <h2 class="">Types</h2>
-              <div class="table" data-togglable="Types"><a data-name="-760724732%2FClasslikes%2F-1846338308" anchor-label="AccountState" id="-760724732%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex">
-                        <div><a href="-account-state/index.html"><span>Account</span><wbr></wbr><span><span>State</span></span></a></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageIds="sudoentitlementsadmin::com.sudoplatform.sudoentitlementsadmin.types////PointingToDeclaration//-1846338308">
+  <div class="breadcrumbs"><a href="../../index.html">sudoentitlementsadmin</a><span class="delimiter">/</span><span class="current">com.sudoplatform.sudoentitlementsadmin.types</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button></div>
+    <div class="tabs-section-body">
+      <h2 class="">Types</h2>
+      <div class="table" data-togglable="Types"><a data-name="-760724732%2FClasslikes%2F-1846338308" anchor-label="AccountState" id="-760724732%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-account-state/index.html"><span>Account</span><wbr></wbr><span><span>State</span></span></a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-760724732%2FClasslikes%2F-1846338308"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-account-state/index.html">AccountState</a> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-account-state/index.html">AccountState</a><span class="token operator">&gt; </span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-1006611531%2FClasslikes%2F-1846338308" anchor-label="ApplyEntitlementsOperation" id="-1006611531%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex">
-                        <div><a href="-apply-entitlements-operation/index.html"><span>Apply</span><wbr></wbr><span>Entitlements</span><wbr></wbr><span><span>Operation</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1006611531%2FClasslikes%2F-1846338308"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-apply-entitlements-operation/index.html">ApplyEntitlementsOperation</a><span class="token punctuation">(</span>externalId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span>entitlements<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-entitlement/index.html">Entitlement</a><span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Description of an operation to be performed when calling applyEntitlementsToUsers bulk entitlements application method.</p></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-542974890%2FClasslikes%2F-1846338308" anchor-label="ApplyEntitlementsSequenceOperation" id="-542974890%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex">
-                        <div><a href="-apply-entitlements-sequence-operation/index.html"><span>Apply</span><wbr></wbr><span>Entitlements</span><wbr></wbr><span>Sequence</span><wbr></wbr><span><span>Operation</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-542974890%2FClasslikes%2F-1846338308"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-apply-entitlements-sequence-operation/index.html">ApplyEntitlementsSequenceOperation</a><span class="token punctuation">(</span>externalId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span>entitlementsSequenceName<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Description of an operation to be performed when calling applyEntitlementsSequenceToUsers bulk entitlements sequence application method</p></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-723004991%2FClasslikes%2F-1846338308" anchor-label="ApplyEntitlementsSetOperation" id="-723004991%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex">
-                        <div><a href="-apply-entitlements-set-operation/index.html"><span>Apply</span><wbr></wbr><span>Entitlements</span><wbr></wbr><span>Set</span><wbr></wbr><span><span>Operation</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-723004991%2FClasslikes%2F-1846338308"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-apply-entitlements-set-operation/index.html">ApplyEntitlementsSetOperation</a><span class="token punctuation">(</span>externalId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span>entitlementsSetName<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Description of an operation to be performed when calling applyEntitlementsSetToUsers bulk entitlements set application method</p></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="1938793608%2FClasslikes%2F-1846338308" anchor-label="EntitledUser" id="1938793608%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex">
-                        <div><a href="-entitled-user/index.html"><span>Entitled</span><wbr></wbr><span><span>User</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1938793608%2FClasslikes%2F-1846338308"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-entitled-user/index.html">EntitledUser</a><span class="token punctuation">(</span>externalId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Entitled user.</p></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-867557363%2FClasslikes%2F-1846338308" anchor-label="Entitlement" id="-867557363%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex">
-                        <div><a href="-entitlement/index.html"><span><span>Entitlement</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-867557363%2FClasslikes%2F-1846338308"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-entitlement/index.html">Entitlement</a><span class="token punctuation">(</span>name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span>description<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Representation of an entitlement.</p></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="837861306%2FClasslikes%2F-1846338308" anchor-label="EntitlementConsumption" id="837861306%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex">
-                        <div><a href="-entitlement-consumption/index.html"><span>Entitlement</span><wbr></wbr><span><span>Consumption</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="837861306%2FClasslikes%2F-1846338308"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-entitlement-consumption/index.html">EntitlementConsumption</a><span class="token punctuation">(</span>name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span>available<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span>consumed<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span>firstConsumedAt<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/Date.html">Date</a><span class="token operator">?</span><span class="token punctuation">, </span>lastConsumedAt<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/Date.html">Date</a><span class="token operator">?</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Entitlement consumption information.</p></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-1649241855%2FClasslikes%2F-1846338308" anchor-label="EntitlementsSequence" id="-1649241855%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex">
-                        <div><a href="-entitlements-sequence/index.html"><span>Entitlements</span><wbr></wbr><span><span>Sequence</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1649241855%2FClasslikes%2F-1846338308"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-entitlements-sequence/index.html">EntitlementsSequence</a><span class="token punctuation">(</span>createdAt<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/Date.html">Date</a><span class="token punctuation">, </span>updatedAt<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/Date.html">Date</a><span class="token punctuation">, </span>version<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span>name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span>description<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span>transitions<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-entitlements-sequence-transition/index.html">EntitlementsSequenceTransition</a><span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Definition of a sequence of entitlements sets through which a user will transition</p></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="1201479980%2FClasslikes%2F-1846338308" anchor-label="EntitlementsSequenceTransition" id="1201479980%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex">
-                        <div><a href="-entitlements-sequence-transition/index.html"><span>Entitlements</span><wbr></wbr><span>Sequence</span><wbr></wbr><span><span>Transition</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1201479980%2FClasslikes%2F-1846338308"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-entitlements-sequence-transition/index.html">EntitlementsSequenceTransition</a><span class="token punctuation">(</span>entitlementsSetName<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span>duration<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Definition of a single transition within an entitlements sequence</p></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-1216863746%2FClasslikes%2F-1846338308" anchor-label="EntitlementsSet" id="-1216863746%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex">
-                        <div><a href="-entitlements-set/index.html"><span>Entitlements</span><wbr></wbr><span><span>Set</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1216863746%2FClasslikes%2F-1846338308"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-entitlements-set/index.html">EntitlementsSet</a><span class="token punctuation">(</span>createdAt<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/Date.html">Date</a><span class="token punctuation">, </span>updatedAt<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/Date.html">Date</a><span class="token punctuation">, </span>version<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span>name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span>description<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span>entitlements<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-entitlement/index.html">Entitlement</a><span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Set of entitlements current for the user</p></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-2061895607%2FClasslikes%2F-1846338308" anchor-label="ListOutput" id="-2061895607%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex">
-                        <div><a href="-list-output/index.html"><span>List</span><wbr></wbr><span><span>Output</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2061895607%2FClasslikes%2F-1846338308"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-list-output/index.html">ListOutput</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-list-output/index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">(</span>items<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-list-output/index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">, </span>nextToken<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Representation of a generic type to wrap around a GraphQL list type. This is useful for exposing a list of <a href="-list-output/items.html">items</a> and <a href="-list-output/next-token.html">nextToken</a> to allow for pagination by calling for the next set of paginated results.</p></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="613786167%2FClasslikes%2F-1846338308" anchor-label="UserEntitlements" id="613786167%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex">
-                        <div><a href="-user-entitlements/index.html"><span>User</span><wbr></wbr><span><span>Entitlements</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="613786167%2FClasslikes%2F-1846338308"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-user-entitlements/index.html">UserEntitlements</a><span class="token punctuation">(</span>createdAt<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/Date.html">Date</a><span class="token punctuation">, </span>updatedAt<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/Date.html">Date</a><span class="token punctuation">, </span>version<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token punctuation">, </span>externalId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span>owner<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span>entitlementsSetName<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span>entitlementsSequenceName<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span>entitlements<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-entitlement/index.html">Entitlement</a><span class="token operator">&gt;</span><span class="token punctuation">, </span>transitionsRelativeTo<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/Date.html">Date</a><span class="token operator">?</span><span class="token punctuation">, </span>accountState<span class="token operator">: </span><a href="-account-state/index.html">AccountState</a><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Entitlements of a user.</p></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-974839984%2FClasslikes%2F-1846338308" anchor-label="UserEntitlementsConsumption" id="-974839984%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex">
-                        <div><a href="-user-entitlements-consumption/index.html"><span>User</span><wbr></wbr><span>Entitlements</span><wbr></wbr><span><span>Consumption</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-974839984%2FClasslikes%2F-1846338308"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-user-entitlements-consumption/index.html">UserEntitlementsConsumption</a><span class="token punctuation">(</span>entitlements<span class="token operator">: </span><a href="-user-entitlements/index.html">UserEntitlements</a><span class="token punctuation">, </span>consumption<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-entitlement-consumption/index.html">EntitlementConsumption</a><span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Entitlements consumption information.</p></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="1763352602%2FClasslikes%2F-1846338308" anchor-label="UserEntitlementsResult" id="1763352602%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
-                <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex">
-                        <div><a href="-user-entitlements-result/index.html"><span>User</span><wbr></wbr><span>Entitlements</span><wbr></wbr><span><span>Result</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1763352602%2FClasslikes%2F-1846338308"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-user-entitlements-result/index.html">UserEntitlementsResult</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-account-state/index.html">AccountState</a> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-account-state/index.html">AccountState</a><span class="token operator">&gt; </span></div></div></div>
               </div>
             </div>
           </div>
         </div>
-        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span></div>
+<a data-name="-1006611531%2FClasslikes%2F-1846338308" anchor-label="ApplyEntitlementsOperation" id="-1006611531%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-apply-entitlements-operation/index.html"><span>Apply</span><wbr></wbr><span>Entitlements</span><wbr></wbr><span><span>Operation</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1006611531%2FClasslikes%2F-1846338308"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-apply-entitlements-operation/index.html">ApplyEntitlementsOperation</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>externalId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>entitlements<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-entitlement/index.html">Entitlement</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Description of an operation to be performed when calling applyEntitlementsToUsers bulk entitlements application method.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-542974890%2FClasslikes%2F-1846338308" anchor-label="ApplyEntitlementsSequenceOperation" id="-542974890%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-apply-entitlements-sequence-operation/index.html"><span>Apply</span><wbr></wbr><span>Entitlements</span><wbr></wbr><span>Sequence</span><wbr></wbr><span><span>Operation</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-542974890%2FClasslikes%2F-1846338308"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-apply-entitlements-sequence-operation/index.html">ApplyEntitlementsSequenceOperation</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>externalId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>entitlementsSequenceName<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Description of an operation to be performed when calling applyEntitlementsSequenceToUsers bulk entitlements sequence application method</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-723004991%2FClasslikes%2F-1846338308" anchor-label="ApplyEntitlementsSetOperation" id="-723004991%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-apply-entitlements-set-operation/index.html"><span>Apply</span><wbr></wbr><span>Entitlements</span><wbr></wbr><span>Set</span><wbr></wbr><span><span>Operation</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-723004991%2FClasslikes%2F-1846338308"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-apply-entitlements-set-operation/index.html">ApplyEntitlementsSetOperation</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>externalId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>entitlementsSetName<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Description of an operation to be performed when calling applyEntitlementsSetToUsers bulk entitlements set application method</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1938793608%2FClasslikes%2F-1846338308" anchor-label="EntitledUser" id="1938793608%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-entitled-user/index.html"><span>Entitled</span><wbr></wbr><span><span>User</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1938793608%2FClasslikes%2F-1846338308"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-entitled-user/index.html">EntitledUser</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>externalId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Entitled user.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-867557363%2FClasslikes%2F-1846338308" anchor-label="Entitlement" id="-867557363%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-entitlement/index.html"><span><span>Entitlement</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-867557363%2FClasslikes%2F-1846338308"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-entitlement/index.html">Entitlement</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>description<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Representation of an entitlement.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="837861306%2FClasslikes%2F-1846338308" anchor-label="EntitlementConsumption" id="837861306%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-entitlement-consumption/index.html"><span>Entitlement</span><wbr></wbr><span><span>Consumption</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="837861306%2FClasslikes%2F-1846338308"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-entitlement-consumption/index.html">EntitlementConsumption</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>available<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>consumed<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>firstConsumedAt<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/Date.html">Date</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>lastConsumedAt<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/Date.html">Date</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Entitlement consumption information.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1649241855%2FClasslikes%2F-1846338308" anchor-label="EntitlementsSequence" id="-1649241855%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-entitlements-sequence/index.html"><span>Entitlements</span><wbr></wbr><span><span>Sequence</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1649241855%2FClasslikes%2F-1846338308"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-entitlements-sequence/index.html">EntitlementsSequence</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>createdAt<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/Date.html">Date</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>updatedAt<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/Date.html">Date</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>version<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>description<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>transitions<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-entitlements-sequence-transition/index.html">EntitlementsSequenceTransition</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Definition of a sequence of entitlements sets through which a user will transition</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1201479980%2FClasslikes%2F-1846338308" anchor-label="EntitlementsSequenceTransition" id="1201479980%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-entitlements-sequence-transition/index.html"><span>Entitlements</span><wbr></wbr><span>Sequence</span><wbr></wbr><span><span>Transition</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1201479980%2FClasslikes%2F-1846338308"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-entitlements-sequence-transition/index.html">EntitlementsSequenceTransition</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>entitlementsSetName<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>duration<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Definition of a single transition within an entitlements sequence</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1216863746%2FClasslikes%2F-1846338308" anchor-label="EntitlementsSet" id="-1216863746%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-entitlements-set/index.html"><span>Entitlements</span><wbr></wbr><span><span>Set</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1216863746%2FClasslikes%2F-1846338308"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-entitlements-set/index.html">EntitlementsSet</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>createdAt<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/Date.html">Date</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>updatedAt<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/Date.html">Date</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>version<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>name<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>description<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>entitlements<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-entitlement/index.html">Entitlement</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Set of entitlements current for the user</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-2061895607%2FClasslikes%2F-1846338308" anchor-label="ListOutput" id="-2061895607%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-list-output/index.html"><span>List</span><wbr></wbr><span><span>Output</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2061895607%2FClasslikes%2F-1846338308"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-list-output/index.html">ListOutput</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-list-output/index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>items<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-list-output/index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>nextToken<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Representation of a generic type to wrap around a GraphQL list type. This is useful for exposing a list of <a href="-list-output/items.html">items</a> and <a href="-list-output/next-token.html">nextToken</a> to allow for pagination by calling for the next set of paginated results.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="613786167%2FClasslikes%2F-1846338308" anchor-label="UserEntitlements" id="613786167%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-user-entitlements/index.html"><span>User</span><wbr></wbr><span><span>Entitlements</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="613786167%2FClasslikes%2F-1846338308"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-user-entitlements/index.html">UserEntitlements</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>createdAt<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/Date.html">Date</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>updatedAt<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/Date.html">Date</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>version<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>externalId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>owner<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>entitlementsSetName<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>entitlementsSequenceName<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>entitlements<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-entitlement/index.html">Entitlement</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>transitionsRelativeTo<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/java/util/Date.html">Date</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>accountState<span class="token operator">: </span><a href="-account-state/index.html">AccountState</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Entitlements of a user.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-974839984%2FClasslikes%2F-1846338308" anchor-label="UserEntitlementsConsumption" id="-974839984%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-user-entitlements-consumption/index.html"><span>User</span><wbr></wbr><span>Entitlements</span><wbr></wbr><span><span>Consumption</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-974839984%2FClasslikes%2F-1846338308"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-user-entitlements-consumption/index.html">UserEntitlementsConsumption</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>entitlements<span class="token operator">: </span><a href="-user-entitlements/index.html">UserEntitlements</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>consumption<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-entitlement-consumption/index.html">EntitlementConsumption</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Entitlements consumption information.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1763352602%2FClasslikes%2F-1846338308" anchor-label="UserEntitlementsResult" id="1763352602%2FClasslikes%2F-1846338308" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release"></a>
+        <div class="table-row" data-filterable-current=":sudoentitlementsadmin:dokkaHtml/release" data-filterable-set=":sudoentitlementsadmin:dokkaHtml/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-user-entitlements-result/index.html"><span>User</span><wbr></wbr><span>Entitlements</span><wbr></wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1763352602%2FClasslikes%2F-1846338308"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":sudoentitlementsadmin:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-user-entitlements-result/index.html">UserEntitlementsResult</a></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </body>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+    </div>
+</div>
+</body>
 </html>
-

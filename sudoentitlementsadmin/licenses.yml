@@ -1,9 +1,3 @@
-- artifact: androidx.annotation:annotation-experimental:+
-  name: Experimental annotation
-  copyrightHolder: Google, Inc.
-  license: The Apache Software License, Version 2.0
-  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
-  url: https://developer.android.com/jetpack/androidx/releases/annotation#1.1.0
 - artifact: androidx.activity:activity:+
   name: Activity
   copyrightHolder: Google, Inc.
@@ -111,12 +105,6 @@
   license: Amazon Software License
   licenseUrl: http://aws.amazon.com/asl/
   url: http://aws.amazon.com/sdkforandroid
-- artifact: androidx.core:core-ktx:+
-  name: Core Kotlin Extensions
-  copyrightHolder: Google, Inc.
-  license: The Apache Software License, Version 2.0
-  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
-  url: https://developer.android.com/jetpack/androidx/releases/core#1.6.0
 - artifact: androidx.vectordrawable:vectordrawable-animated:+
   name: Android Support AnimatedVectorDrawable
   copyrightHolder: Google, Inc.
@@ -176,18 +164,6 @@
   license: Bouncy Castle Licence
   licenseUrl: http://www.bouncycastle.org/licence.html
   url: http://www.bouncycastle.org/java.html
-- artifact: androidx.lifecycle:lifecycle-viewmodel-savedstate:+
-  name: Android Lifecycle ViewModel with SavedState
-  copyrightHolder: Google, Inc.
-  license: The Apache Software License, Version 2.0
-  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
-  url: https://developer.android.com/jetpack/androidx/releases/lifecycle#2.3.1
-- artifact: androidx.tracing:tracing:+
-  name: Android Tracing
-  copyrightHolder: Google, Inc.
-  license: The Apache Software License, Version 2.0
-  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
-  url: https://developer.android.com/jetpack/androidx/releases/tracing#1.0.0
 - artifact: com.amazonaws:aws-android-sdk-appsync-api:+
   name: AWS SDK for Android GraphQL API
   copyrightHolder: Amazon
@@ -312,32 +288,6 @@
   license: The Apache License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: https://kotlinlang.org/
-
-
-- artifact: org.hamcrest:hamcrest-core:+
-  name: Hamcrest Core
-  copyrightHolder: www.hamcrest.org
-  license: 3-Clause BSD License
-  licenseUrl: http://opensource.org/licenses/BSD-3-Clause
-  url: http://www.hamcrest.org/
-- artifact: junit:junit:+
-  name: JUnit
-  copyrightHolder: www.junit.org
-  license: Eclipse Public License 1.0
-  licenseUrl: http://www.eclipse.org/legal/epl-v10.html
-  url: http://junit.org
-- artifact: androidx.test.ext:junit:+
-  name: AndroidX Test Library
-  copyrightHolder: Google, Inc.
-  license: The Apache Software License, Version 2.0
-  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
-  url: https://developer.android.com/testing
-- artifact: androidx.test.ext:junit-ktx:+
-  name: AndroidX Test Library
-  copyrightHolder: Google, Inc.
-  license: The Apache Software License, Version 2.0
-  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
-  url: https://developer.android.com/testing
 - artifact: com.amazonaws:aws-android-sdk-s3:+
   name: AWS SDK for Android - Amazon S3
   copyrightHolder: Amazon.com
@@ -350,56 +300,3 @@
   license: Amazon Software License
   licenseUrl: https://aws.amazon.com/asl/
   url: https://github.com/aws/aws-sdk-android
-- artifact: androidx.test:monitor:+
-  name: AndroidX Test Library
-  copyrightHolder: Google, Inc.
-  license: The Apache Software License, Version 2.0
-  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
-  url: https://developer.android.com/testing
-- artifact: androidx.test:core:+
-  name: AndroidX Test Library
-  copyrightHolder: Google, Inc.
-  license: The Apache Software License, Version 2.0
-  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
-  url: https://developer.android.com/testing
-- artifact: androidx.startup:startup-runtime:+
-  name: Android App Startup Runtime
-  copyrightHolder: Google, Inc.
-  license: The Apache Software License, Version 2.0
-  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
-  url: https://developer.android.com/jetpack/androidx/releases/startup#1.1.1
-- artifact: androidx.emoji2:emoji2-views-helper:+
-  name: Android Emoji2 Compat view helpers
-  copyrightHolder: Google, Inc.
-  license: The Apache Software License, Version 2.0
-  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
-  url: https://developer.android.com/jetpack/androidx/releases/emoji2#1.2.0
-- artifact: androidx.lifecycle:lifecycle-process:+
-  name: Android Lifecycle Process
-  copyrightHolder: Google, Inc.
-  license: The Apache Software License, Version 2.0
-  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
-  url: https://developer.android.com/jetpack/androidx/releases/lifecycle#2.4.1
-- artifact: androidx.resourceinspection:resourceinspection-annotation:+
-  name: Android Resource Inspection - Annotations
-  copyrightHolder: Google, Inc.
-  license: The Apache Software License, Version 2.0
-  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
-  url: https://developer.android.com/jetpack/androidx/releases/resourceinspection#1.0.1
-- artifact: androidx.emoji2:emoji2:+
-  name: Android Emoji2 Compat
-  copyrightHolder: Google, Inc.
-  license: The Apache Software License, Version 2.0
-  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
-  url: https://developer.android.com/jetpack/androidx/releases/emoji2#1.2.0
-- artifact: androidx.concurrent:concurrent-futures:+
-  name: AndroidX Futures
-  copyrightHolder: Google, Inc.
-  license: The Apache Software License, Version 2.0
-  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
-  url: https://developer.android.com/topic/libraries/architecture/index.html
-- artifact: com.google.guava:listenablefuture:+
-  name: Guava ListenableFuture only
-  copyrightHolder: Google, Inc.
-  license: The Apache Software License, Version 2.0
-  url: https://https://github.com/google/guava  

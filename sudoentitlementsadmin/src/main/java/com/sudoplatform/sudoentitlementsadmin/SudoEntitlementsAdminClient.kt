@@ -402,7 +402,7 @@ class DefaultSudoEntitlementsAdminClient(
         private const val CONFIG_API_URL = "apiUrl"
     }
 
-    override val version: String = "3.0.0"
+    override val version: String = "4.0.0"
 
     /**
      * GraphQL client used for calling Sudo service API.

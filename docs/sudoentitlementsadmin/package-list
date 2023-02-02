@@ -1,9 +1,11 @@
 $dokka.format:html-v1
 $dokka.linkExtension:html
 $dokka.location:com.sudoplatform.sudoentitlementsadmin.types////PointingToDeclaration/sudoentitlementsadmin/com.sudoplatform.sudoentitlementsadmin.types/index.html
-$dokka.location:com.sudoplatform.sudoentitlementsadmin.types/AccountState.ACTIVE///PointingToDeclaration/sudoentitlementsadmin/com.sudoplatform.sudoentitlementsadmin.types/-account-state/-a-c-t-i-v-e/index.html
-$dokka.location:com.sudoplatform.sudoentitlementsadmin.types/AccountState.LOCKED///PointingToDeclaration/sudoentitlementsadmin/com.sudoplatform.sudoentitlementsadmin.types/-account-state/-l-o-c-k-e-d/index.html
+$dokka.location:com.sudoplatform.sudoentitlementsadmin.types/AccountState.ACTIVE///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}sudoentitlementsadmin/com.sudoplatform.sudoentitlementsadmin.types/-account-state/-a-c-t-i-v-e/index.html
+$dokka.location:com.sudoplatform.sudoentitlementsadmin.types/AccountState.LOCKED///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}sudoentitlementsadmin/com.sudoplatform.sudoentitlementsadmin.types/-account-state/-l-o-c-k-e-d/index.html
 $dokka.location:com.sudoplatform.sudoentitlementsadmin.types/AccountState///PointingToDeclaration/sudoentitlementsadmin/com.sudoplatform.sudoentitlementsadmin.types/-account-state/index.html
+$dokka.location:com.sudoplatform.sudoentitlementsadmin.types/AccountState/valueOf/#kotlin.String/PointingToDeclaration/sudoentitlementsadmin/com.sudoplatform.sudoentitlementsadmin.types/-account-state/value-of.html
+$dokka.location:com.sudoplatform.sudoentitlementsadmin.types/AccountState/values/#/PointingToDeclaration/sudoentitlementsadmin/com.sudoplatform.sudoentitlementsadmin.types/-account-state/values.html
 $dokka.location:com.sudoplatform.sudoentitlementsadmin.types/ApplyEntitlementsOperation///PointingToDeclaration/sudoentitlementsadmin/com.sudoplatform.sudoentitlementsadmin.types/-apply-entitlements-operation/index.html
 $dokka.location:com.sudoplatform.sudoentitlementsadmin.types/ApplyEntitlementsOperation/ApplyEntitlementsOperation/#kotlin.String#kotlin.collections.List[com.sudoplatform.sudoentitlementsadmin.types.Entitlement]/PointingToDeclaration/sudoentitlementsadmin/com.sudoplatform.sudoentitlementsadmin.types/-apply-entitlements-operation/-apply-entitlements-operation.html
 $dokka.location:com.sudoplatform.sudoentitlementsadmin.types/ApplyEntitlementsOperation/entitlements/#/PointingToDeclaration/sudoentitlementsadmin/com.sudoplatform.sudoentitlementsadmin.types/-apply-entitlements-operation/entitlements.html

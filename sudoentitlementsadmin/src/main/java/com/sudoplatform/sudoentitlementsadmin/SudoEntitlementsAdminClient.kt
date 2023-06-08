@@ -168,7 +168,7 @@ interface SudoEntitlementsAdminClient {
      */
     @Throws(SudoEntitlementsAdminException::class)
     suspend fun getEntitlementsForUser(
-        externalId: String,
+        externalId: String
     ): UserEntitlementsConsumption?
 
     /**
@@ -210,7 +210,7 @@ interface SudoEntitlementsAdminClient {
     @Throws(SudoEntitlementsAdminException::class)
     suspend fun applyEntitlementsToUser(
         externalId: String,
-        entitlements: List<Entitlement>,
+        entitlements: List<Entitlement>
     ): UserEntitlements
 
     /**
@@ -226,7 +226,7 @@ interface SudoEntitlementsAdminClient {
      */
     @Throws(SudoEntitlementsAdminException::class)
     suspend fun applyEntitlementsToUsers(
-        operations: List<ApplyEntitlementsOperation>,
+        operations: List<ApplyEntitlementsOperation>
     ): List<UserEntitlementsResult>
 
     /**
@@ -258,7 +258,7 @@ interface SudoEntitlementsAdminClient {
      */
     @Throws(SudoEntitlementsAdminException::class)
     suspend fun applyEntitlementsSetToUsers(
-        operations: List<ApplyEntitlementsSetOperation>,
+        operations: List<ApplyEntitlementsSetOperation>
     ): List<UserEntitlementsResult>
 
     /**
@@ -271,7 +271,7 @@ interface SudoEntitlementsAdminClient {
      */
     @Throws(SudoEntitlementsAdminException::class)
     suspend fun getEntitlementsSequence(
-        name: String,
+        name: String
     ): EntitlementsSequence?
 
     /**
@@ -285,7 +285,7 @@ interface SudoEntitlementsAdminClient {
      */
     @Throws(SudoEntitlementsAdminException::class)
     suspend fun listEntitlementsSequences(
-        nextToken: String?,
+        nextToken: String?
     ): ListOutput<EntitlementsSequence>
 
     /**
@@ -301,7 +301,7 @@ interface SudoEntitlementsAdminClient {
     suspend fun addEntitlementsSequence(
         name: String,
         description: String,
-        transitions: List<EntitlementsSequenceTransition>,
+        transitions: List<EntitlementsSequenceTransition>
     ): EntitlementsSequence
 
     /**
@@ -317,7 +317,7 @@ interface SudoEntitlementsAdminClient {
     suspend fun setEntitlementsSequence(
         name: String,
         description: String,
-        transitions: List<EntitlementsSequenceTransition>,
+        transitions: List<EntitlementsSequenceTransition>
     ): EntitlementsSequence
 
     /**
@@ -329,7 +329,7 @@ interface SudoEntitlementsAdminClient {
      */
     @Throws(SudoEntitlementsAdminException::class)
     suspend fun removeEntitlementsSequence(
-        name: String,
+        name: String
     ): EntitlementsSequence?
 
     /**
@@ -345,7 +345,7 @@ interface SudoEntitlementsAdminClient {
     @Throws(SudoEntitlementsAdminException::class)
     suspend fun applyEntitlementsSequenceToUser(
         externalId: String,
-        entitlementSequenceName: String,
+        entitlementSequenceName: String
     ): UserEntitlements
 
     /**
@@ -361,7 +361,7 @@ interface SudoEntitlementsAdminClient {
      */
     @Throws(SudoEntitlementsAdminException::class)
     suspend fun applyEntitlementsSequenceToUsers(
-        operations: List<ApplyEntitlementsSequenceOperation>,
+        operations: List<ApplyEntitlementsSequenceOperation>
     ): List<UserEntitlementsResult>
 
     /**
@@ -402,7 +402,7 @@ class DefaultSudoEntitlementsAdminClient(
         private const val CONFIG_API_URL = "apiUrl"
     }
 
-    override val version: String = "4.0.0"
+    override val version: String = "5.0.0"
 
     /**
      * GraphQL client used for calling Sudo service API.
@@ -451,20 +451,24 @@ class DefaultSudoEntitlementsAdminClient(
         }
 
         val output = response.data()?.getEntitlementsSet?.fragments()?.entitlementsSet()
-        return if (output != null) EntitlementsSet(
-            Date(output.createdAtEpochMs().toLong()),
-            Date(
-                output
-                    .updatedAtEpochMs().toLong()
-            ),
-            output.version(),
-            output.name(),
-            output.description(),
-            output.entitlements().map {
-                val entitlement = it.fragments().entitlement()
-                Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
-            }
-        ) else null
+        return if (output != null) {
+            EntitlementsSet(
+                Date(output.createdAtEpochMs().toLong()),
+                Date(
+                    output
+                        .updatedAtEpochMs().toLong()
+                ),
+                output.version(),
+                output.name(),
+                output.description(),
+                output.entitlements().map {
+                    val entitlement = it.fragments().entitlement()
+                    Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
+                }
+            )
+        } else {
+            null
+        }
     }
 
     override suspend fun addEntitlementsSet(
@@ -593,12 +597,19 @@ class DefaultSudoEntitlementsAdminClient(
                     },
                 if (entitlements
                     .accountState() == AccountStates.ACTIVE
-                ) AccountState.ACTIVE else AccountState.LOCKED
+                ) {
+                    AccountState.ACTIVE
+                } else {
+                    AccountState.LOCKED
+                }
             ),
             output.consumption().map {
                 val consumption = it.fragments().entitlementConsumption()
                 EntitlementConsumption(
-                    consumption.name(), consumption.value(), consumption.available(), consumption.consumed(),
+                    consumption.name(),
+                    consumption.value(),
+                    consumption.available(),
+                    consumption.consumed(),
                     consumption.firstConsumedAtEpochMs()?.let { at ->
                         Date(
                             at.toLong()
@@ -669,20 +680,24 @@ class DefaultSudoEntitlementsAdminClient(
         }
 
         val output = response.data()?.removeEntitlementsSet?.fragments()?.entitlementsSet()
-        return if (output != null) EntitlementsSet(
-            Date(output.createdAtEpochMs().toLong()),
-            Date(
-                output
-                    .updatedAtEpochMs().toLong()
-            ),
-            output.version(),
-            output.name(),
-            output.description(),
-            output.entitlements().map {
-                val entitlement = it.fragments().entitlement()
-                Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
-            }
-        ) else null
+        return if (output != null) {
+            EntitlementsSet(
+                Date(output.createdAtEpochMs().toLong()),
+                Date(
+                    output
+                        .updatedAtEpochMs().toLong()
+                ),
+                output.version(),
+                output.name(),
+                output.description(),
+                output.entitlements().map {
+                    val entitlement = it.fragments().entitlement()
+                    Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
+                }
+            )
+        } else {
+            null
+        }
     }
 
     override suspend fun applyEntitlementsToUser(
@@ -789,7 +804,7 @@ class DefaultSudoEntitlementsAdminClient(
                         transitionsRelativeTo = userEntitlements.transitionsRelativeToEpochMs()?.let {
                             Date(it.toLong())
                         },
-                        accountState = if (userEntitlements.accountState() == AccountStates.ACTIVE) AccountState.ACTIVE else AccountState.LOCKED,
+                        accountState = if (userEntitlements.accountState() == AccountStates.ACTIVE) AccountState.ACTIVE else AccountState.LOCKED
                     )
                 )
             } else if (error != null) {
@@ -900,7 +915,7 @@ class DefaultSudoEntitlementsAdminClient(
                         transitionsRelativeTo = userEntitlements.transitionsRelativeToEpochMs()?.let {
                             Date(it.toLong())
                         },
-                        accountState = if (userEntitlements.accountState() == AccountStates.ACTIVE) AccountState.ACTIVE else AccountState.LOCKED,
+                        accountState = if (userEntitlements.accountState() == AccountStates.ACTIVE) AccountState.ACTIVE else AccountState.LOCKED
                     )
                 )
             } else if (error != null) {
@@ -929,20 +944,24 @@ class DefaultSudoEntitlementsAdminClient(
         }
 
         val output = response.data()?.getEntitlementsSequence?.fragments()?.entitlementsSequence()
-        return if (output != null) EntitlementsSequence(
-            Date(output.createdAtEpochMs().toLong()),
-            Date(
-                output
-                    .updatedAtEpochMs().toLong()
-            ),
-            output.version(),
-            output.name(),
-            output.description(),
-            output.transitions().map {
-                val transition = it.fragments().entitlementsSequenceTransition()
-                EntitlementsSequenceTransition(transition.entitlementsSetName(), transition.duration())
-            }
-        ) else null
+        return if (output != null) {
+            EntitlementsSequence(
+                Date(output.createdAtEpochMs().toLong()),
+                Date(
+                    output
+                        .updatedAtEpochMs().toLong()
+                ),
+                output.version(),
+                output.name(),
+                output.description(),
+                output.transitions().map {
+                    val transition = it.fragments().entitlementsSequenceTransition()
+                    EntitlementsSequenceTransition(transition.entitlementsSetName(), transition.duration())
+                }
+            )
+        } else {
+            null
+        }
     }
 
     override suspend fun listEntitlementsSequences(nextToken: String?): ListOutput<EntitlementsSequence> {
@@ -1086,20 +1105,24 @@ class DefaultSudoEntitlementsAdminClient(
         }
 
         val output = response.data()?.removeEntitlementsSequence?.fragments()?.entitlementsSequence()
-        return if (output != null) EntitlementsSequence(
-            Date(output.createdAtEpochMs().toLong()),
-            Date(
-                output
-                    .updatedAtEpochMs().toLong()
-            ),
-            output.version(),
-            output.name(),
-            output.description(),
-            output.transitions().map {
-                val transition = it.fragments().entitlementsSequenceTransition()
-                EntitlementsSequenceTransition(transition.entitlementsSetName(), transition.duration())
-            }
-        ) else null
+        return if (output != null) {
+            EntitlementsSequence(
+                Date(output.createdAtEpochMs().toLong()),
+                Date(
+                    output
+                        .updatedAtEpochMs().toLong()
+                ),
+                output.version(),
+                output.name(),
+                output.description(),
+                output.transitions().map {
+                    val transition = it.fragments().entitlementsSequenceTransition()
+                    EntitlementsSequenceTransition(transition.entitlementsSetName(), transition.duration())
+                }
+            )
+        } else {
+            null
+        }
     }
 
     override suspend fun applyEntitlementsSequenceToUser(
@@ -1199,7 +1222,7 @@ class DefaultSudoEntitlementsAdminClient(
                         transitionsRelativeTo = userEntitlements.transitionsRelativeToEpochMs()?.let {
                             Date(it.toLong())
                         },
-                        accountState = if (userEntitlements.accountState() == AccountStates.ACTIVE) AccountState.ACTIVE else AccountState.LOCKED,
+                        accountState = if (userEntitlements.accountState() == AccountStates.ACTIVE) AccountState.ACTIVE else AccountState.LOCKED
                     )
                 )
             } else if (error != null) {

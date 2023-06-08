@@ -8,7 +8,6 @@ package com.sudoplatform.sudoentitlementsadmin
 
 import android.content.Context
 import android.content.res.AssetManager
-import android.util.Log
 import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient
 import com.amazonaws.mobileconnectors.appsync.AppSyncMutationCall
 import com.amazonaws.mobileconnectors.appsync.AppSyncQueryCall
@@ -50,23 +49,18 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.kotlin.any
 import org.mockito.kotlin.check
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.spy
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import org.powermock.core.classloader.annotations.PrepareForTest
-import org.powermock.modules.junit4.PowerMockRunner
 import com.sudoplatform.sudoentitlementsadmin.fragment.Entitlement as GraphQLEntitlement
 import com.sudoplatform.sudoentitlementsadmin.fragment.EntitlementsSequence as GraphQLEntitlementsSequence
 import com.sudoplatform.sudoentitlementsadmin.fragment.EntitlementsSequenceTransition as GraphQLEntitlementsSequenceTransition
 import com.sudoplatform.sudoentitlementsadmin.fragment.EntitlementsSet as GraphQLEntitlementsSet
 import com.sudoplatform.sudoentitlementsadmin.fragment.ExternalUserEntitlements as GraphQLExternalUserEntitlements
 
-@RunWith(PowerMockRunner::class)
-@PrepareForTest(DefaultSudoEntitlementsAdminClient::class, Log::class)
 class SudoEntitlementsAdminClientUnitTest {
 
     private lateinit var client: SudoEntitlementsAdminClient
@@ -78,7 +72,7 @@ class SudoEntitlementsAdminClientUnitTest {
         "adminConsoleProjectService" to mapOf(
             "apiUrl" to "https://myfulnonlrb4lao7kj4f76zfpa.appsync-api.us-west-2.amazonaws.com/graphql",
             "region" to "us-west-2",
-            "clientId" to "2f8kflcpsdibmoik2t8654dm3s",
+            "clientId" to "2f8kflcpsdibmoik2t8654dm3s"
         )
     )
 
@@ -151,7 +145,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                         )
                                     )
                                 )
-                            ),
+                            )
                         )
                     )
                 )
@@ -239,7 +233,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                     )
                                 )
                             )
-                        ),
+                        )
                     )
                 )
             ).build()
@@ -252,7 +246,8 @@ class SudoEntitlementsAdminClientUnitTest {
 
         val entitlementsSet =
             this@SudoEntitlementsAdminClientUnitTest.client.addEntitlementsSet(
-                "dummy_name", "dummy_description",
+                "dummy_name",
+                "dummy_description",
                 listOf(
                     Entitlement("dummy_entitlement", "dummy_description", 1)
                 )
@@ -336,7 +331,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                     )
                                 )
                             )
-                        ),
+                        )
                     )
                 )
             ).build()
@@ -349,7 +344,8 @@ class SudoEntitlementsAdminClientUnitTest {
 
         val entitlementsSet =
             this@SudoEntitlementsAdminClientUnitTest.client.setEntitlementsSet(
-                "dummy_name", "dummy_description",
+                "dummy_name",
+                "dummy_description",
                 listOf(
                     Entitlement("dummy_entitlement", "dummy_description", 1)
                 )
@@ -427,7 +423,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                     )
                                 )
                             )
-                        ),
+                        )
                     )
                 )
             ).build()
@@ -528,7 +524,8 @@ class SudoEntitlementsAdminClientUnitTest {
 
         val userEntitlements =
             this@SudoEntitlementsAdminClientUnitTest.client.applyEntitlementsSetToUser(
-                "dummy_external_id", "dummy_name"
+                "dummy_external_id",
+                "dummy_name"
             )
 
         verify(this@SudoEntitlementsAdminClientUnitTest.graphQLClient).mutate<ApplyEntitlementsSetToUserMutation.Data, ApplyEntitlementsSetToUserMutation, ApplyEntitlementsSetToUserMutation.Variables>(
@@ -622,7 +619,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                     )
                                 )
                             ),
-                            null,
+                            null
                         ),
                         ApplyEntitlementsSetToUsersMutation.ApplyEntitlementsSetToUser(
                             "ExternalUserEntitlementsError",
@@ -651,7 +648,7 @@ class SudoEntitlementsAdminClientUnitTest {
             this@SudoEntitlementsAdminClientUnitTest.client.applyEntitlementsSetToUsers(
                 listOf(
                     ApplyEntitlementsSetOperation("dummy_external_id", "dummy_name"),
-                    ApplyEntitlementsSetOperation("error_external_id", "error_name"),
+                    ApplyEntitlementsSetOperation("error_external_id", "error_name")
                 )
             )
 
@@ -691,8 +688,7 @@ class SudoEntitlementsAdminClientUnitTest {
 
         when (results1) {
             is UserEntitlementsResult.Failure -> {
-                val error = results1.error
-                when (error) {
+                when (results1.error) {
                     is SudoEntitlementsAdminException.EntitlementsSetNotFoundException -> {}
                     else -> {
                         fail("Error not mapped correctly")
@@ -747,13 +743,13 @@ class SudoEntitlementsAdminClientUnitTest {
                                             GraphQLEntitlementsSequenceTransition(
                                                 "Transition",
                                                 "dummy_entitlements_set",
-                                                "dummy_duration",
+                                                "dummy_duration"
                                             )
                                         )
                                     )
                                 )
                             )
-                        ),
+                        )
                     )
                 )
             ).build()
@@ -833,13 +829,13 @@ class SudoEntitlementsAdminClientUnitTest {
                                             GraphQLEntitlementsSequenceTransition(
                                                 "Transition",
                                                 "dummy_entitlements_set",
-                                                "dummy_duration",
+                                                "dummy_duration"
                                             )
                                         )
                                     )
                                 )
                             )
-                        ),
+                        )
                     )
                 )
             ).build()
@@ -852,7 +848,8 @@ class SudoEntitlementsAdminClientUnitTest {
 
         val entitlementsSequence =
             this@SudoEntitlementsAdminClientUnitTest.client.addEntitlementsSequence(
-                "dummy_name", "dummy_description",
+                "dummy_name",
+                "dummy_description",
                 listOf(
                     EntitlementsSequenceTransition("dummy_entitlements_set", "dummy_duration")
                 )
@@ -928,13 +925,13 @@ class SudoEntitlementsAdminClientUnitTest {
                                             GraphQLEntitlementsSequenceTransition(
                                                 "Transition",
                                                 "dummy_entitlements_set",
-                                                "dummy_duration",
+                                                "dummy_duration"
                                             )
                                         )
                                     )
                                 )
                             )
-                        ),
+                        )
                     )
                 )
             ).build()
@@ -947,7 +944,8 @@ class SudoEntitlementsAdminClientUnitTest {
 
         val entitlementsSequence =
             this@SudoEntitlementsAdminClientUnitTest.client.setEntitlementsSequence(
-                "dummy_name", "dummy_description",
+                "dummy_name",
+                "dummy_description",
                 listOf(
                     EntitlementsSequenceTransition("dummy_entitlements_set", "dummy_duration")
                 )
@@ -1016,13 +1014,13 @@ class SudoEntitlementsAdminClientUnitTest {
                                             GraphQLEntitlementsSequenceTransition(
                                                 "Transition",
                                                 "dummy_entitlements_set",
-                                                "dummy_duration",
+                                                "dummy_duration"
                                             )
                                         )
                                     )
                                 )
                             )
-                        ),
+                        )
                     )
                 )
             ).build()
@@ -1122,7 +1120,8 @@ class SudoEntitlementsAdminClientUnitTest {
 
         val userEntitlements =
             this@SudoEntitlementsAdminClientUnitTest.client.applyEntitlementsSequenceToUser(
-                "dummy_external_id", "dummy_name"
+                "dummy_external_id",
+                "dummy_name"
             )
 
         verify(this@SudoEntitlementsAdminClientUnitTest.graphQLClient).mutate<ApplyEntitlementsSequenceToUserMutation.Data, ApplyEntitlementsSequenceToUserMutation, ApplyEntitlementsSequenceToUserMutation.Variables>(
@@ -1216,7 +1215,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                     )
                                 )
                             ),
-                            null,
+                            null
                         ),
                         ApplyEntitlementsSequenceToUsersMutation.ApplyEntitlementsSequenceToUser(
                             "ExternalUserEntitlementsError",
@@ -1245,7 +1244,7 @@ class SudoEntitlementsAdminClientUnitTest {
             this@SudoEntitlementsAdminClientUnitTest.client.applyEntitlementsSequenceToUsers(
                 listOf(
                     ApplyEntitlementsSequenceOperation("dummy_external_id", "dummy_name"),
-                    ApplyEntitlementsSequenceOperation("error_external_id", "error_name"),
+                    ApplyEntitlementsSequenceOperation("error_external_id", "error_name")
                 )
             )
 
@@ -1435,7 +1434,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                                 .description("error_description").value(1).build()
                                         )
                                     )
-                                    .build(),
+                                    .build()
                             )
                         ).build()
                 ).build()
@@ -1479,7 +1478,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                     )
                                 )
                             ),
-                            null,
+                            null
                         ),
                         ApplyEntitlementsToUsersMutation.ApplyEntitlementsToUser(
                             "ExternalUserEntitlementsError",
@@ -1585,7 +1584,7 @@ class SudoEntitlementsAdminClientUnitTest {
             "sudoplatform.entitlements.EntitlementsSequenceAlreadyExistsError" to SudoEntitlementsAdminException.EntitlementsSequenceAlreadyExistsException().javaClass,
             "sudoplatform.entitlements.EntitlementsSequenceNotFoundError" to SudoEntitlementsAdminException.EntitlementsSequenceNotFoundException().javaClass,
             "sudoplatform.entitlements.EntitlementsSequenceUpdateInProgressError" to SudoEntitlementsAdminException.EntitlementsSequenceUpdateInProgressException().javaClass,
-            "sudoplatform.entitlements.InvalidEntitlementsError" to SudoEntitlementsAdminException.InvalidEntitlementsException().javaClass,
+            "sudoplatform.entitlements.InvalidEntitlementsError" to SudoEntitlementsAdminException.InvalidEntitlementsException().javaClass
         )
 
         for (entry in expectedErrors) {

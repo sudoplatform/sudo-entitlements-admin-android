@@ -78,7 +78,7 @@ open class SudoEntitlementsAdminException(message: String? = null, cause: Throwa
          * Convert from a GraphQL [Error] into a custom exception of type [SudoEntitlementsAdminException]
          */
         fun Error.toSudoEntitlementsAdminException(): SudoEntitlementsAdminException {
-            return sudoEntitlementsAdminException(errorString = this.customAttributes()[GRAPHQL_ERROR_TYPE] as String ?: "")
+            return sudoEntitlementsAdminException(errorString = this.customAttributes()[GRAPHQL_ERROR_TYPE] as String)
         }
     }
 

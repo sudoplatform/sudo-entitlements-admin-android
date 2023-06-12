@@ -18,6 +18,8 @@ open class SudoEntitlementsAdminException(message: String? = null, cause: Throwa
         private const val GRAPHQL_ERROR_BULK_OPERATION_DUPLICATE_USERS_ERROR =
             "sudoplatform.entitlements.BulkOperationDuplicateUsersError"
         private const val GRAPHQL_ERROR_DECODING_ERROR = "sudoplatform.DecodingError"
+        private const val GRAPHQL_ERROR_DUPLICATE_ENTITLEMENT_ERROR =
+            "sudoplatform.entitlements.DuplicateEntitlementError"
         private const val GRAPHQL_ERROR_ENTITLEMENTS_SEQUENCE_ALREADY_EXISTS_ERROR =
             "sudoplatform.entitlements.EntitlementsSequenceAlreadyExistsError"
         private const val GRAPHQL_ERROR_ENTITLEMENTS_SEQUENCE_NOT_FOUND_ERROR =
@@ -36,6 +38,10 @@ open class SudoEntitlementsAdminException(message: String? = null, cause: Throwa
         private const val GRAPHQL_ERROR_INVALID_ENTITLEMENTS_ERROR =
             "sudoplatform.entitlements.InvalidEntitlementsError"
         private const val GRAPHQL_ERROR_LIMIT_EXCEEDED_ERROR = "sudoplatform.LimitExceededError"
+        private const val GRAPHQL_ERROR_NEGATIVE_ENTITLEMENT_ERROR =
+            "sudoplatform.entitlements.NegativeEntitlementError"
+        private const val GRAPHQL_ERROR_NO_ENTITLEMENTS_ERROR =
+            "sudoplatform.NoEntitlementsError"
         private const val GRAPHQL_ERROR_SERVICE_ERROR = "sudoplatform.ServiceError"
 
         /**
@@ -45,6 +51,7 @@ open class SudoEntitlementsAdminException(message: String? = null, cause: Throwa
             return when (errorString) {
                 GRAPHQL_ERROR_ALREADY_UPDATED_ERROR -> AlreadyUpdatedException(message)
                 GRAPHQL_ERROR_BULK_OPERATION_DUPLICATE_USERS_ERROR -> BulkOperationDuplicateUsersException(message)
+                GRAPHQL_ERROR_DUPLICATE_ENTITLEMENT_ERROR -> DuplicateEntitlementException(message)
                 GRAPHQL_ERROR_SERVICE_ERROR -> InternalServerException(message)
                 GRAPHQL_ERROR_DECODING_ERROR, GRAPHQL_ERROR_INVALID_ARGUMENT_ERROR -> InvalidInputException(
                     message
@@ -70,6 +77,8 @@ open class SudoEntitlementsAdminException(message: String? = null, cause: Throwa
                     message
                 )
                 GRAPHQL_ERROR_LIMIT_EXCEEDED_ERROR -> LimitExceededException(message)
+                GRAPHQL_ERROR_NEGATIVE_ENTITLEMENT_ERROR -> NegativeEntitlementException(message)
+                GRAPHQL_ERROR_NO_ENTITLEMENTS_ERROR -> NoEntitlementsException(message)
                 else -> GraphQLException(message)
             }
         }
@@ -96,36 +105,9 @@ open class SudoEntitlementsAdminException(message: String? = null, cause: Throwa
         SudoEntitlementsAdminException(message = message, cause = cause)
 
     /**
-     * Indicates that invalid input was provided to the API call.
+     * Indicates that an operation has invalidly specified the same entitlement multiple times
      */
-    class InvalidInputException(message: String? = null, cause: Throwable? = null) :
-        SudoEntitlementsAdminException(message = message, cause = cause)
-
-    /**
-     * Indicates that the input entitlements name was not recognized.
-     */
-    class InvalidEntitlementsException(message: String? = null, cause: Throwable? = null) :
-        SudoEntitlementsAdminException(message = message, cause = cause)
-
-    /**
-     * Indicates that an attempt has been made to delete an entitlements set that is currently in
-     * use by one or more entitlements sequences.
-     */
-    class EntitlementsSetInUseException(message: String? = null, cause: Throwable? = null) :
-        SudoEntitlementsAdminException(message = message, cause = cause)
-
-    /**
-     * Indicates that the input entitlements set name does not exists when applying an entitlements
-     * set to a user.
-     */
-    class EntitlementsSetNotFoundException(message: String? = null, cause: Throwable? = null) :
-        SudoEntitlementsAdminException(message = message, cause = cause)
-
-    /**
-     * Indicates that the attempt to add a new entitlement set failed because an entitlements set
-     * with the same name already exists.
-     */
-    class EntitlementsSetAlreadyExistsException(message: String? = null, cause: Throwable? = null) :
+    class DuplicateEntitlementException(message: String? = null, cause: Throwable? = null) :
         SudoEntitlementsAdminException(message = message, cause = cause)
 
     /**
@@ -153,10 +135,51 @@ open class SudoEntitlementsAdminException(message: String? = null, cause: Throwa
         SudoEntitlementsAdminException(message = message, cause = cause)
 
     /**
+     * Indicates that the attempt to add a new entitlement set failed because an entitlements set
+     * with the same name already exists.
+     */
+    class EntitlementsSetAlreadyExistsException(message: String? = null, cause: Throwable? = null) :
+        SudoEntitlementsAdminException(message = message, cause = cause)
+
+    /**
      * Indicates that an attempt was made to modify or delete an immutable entitlements set was made
      * (e.g. _unentitled_).
      */
     class EntitlementsSetImmutableException(message: String? = null, cause: Throwable? = null) :
+        SudoEntitlementsAdminException(message = message, cause = cause)
+
+    /**
+     * Indicates that an attempt has been made to delete an entitlements set that is currently in
+     * use by one or more entitlements sequences.
+     */
+    class EntitlementsSetInUseException(message: String? = null, cause: Throwable? = null) :
+        SudoEntitlementsAdminException(message = message, cause = cause)
+
+    /**
+     * Indicates that the input entitlements set name does not exists when applying an entitlements
+     * set to a user.
+     */
+    class EntitlementsSetNotFoundException(message: String? = null, cause: Throwable? = null) :
+        SudoEntitlementsAdminException(message = message, cause = cause)
+
+    /**
+     * Indicates that an internal server error caused the operation to fail. The error is
+     * possibly transient and retrying at a later time may cause the operation to complete
+     * successfully.
+     */
+    class InternalServerException(message: String? = null, cause: Throwable? = null) :
+        SudoEntitlementsAdminException(message = message, cause = cause)
+
+    /**
+     * Indicates that the input entitlements name was not recognized.
+     */
+    class InvalidEntitlementsException(message: String? = null, cause: Throwable? = null) :
+        SudoEntitlementsAdminException(message = message, cause = cause)
+
+    /**
+     * Indicates that invalid input was provided to the API call.
+     */
+    class InvalidInputException(message: String? = null, cause: Throwable? = null) :
         SudoEntitlementsAdminException(message = message, cause = cause)
 
     /**
@@ -166,11 +189,16 @@ open class SudoEntitlementsAdminException(message: String? = null, cause: Throwa
         SudoEntitlementsAdminException(message = message, cause = cause)
 
     /**
-     * Indicates that an internal server error caused the operation to fail. The error is
-     * possibly transient and retrying at a later time may cause the operation to complete
-     * successfully.
+     * Indicates that an operation would result in negative entitlements for user which is not permittd
      */
-    class InternalServerException(message: String? = null, cause: Throwable? = null) :
+    class NegativeEntitlementException(message: String? = null, cause: Throwable? = null) :
+        SudoEntitlementsAdminException(message = message, cause = cause)
+
+    /**
+     * Indicates that an operation that a user does not already have entitlements defined
+     * for an operation that requires this.
+     */
+    class NoEntitlementsException(message: String? = null, cause: Throwable? = null) :
         SudoEntitlementsAdminException(message = message, cause = cause)
 
     /**

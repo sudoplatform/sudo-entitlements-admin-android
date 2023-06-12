@@ -81,6 +81,11 @@ data class UserEntitlements(
     val entitlements: List<Entitlement>,
 
     /**
+     * User's expendable entitlements.
+     */
+    val expendableEntitlements: List<Entitlement>,
+
+    /**
      * Date from when user's transitions should be calculated. Defaults to current
      * time.
      */

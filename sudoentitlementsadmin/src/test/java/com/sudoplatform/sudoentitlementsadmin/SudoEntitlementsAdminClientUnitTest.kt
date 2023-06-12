@@ -24,6 +24,7 @@ import com.sudoplatform.sudoentitlementsadmin.type.ApplyEntitlementsSetToUserInp
 import com.sudoplatform.sudoentitlementsadmin.type.ApplyEntitlementsSetToUsersInput
 import com.sudoplatform.sudoentitlementsadmin.type.ApplyEntitlementsToUserInput
 import com.sudoplatform.sudoentitlementsadmin.type.ApplyEntitlementsToUsersInput
+import com.sudoplatform.sudoentitlementsadmin.type.ApplyExpendableEntitlementsToUserInput
 import com.sudoplatform.sudoentitlementsadmin.type.EntitlementInput
 import com.sudoplatform.sudoentitlementsadmin.type.EntitlementsSequenceTransitionInput
 import com.sudoplatform.sudoentitlementsadmin.type.GetEntitlementsSequenceInput
@@ -509,6 +510,19 @@ class SudoEntitlementsAdminClientUnitTest {
                                         )
                                     )
                                 ),
+                                mutableListOf(
+                                    GraphQLExternalUserEntitlements.ExpendableEntitlement(
+                                        "Entitlement",
+                                        GraphQLExternalUserEntitlements.ExpendableEntitlement.Fragments(
+                                            GraphQLEntitlement(
+                                                "Entitlement",
+                                                "expendable_entitlement",
+                                                "expendable_description",
+                                                2
+                                            )
+                                        )
+                                    )
+                                ),
                                 null
                             )
                         )
@@ -611,6 +625,19 @@ class SudoEntitlementsAdminClientUnitTest {
                                                         "dummy_entitlement",
                                                         "dummy_description",
                                                         1
+                                                    )
+                                                )
+                                            )
+                                        ),
+                                        mutableListOf(
+                                            GraphQLExternalUserEntitlements.ExpendableEntitlement(
+                                                "Entitlement",
+                                                GraphQLExternalUserEntitlements.ExpendableEntitlement.Fragments(
+                                                    GraphQLEntitlement(
+                                                        "Entitlement",
+                                                        "expendable_entitlement",
+                                                        "expendable_description",
+                                                        2
                                                     )
                                                 )
                                             )
@@ -1105,6 +1132,19 @@ class SudoEntitlementsAdminClientUnitTest {
                                         )
                                     )
                                 ),
+                                mutableListOf(
+                                    GraphQLExternalUserEntitlements.ExpendableEntitlement(
+                                        "Entitlement",
+                                        GraphQLExternalUserEntitlements.ExpendableEntitlement.Fragments(
+                                            GraphQLEntitlement(
+                                                "Entitlement",
+                                                "expendable_entitlement",
+                                                "expendable_description",
+                                                2
+                                            )
+                                        )
+                                    )
+                                ),
                                 1.0
                             )
                         )
@@ -1207,6 +1247,19 @@ class SudoEntitlementsAdminClientUnitTest {
                                                         "dummy_entitlement",
                                                         "dummy_description",
                                                         1
+                                                    )
+                                                )
+                                            )
+                                        ),
+                                        mutableListOf(
+                                            GraphQLExternalUserEntitlements.ExpendableEntitlement(
+                                                "Entitlement",
+                                                GraphQLExternalUserEntitlements.ExpendableEntitlement.Fragments(
+                                                    GraphQLEntitlement(
+                                                        "Entitlement",
+                                                        "expendable_entitlement",
+                                                        "expendable_description",
+                                                        2
                                                     )
                                                 )
                                             )
@@ -1355,6 +1408,19 @@ class SudoEntitlementsAdminClientUnitTest {
                                         )
                                     )
                                 ),
+                                mutableListOf(
+                                    GraphQLExternalUserEntitlements.ExpendableEntitlement(
+                                        "Entitlement",
+                                        GraphQLExternalUserEntitlements.ExpendableEntitlement.Fragments(
+                                            GraphQLEntitlement(
+                                                "Entitlement",
+                                                "expendable_entitlement",
+                                                "expendable_description",
+                                                2
+                                            )
+                                        )
+                                    )
+                                ),
                                 null
                             )
                         )
@@ -1474,6 +1540,19 @@ class SudoEntitlementsAdminClientUnitTest {
                                                 )
                                             )
                                         ),
+                                        mutableListOf(
+                                            GraphQLExternalUserEntitlements.ExpendableEntitlement(
+                                                "Entitlement",
+                                                GraphQLExternalUserEntitlements.ExpendableEntitlement.Fragments(
+                                                    GraphQLEntitlement(
+                                                        "Entitlement",
+                                                        "expendable_entitlement",
+                                                        "expendable_description",
+                                                        2
+                                                    )
+                                                )
+                                            )
+                                        ),
                                         null
                                     )
                                 )
@@ -1562,6 +1641,131 @@ class SudoEntitlementsAdminClientUnitTest {
     }
 
     @Test
+    fun testApplyExpendableEntitlementsToUser() = runBlocking {
+        val call: AppSyncMutationCall<ApplyExpendableEntitlementsToUserMutation> = mock()
+        whenever(
+            this@SudoEntitlementsAdminClientUnitTest.graphQLClient.mutate<ApplyExpendableEntitlementsToUserMutation.Data, ApplyExpendableEntitlementsToUserMutation, Operation.Variables>(
+                any()
+            )
+        ).thenReturn(call)
+
+        whenever(
+            call.enqueue(
+                any()
+            )
+        ).thenAnswer {
+            val mutation = ApplyExpendableEntitlementsToUserMutation.builder()
+                .input(
+                    ApplyExpendableEntitlementsToUserInput.builder()
+                        .externalId("dummy_external_id")
+                        .expendableEntitlements(
+                            listOf(
+                                EntitlementInput.builder()
+                                    .name("expendable_entitlement")
+                                    .description("expendable_description")
+                                    .value(2).build()
+                            )
+                        )
+                        .requestId("request-id")
+                        .build()
+                ).build()
+
+            val builder =
+                com.apollographql.apollo.api.Response.builder<ApplyExpendableEntitlementsToUserMutation.Data>(
+                    mutation
+                )
+
+            val response = builder.data(
+                ApplyExpendableEntitlementsToUserMutation.Data(
+                    ApplyExpendableEntitlementsToUserMutation.ApplyExpendableEntitlementsToUser(
+                        "ApplyExpendableEntitlementsToUser",
+                        ApplyExpendableEntitlementsToUserMutation.ApplyExpendableEntitlementsToUser.Fragments(
+                            GraphQLExternalUserEntitlements(
+                                "ExternalUserEntitlements",
+                                1.0,
+                                2.0,
+                                1.0,
+                                "dummy_external_id",
+                                "dummy_owner",
+                                AccountStates.LOCKED,
+                                null,
+                                null,
+                                mutableListOf(
+                                    GraphQLExternalUserEntitlements.Entitlement(
+                                        "Entitlement",
+                                        GraphQLExternalUserEntitlements.Entitlement.Fragments(
+                                            GraphQLEntitlement(
+                                                "Entitlement",
+                                                "dummy_entitlement",
+                                                "dummy_description",
+                                                1
+                                            )
+                                        )
+                                    )
+                                ),
+                                mutableListOf(
+                                    GraphQLExternalUserEntitlements.ExpendableEntitlement(
+                                        "Entitlement",
+                                        GraphQLExternalUserEntitlements.ExpendableEntitlement.Fragments(
+                                            GraphQLEntitlement(
+                                                "Entitlement",
+                                                "expendable_entitlement",
+                                                "expendable_description",
+                                                2
+                                            )
+                                        )
+                                    )
+                                ),
+                                null
+                            )
+                        )
+                    )
+                )
+            ).build()
+
+            @Suppress("UNCHECKED_CAST")
+            (it.arguments[0] as GraphQLCall.Callback<ApplyExpendableEntitlementsToUserMutation.Data>).onResponse(
+                response
+            )
+        }
+
+        val userEntitlements =
+            this@SudoEntitlementsAdminClientUnitTest.client.applyExpendableEntitlementsToUser(
+                "dummy_external_id",
+                listOf(Entitlement("expendable_entitlement", "expendable_description", 2)),
+                "request_id"
+            )
+
+        verify(this@SudoEntitlementsAdminClientUnitTest.graphQLClient).mutate<ApplyExpendableEntitlementsToUserMutation.Data, ApplyExpendableEntitlementsToUserMutation, ApplyExpendableEntitlementsToUserMutation.Variables>(
+            check {
+                assertEquals("dummy_external_id", it.variables().input().externalId())
+                val entitlement = it.variables().input().expendableEntitlements().first()
+                assertEquals("expendable_entitlement", entitlement.name())
+                assertEquals("expendable_description", entitlement.description())
+                assertEquals(2, entitlement.value())
+                assertEquals("request_id", it.variables().input().requestId())
+            }
+        )
+
+        assertEquals(AccountState.LOCKED, userEntitlements.accountState)
+        assertEquals(1.0, userEntitlements.version, 0.0)
+        assertEquals("dummy_owner", userEntitlements.owner)
+        assertNull(userEntitlements.entitlementsSequenceName)
+        assertNull(userEntitlements.entitlementsSetName)
+        assertNull(userEntitlements.transitionsRelativeTo)
+        assertEquals(1L, userEntitlements.createdAt.time)
+        assertEquals(2L, userEntitlements.updatedAt.time)
+        val entitlement = userEntitlements.entitlements.first()
+        assertEquals("dummy_entitlement", entitlement.name)
+        assertEquals("dummy_description", entitlement.description)
+        assertEquals(1, entitlement.value)
+        val expendableEntitlement = userEntitlements.expendableEntitlements.first()
+        assertEquals("expendable_entitlement", expendableEntitlement.name)
+        assertEquals("expendable_description", expendableEntitlement.description)
+        assertEquals(2, expendableEntitlement.value)
+    }
+
+    @Test
     fun testErrorHandling() = runBlocking {
         val call: AppSyncMutationCall<RemoveEntitlementsSetMutation> = mock()
         whenever(
@@ -1574,17 +1778,19 @@ class SudoEntitlementsAdminClientUnitTest {
             "sudoplatform.DecodingError" to SudoEntitlementsAdminException.InvalidInputException().javaClass,
             "sudoplatform.InvalidArgumentError" to SudoEntitlementsAdminException.InvalidInputException().javaClass,
             "sudoplatform.LimitExceededError" to SudoEntitlementsAdminException.LimitExceededException().javaClass,
+            "sudoplatform.NoEntitlementsError" to SudoEntitlementsAdminException.NoEntitlementsException().javaClass,
             "sudoplatform.ServiceError" to SudoEntitlementsAdminException.InternalServerException().javaClass,
             "sudoplatform.entitlements.AlreadyUpdatedError" to SudoEntitlementsAdminException.AlreadyUpdatedException().javaClass,
-            "sudoplatform.entitlements.AlreadyUpdatedError" to SudoEntitlementsAdminException.AlreadyUpdatedException().javaClass,
             "sudoplatform.entitlements.BulkOperationDuplicateUsersError" to SudoEntitlementsAdminException.BulkOperationDuplicateUsersException().javaClass,
+            "sudoplatform.entitlements.DuplicateEntitlementError" to SudoEntitlementsAdminException.DuplicateEntitlementException().javaClass,
             "sudoplatform.entitlements.EntitlementsSetImmutableError" to SudoEntitlementsAdminException.EntitlementsSetImmutableException().javaClass,
             "sudoplatform.entitlements.EntitlementsSetInUseError" to SudoEntitlementsAdminException.EntitlementsSetInUseException().javaClass,
             "sudoplatform.entitlements.EntitlementsSetNotFoundError" to SudoEntitlementsAdminException.EntitlementsSetNotFoundException().javaClass,
             "sudoplatform.entitlements.EntitlementsSequenceAlreadyExistsError" to SudoEntitlementsAdminException.EntitlementsSequenceAlreadyExistsException().javaClass,
             "sudoplatform.entitlements.EntitlementsSequenceNotFoundError" to SudoEntitlementsAdminException.EntitlementsSequenceNotFoundException().javaClass,
             "sudoplatform.entitlements.EntitlementsSequenceUpdateInProgressError" to SudoEntitlementsAdminException.EntitlementsSequenceUpdateInProgressException().javaClass,
-            "sudoplatform.entitlements.InvalidEntitlementsError" to SudoEntitlementsAdminException.InvalidEntitlementsException().javaClass
+            "sudoplatform.entitlements.InvalidEntitlementsError" to SudoEntitlementsAdminException.InvalidEntitlementsException().javaClass,
+            "sudoplatform.entitlements.NegativeEntitlementError" to SudoEntitlementsAdminException.NegativeEntitlementException().javaClass
         )
 
         for (entry in expectedErrors) {

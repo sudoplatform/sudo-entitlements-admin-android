@@ -1,0 +1,6 @@
+fragment EntitlementDefinition on EntitlementDefinition {
+  name
+  description
+  type
+  expendable
+}

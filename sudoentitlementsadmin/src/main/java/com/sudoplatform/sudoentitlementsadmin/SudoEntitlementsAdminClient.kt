@@ -22,6 +22,7 @@ import com.sudoplatform.sudoentitlementsadmin.type.ApplyEntitlementsSetToUserInp
 import com.sudoplatform.sudoentitlementsadmin.type.ApplyEntitlementsSetToUsersInput
 import com.sudoplatform.sudoentitlementsadmin.type.ApplyEntitlementsToUserInput
 import com.sudoplatform.sudoentitlementsadmin.type.ApplyEntitlementsToUsersInput
+import com.sudoplatform.sudoentitlementsadmin.type.ApplyExpendableEntitlementsToUserInput
 import com.sudoplatform.sudoentitlementsadmin.type.EntitlementInput
 import com.sudoplatform.sudoentitlementsadmin.type.EntitlementsSequenceTransitionInput
 import com.sudoplatform.sudoentitlementsadmin.type.GetEntitlementsForUserInput
@@ -260,6 +261,26 @@ interface SudoEntitlementsAdminClient {
     suspend fun applyEntitlementsSetToUsers(
         operations: List<ApplyEntitlementsSetOperation>
     ): List<UserEntitlementsResult>
+
+    /**
+     * Apply an expendable entitlements delta to a user. If a record for the user's
+     * entitlements does not yet exist a NoEntitlementsForUserError is thrown. Call
+     * an applyEntitlements method to assign entitlements before calling this method.
+     *
+     * @param externalId external IDP user ID of user to apply entitlements to.
+     * @param expendableEntitlements the expendable entitlements delta to apply to the user
+     * @param requestId
+     *     Request of this delta. Repetition of requests for the same external
+     *     ID with the same requestId are idempotent
+     *
+     * @returns The resulting user entitlements
+     */
+    @Throws(SudoEntitlementsAdminException::class)
+    suspend fun applyExpendableEntitlementsToUser(
+        externalId: String,
+        expendableEntitlements: List<Entitlement>,
+        requestId: String
+    ): UserEntitlements
 
     /**
      * Get an entitlements sequence
@@ -589,6 +610,10 @@ class DefaultSudoEntitlementsAdminClient(
                     val entitlement = it.fragments().entitlement()
                     Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
                 },
+                entitlements.expendableEntitlements().map {
+                    val entitlement = it.fragments().entitlement()
+                    Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
+                },
                 entitlements
                     .transitionsRelativeToEpochMs()?.let {
                         Date(
@@ -742,6 +767,10 @@ class DefaultSudoEntitlementsAdminClient(
                 val entitlement = it.fragments().entitlement()
                 Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
             },
+            output.expendableEntitlements().map {
+                val entitlement = it.fragments().entitlement()
+                Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
+            },
             output
                 .transitionsRelativeToEpochMs()?.let {
                     Date(
@@ -801,6 +830,10 @@ class DefaultSudoEntitlementsAdminClient(
                             val entitlement = it.fragments().entitlement()
                             Entitlement(name = entitlement.name(), description = entitlement.description(), value = entitlement.value())
                         },
+                        expendableEntitlements = userEntitlements.expendableEntitlements().map {
+                            val entitlement = it.fragments().entitlement()
+                            Entitlement(name = entitlement.name(), description = entitlement.description(), value = entitlement.value())
+                        },
                         transitionsRelativeTo = userEntitlements.transitionsRelativeToEpochMs()?.let {
                             Date(it.toLong())
                         },
@@ -854,6 +887,10 @@ class DefaultSudoEntitlementsAdminClient(
             output.entitlementsSetName(),
             output.entitlementsSequenceName(),
             output.entitlements().map {
+                val entitlement = it.fragments().entitlement()
+                Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
+            },
+            output.expendableEntitlements().map {
                 val entitlement = it.fragments().entitlement()
                 Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
             },
@@ -912,6 +949,10 @@ class DefaultSudoEntitlementsAdminClient(
                             val entitlement = it.fragments().entitlement()
                             Entitlement(name = entitlement.name(), description = entitlement.description(), value = entitlement.value())
                         },
+                        expendableEntitlements = userEntitlements.expendableEntitlements().map {
+                            val entitlement = it.fragments().entitlement()
+                            Entitlement(name = entitlement.name(), description = entitlement.description(), value = entitlement.value())
+                        },
                         transitionsRelativeTo = userEntitlements.transitionsRelativeToEpochMs()?.let {
                             Date(it.toLong())
                         },
@@ -928,6 +969,67 @@ class DefaultSudoEntitlementsAdminClient(
                 UserEntitlementsResult.Failure(SudoEntitlementsAdminException.FailedException("Unknown result type ${it.__typename}"))
             }
         }
+    }
+
+    override suspend fun applyExpendableEntitlementsToUser(
+        externalId: String,
+        expendableEntitlements: List<Entitlement>,
+        requestId: String
+    ): UserEntitlements {
+        this.logger.info("Applying expendable entitlements to a user.")
+
+        val input =
+            ApplyExpendableEntitlementsToUserInput.builder()
+                .externalId(externalId)
+                .expendableEntitlements(
+                    expendableEntitlements.map {
+                        EntitlementInput.builder().name(it.name).description(it.description)
+                            .value(it.value).build()
+                    }
+                )
+                .requestId(requestId)
+                .build()
+
+        val response =
+            this.graphQLClient.mutate(
+                ApplyExpendableEntitlementsToUserMutation.builder().input(input).build()
+            )
+                .enqueue()
+
+        if (response.hasErrors()) {
+            throw response.errors().first().toSudoEntitlementsAdminException()
+        }
+
+        val output = response.data()?.applyExpendableEntitlementsToUser?.fragments()?.externalUserEntitlements()
+            ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
+
+        return UserEntitlements(
+            Date(output.createdAtEpochMs().toLong()),
+            Date(
+                output
+                    .updatedAtEpochMs().toLong()
+            ),
+            output.version(),
+            output.externalId(),
+            output.owner(),
+            output.entitlementsSetName(),
+            output.entitlementsSequenceName(),
+            output.entitlements().map {
+                val entitlement = it.fragments().entitlement()
+                Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
+            },
+            output.expendableEntitlements().map {
+                val entitlement = it.fragments().entitlement()
+                Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
+            },
+            output
+                .transitionsRelativeToEpochMs()?.let {
+                    Date(
+                        it.toLong()
+                    )
+                },
+            if (output.accountState() == AccountStates.ACTIVE) AccountState.ACTIVE else AccountState.LOCKED
+        )
     }
 
     override suspend fun getEntitlementsSequence(name: String): EntitlementsSequence? {
@@ -1164,6 +1266,10 @@ class DefaultSudoEntitlementsAdminClient(
                 val entitlement = it.fragments().entitlement()
                 Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
             },
+            output.expendableEntitlements().map {
+                val entitlement = it.fragments().entitlement()
+                Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
+            },
             output
                 .transitionsRelativeToEpochMs()?.let {
                     Date(
@@ -1216,6 +1322,10 @@ class DefaultSudoEntitlementsAdminClient(
                         entitlementsSequenceName = userEntitlements.entitlementsSequenceName(),
                         entitlementsSetName = userEntitlements.entitlementsSetName(),
                         entitlements = userEntitlements.entitlements().map {
+                            val entitlement = it.fragments().entitlement()
+                            Entitlement(name = entitlement.name(), description = entitlement.description(), value = entitlement.value())
+                        },
+                        expendableEntitlements = userEntitlements.expendableEntitlements().map {
                             val entitlement = it.fragments().entitlement()
                             Entitlement(name = entitlement.name(), description = entitlement.description(), value = entitlement.value())
                         },

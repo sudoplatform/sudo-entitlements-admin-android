@@ -20,10 +20,10 @@ android {
     compileSdkVersion 31
 
     defaultConfig {
-        minSdkVersion 24
+        minSdkVersion 26
         targetSdkVersion 31
         versionCode 1
-        versionName "5.1.0"
+        versionName "6.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments clearPackageData: 'true'
@@ -73,6 +73,13 @@ android {
             assets.srcDirs += ['../config']
         }
     }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
 }
 
 ext {
@@ -101,14 +108,8 @@ dependencies {
     implementation "com.amazonaws:aws-android-sdk-appsync:$appsync_version!!"
 
     // Sudo Platform SDKs.
-    implementation 'com.sudoplatform:sudologging:2.1.0'
-    implementation 'com.sudoplatform:sudoconfigmanager:5.0.0'
-
-    // Utils
-    implementation 'org.bouncycastle:bcpkix-jdk15to18:1.73'
-
-    // Use for injecting custom HTTP client into AppSync.
-    implementation "com.squareup.okhttp3:okhttp:4.11.0"
+    implementation 'com.sudoplatform:sudologging:3.0.0'
+    implementation 'com.sudoplatform:sudoconfigmanager:6.0.0'
 
     // Testing
     testImplementation 'junit:junit:4.13.2'

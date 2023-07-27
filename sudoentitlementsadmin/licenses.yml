@@ -63,12 +63,6 @@
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: https://developer.android.com/jetpack/androidx/releases/lifecycle#2.3.1
-- artifact: org.bouncycastle:bcprov-jdk15to18:+
-  name: Bouncy Castle Provider
-  copyrightHolder: The JSR-330 Expert Group
-  license: Bouncy Castle Licence
-  licenseUrl: http://www.bouncycastle.org/licence.html
-  url: http://www.bouncycastle.org/java.html
 - artifact: androidx.fragment:fragment:+
   name: Android Support Library fragment
   copyrightHolder: Google, Inc.
@@ -129,12 +123,6 @@
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: http://developer.android.com/tools/extras/support-library.html
-- artifact: org.bouncycastle:bcutil-jdk15to18:+
-  name: Bouncy Castle ASN.1 Extension and Utility APIs
-  copyrightHolder: The JSR-330 Expert Group
-  license: Bouncy Castle Licence
-  licenseUrl: http://www.bouncycastle.org/licence.html
-  url: http://www.bouncycastle.org/java.html
 - artifact: com.amazonaws:aws-android-sdk-appsync-runtime:+
   name: AWS Android SDK - AppSync GraphQL Runtime
   copyrightHolder: Amazon
@@ -158,12 +146,6 @@
   copyrightHolder: Amazon
   license: Amazon Software License
   url: http://aws.amazon.com/sdkforandroid
-- artifact: org.bouncycastle:bcpkix-jdk15to18:+
-  name: Bouncy Castle PKIX, CMS, EAC, TSP, PKCS, OCSP, CMP, and CRMF APIs
-  copyrightHolder: The JSR-330 Expert Group
-  license: Bouncy Castle Licence
-  licenseUrl: http://www.bouncycastle.org/licence.html
-  url: http://www.bouncycastle.org/java.html
 - artifact: com.amazonaws:aws-android-sdk-appsync-api:+
   name: AWS SDK for Android GraphQL API
   copyrightHolder: Amazon
@@ -294,8 +276,8 @@
   license: Amazon Software License
   licenseUrl: https://aws.amazon.com/asl/
   url: https://github.com/aws/aws-sdk-android
-- artifact: com.squareup.okio:okio-jvm:+
-  name: okio
+- artifact: com.squareup.okio:okio:+
+  name: Okio
   copyrightHolder: Square, Inc.
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt

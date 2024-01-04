@@ -20,5 +20,5 @@ data class ApplyEntitlementsOperation(
     /**
      * List of entitlements to apply
      */
-    val entitlements: List<Entitlement>
+    val entitlements: List<Entitlement>,
 )

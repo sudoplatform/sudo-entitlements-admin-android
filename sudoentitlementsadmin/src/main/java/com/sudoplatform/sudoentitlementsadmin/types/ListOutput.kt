@@ -19,5 +19,5 @@ data class ListOutput<T> (
     /**
      * Generated next token to call for the next page of paginated results.
      */
-    val nextToken: String?
+    val nextToken: String?,
 )

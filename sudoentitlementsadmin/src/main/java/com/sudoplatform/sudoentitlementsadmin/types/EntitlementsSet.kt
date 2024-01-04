@@ -48,5 +48,5 @@ data class EntitlementsSet(
      * of the user's entitlements and does not specify any information regarding
      * current consumption of those entitlements.
      */
-    val entitlements: List<Entitlement>
+    val entitlements: List<Entitlement>,
 )

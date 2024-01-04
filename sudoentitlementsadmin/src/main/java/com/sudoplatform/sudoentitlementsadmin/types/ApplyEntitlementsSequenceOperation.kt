@@ -20,5 +20,5 @@ data class ApplyEntitlementsSequenceOperation(
     /**
      * Name of the entitlements sequence to apply
      */
-    val entitlementsSequenceName: String
+    val entitlementsSequenceName: String,
 )

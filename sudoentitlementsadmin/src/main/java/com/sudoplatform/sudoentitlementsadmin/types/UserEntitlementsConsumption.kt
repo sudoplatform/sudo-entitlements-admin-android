@@ -20,5 +20,5 @@ data class UserEntitlementsConsumption(
      * entitlements. If there is no entry for an entitlement,
      * none of the entitlement has been consumed.
      */
-    val consumption: List<EntitlementConsumption>
+    val consumption: List<EntitlementConsumption>,
 )

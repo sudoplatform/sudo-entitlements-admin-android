@@ -54,27 +54,27 @@ open class SudoEntitlementsAdminException(message: String? = null, cause: Throwa
                 GRAPHQL_ERROR_DUPLICATE_ENTITLEMENT_ERROR -> DuplicateEntitlementException(message)
                 GRAPHQL_ERROR_SERVICE_ERROR -> InternalServerException(message)
                 GRAPHQL_ERROR_DECODING_ERROR, GRAPHQL_ERROR_INVALID_ARGUMENT_ERROR -> InvalidInputException(
-                    message
+                    message,
                 )
                 GRAPHQL_ERROR_INVALID_ENTITLEMENTS_ERROR -> InvalidEntitlementsException(message)
                 GRAPHQL_ERROR_ENTITLEMENTS_SET_IN_USE_ERROR -> EntitlementsSetInUseException(message)
                 GRAPHQL_ERROR_ENTITLEMENTS_SET_NOT_FOUND_ERROR -> EntitlementsSetNotFoundException(
-                    message
+                    message,
                 )
                 GRAPHQL_ERROR_ENTITLEMENTS_SET_ALREADY_EXISTS_ERROR -> EntitlementsSetAlreadyExistsException(
-                    message
+                    message,
                 )
                 GRAPHQL_ERROR_ENTITLEMENTS_SEQUENCE_ALREADY_EXISTS_ERROR -> EntitlementsSequenceAlreadyExistsException(
-                    message
+                    message,
                 )
                 GRAPHQL_ERROR_ENTITLEMENTS_SEQUENCE_NOT_FOUND_ERROR -> EntitlementsSequenceNotFoundException(
-                    message
+                    message,
                 )
                 GRAPHQL_ERROR_ENTITLEMENTS_SEQUENCE_UPDATE_IN_PROGRESS_ERROR -> EntitlementsSequenceUpdateInProgressException(
-                    message
+                    message,
                 )
                 GRAPHQL_ERROR_ENTITLEMENTS_SET_IMMUTABLE_ERROR -> EntitlementsSetImmutableException(
-                    message
+                    message,
                 )
                 GRAPHQL_ERROR_LIMIT_EXCEEDED_ERROR -> LimitExceededException(message)
                 GRAPHQL_ERROR_NEGATIVE_ENTITLEMENT_ERROR -> NegativeEntitlementException(message)
@@ -116,7 +116,7 @@ open class SudoEntitlementsAdminException(message: String? = null, cause: Throwa
      */
     class EntitlementsSequenceAlreadyExistsException(
         message: String? = null,
-        cause: Throwable? = null
+        cause: Throwable? = null,
     ) :
         SudoEntitlementsAdminException(message = message, cause = cause)
 

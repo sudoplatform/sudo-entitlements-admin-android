@@ -23,5 +23,5 @@ data class Entitlement(
     /**
      * Value of the entitlement.
      */
-    val value: Int
+    val value: Int,
 )

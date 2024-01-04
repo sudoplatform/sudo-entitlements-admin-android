@@ -21,7 +21,7 @@ data class EntitlementsSequenceTransition(
      * ISO8601 period string - if not specified then this transition
      * is the final state for all users on the sequence.
      */
-    val duration: String?
+    val duration: String?,
 )
 
 /**
@@ -58,5 +58,5 @@ data class EntitlementsSequence(
     /**
      * The sequence of transitions a user will go through in order.
      */
-    val transitions: List<EntitlementsSequenceTransition>
+    val transitions: List<EntitlementsSequenceTransition>,
 )

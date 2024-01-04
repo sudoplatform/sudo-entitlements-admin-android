@@ -13,5 +13,5 @@ data class EntitledUser(
     /**
      * External IDP identifier identifying the user.
      */
-    val externalId: String
+    val externalId: String,
 )

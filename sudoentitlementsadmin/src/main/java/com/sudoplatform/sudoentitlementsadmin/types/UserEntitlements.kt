@@ -17,7 +17,7 @@ enum class AccountState {
     /**
      * Account is locked and entitlement cannot be consumed.
      */
-    LOCKED
+    LOCKED,
 }
 
 /**
@@ -95,5 +95,5 @@ data class UserEntitlements(
      * If `locked` the user can no longer consume entitlements. It will be nil
      * if the user has not redeemed any entitlements.
      */
-    val accountState: AccountState
+    val accountState: AccountState,
 )

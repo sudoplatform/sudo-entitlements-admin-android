@@ -39,5 +39,5 @@ data class EntitlementConsumption(
     /**
      * The most recent time at which this entitlement was consumed.
      */
-    val lastConsumedAt: Date?
+    val lastConsumedAt: Date?,
 )

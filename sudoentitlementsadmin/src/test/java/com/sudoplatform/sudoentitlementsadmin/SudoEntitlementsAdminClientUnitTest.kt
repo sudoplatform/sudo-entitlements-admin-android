@@ -141,7 +141,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                                 "Entitlement",
                                                 "dummy_entitlement",
                                                 "dummy_description",
-                                                1,
+                                                1.0,
                                             ),
                                         ),
                                     ),
@@ -176,7 +176,7 @@ class SudoEntitlementsAdminClientUnitTest {
         assertNotNull(entitlement)
         assertEquals("dummy_entitlement", entitlement?.name)
         assertEquals("dummy_description", entitlement?.description)
-        assertEquals(1, entitlement?.value)
+        assertEquals(1L, entitlement?.value)
     }
 
     @Test
@@ -199,7 +199,7 @@ class SudoEntitlementsAdminClientUnitTest {
                         .description("dummy_description").entitlements(
                             listOf(
                                 EntitlementInput.builder().name("dummy_entitlement")
-                                    .description("dummy_description").value(1).build(),
+                                    .description("dummy_description").value(1.0).build(),
                             ),
                         ).build(),
                 ).build()
@@ -228,7 +228,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                                 "Entitlement",
                                                 "dummy_entitlement",
                                                 "dummy_description",
-                                                1,
+                                                1.0,
                                             ),
                                         ),
                                     ),
@@ -261,7 +261,7 @@ class SudoEntitlementsAdminClientUnitTest {
                 val entitlement = it.variables().input().entitlements().first()
                 assertEquals("dummy_entitlement", entitlement.name())
                 assertEquals("dummy_description", entitlement.description())
-                assertEquals(1, entitlement.value())
+                assertEquals(1, entitlement.value().toLong())
             },
         )
 
@@ -297,7 +297,7 @@ class SudoEntitlementsAdminClientUnitTest {
                         .description("dummy_description").entitlements(
                             listOf(
                                 EntitlementInput.builder().name("dummy_entitlement")
-                                    .description("dummy_description").value(1).build(),
+                                    .description("dummy_description").value(1.0).build(),
                             ),
                         ).build(),
                 ).build()
@@ -326,7 +326,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                                 "Entitlement",
                                                 "dummy_entitlement",
                                                 "dummy_description",
-                                                1,
+                                                1.0,
                                             ),
                                         ),
                                     ),
@@ -359,7 +359,7 @@ class SudoEntitlementsAdminClientUnitTest {
                 val entitlement = it.variables().input().entitlements().first()
                 assertEquals("dummy_entitlement", entitlement.name())
                 assertEquals("dummy_description", entitlement.description())
-                assertEquals(1, entitlement.value())
+                assertEquals(1L, entitlement.value().toLong())
             },
         )
 
@@ -372,7 +372,7 @@ class SudoEntitlementsAdminClientUnitTest {
         assertNotNull(entitlement)
         assertEquals("dummy_entitlement", entitlement.name)
         assertEquals("dummy_description", entitlement.description)
-        assertEquals(1, entitlement.value)
+        assertEquals(1L, entitlement.value)
     }
 
     @Test
@@ -418,7 +418,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                                 "Entitlement",
                                                 "dummy_entitlement",
                                                 "dummy_description",
-                                                1,
+                                                1.0,
                                             ),
                                         ),
                                     ),
@@ -455,7 +455,7 @@ class SudoEntitlementsAdminClientUnitTest {
         assertNotNull(entitlement)
         assertEquals("dummy_entitlement", entitlement?.name)
         assertEquals("dummy_description", entitlement?.description)
-        assertEquals(1, entitlement?.value)
+        assertEquals(1L, entitlement?.value)
     }
 
     @Test
@@ -505,7 +505,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                                 "Entitlement",
                                                 "dummy_entitlement",
                                                 "dummy_description",
-                                                1,
+                                                1.0,
                                             ),
                                         ),
                                     ),
@@ -518,7 +518,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                                 "Entitlement",
                                                 "expendable_entitlement",
                                                 "expendable_description",
-                                                2,
+                                                2.0,
                                             ),
                                         ),
                                     ),
@@ -624,7 +624,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                                         "Entitlement",
                                                         "dummy_entitlement",
                                                         "dummy_description",
-                                                        1,
+                                                        1.0,
                                                     ),
                                                 ),
                                             ),
@@ -637,7 +637,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                                         "Entitlement",
                                                         "expendable_entitlement",
                                                         "expendable_description",
-                                                        2,
+                                                        2.0,
                                                     ),
                                                 ),
                                             ),
@@ -1127,7 +1127,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                                 "Entitlement",
                                                 "dummy_entitlement",
                                                 "dummy_description",
-                                                1,
+                                                1.0,
                                             ),
                                         ),
                                     ),
@@ -1140,7 +1140,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                                 "Entitlement",
                                                 "expendable_entitlement",
                                                 "expendable_description",
-                                                2,
+                                                2.0,
                                             ),
                                         ),
                                     ),
@@ -1246,7 +1246,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                                         "Entitlement",
                                                         "dummy_entitlement",
                                                         "dummy_description",
-                                                        1,
+                                                        1.0,
                                                     ),
                                                 ),
                                             ),
@@ -1259,7 +1259,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                                         "Entitlement",
                                                         "expendable_entitlement",
                                                         "expendable_description",
-                                                        2,
+                                                        2.0,
                                                     ),
                                                 ),
                                             ),
@@ -1371,7 +1371,7 @@ class SudoEntitlementsAdminClientUnitTest {
                         .entitlements(
                             listOf(
                                 EntitlementInput.builder().name("dummy_entitlement")
-                                    .description("dummy_description").value(1).build(),
+                                    .description("dummy_description").value(1.0).build(),
                             ),
                         ).build(),
                 ).build()
@@ -1403,7 +1403,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                                 "Entitlement",
                                                 "dummy_entitlement",
                                                 "dummy_description",
-                                                1,
+                                                1.0,
                                             ),
                                         ),
                                     ),
@@ -1416,7 +1416,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                                 "Entitlement",
                                                 "expendable_entitlement",
                                                 "expendable_description",
-                                                2,
+                                                2.0,
                                             ),
                                         ),
                                     ),
@@ -1446,7 +1446,7 @@ class SudoEntitlementsAdminClientUnitTest {
                 val entitlement = it.variables().input().entitlements().first()
                 assertEquals("dummy_entitlement", entitlement.name())
                 assertEquals("dummy_description", entitlement.description())
-                assertEquals(1, entitlement.value())
+                assertEquals(1, entitlement.value().toLong())
             },
         )
 
@@ -1488,7 +1488,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                     .entitlements(
                                         listOf(
                                             EntitlementInput.builder().name("dummy_entitlement")
-                                                .description("dummy_description").value(1).build(),
+                                                .description("dummy_description").value(1.0).build(),
                                         ),
                                     )
                                     .build(),
@@ -1497,7 +1497,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                     .entitlements(
                                         listOf(
                                             EntitlementInput.builder().name("error_entitlement")
-                                                .description("error_description").value(1).build(),
+                                                .description("error_description").value(1.0).build(),
                                         ),
                                     )
                                     .build(),
@@ -1535,7 +1535,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                                         "Entitlement",
                                                         "dummy_entitlement",
                                                         "dummy_description",
-                                                        1,
+                                                        1.0,
                                                     ),
                                                 ),
                                             ),
@@ -1548,7 +1548,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                                         "Entitlement",
                                                         "expendable_entitlement",
                                                         "expendable_description",
-                                                        2,
+                                                        2.0,
                                                     ),
                                                 ),
                                             ),
@@ -1663,7 +1663,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                 EntitlementInput.builder()
                                     .name("expendable_entitlement")
                                     .description("expendable_description")
-                                    .value(2).build(),
+                                    .value(2.0).build(),
                             ),
                         )
                         .requestId("request-id")
@@ -1698,7 +1698,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                                 "Entitlement",
                                                 "dummy_entitlement",
                                                 "dummy_description",
-                                                1,
+                                                1.0,
                                             ),
                                         ),
                                     ),
@@ -1711,7 +1711,7 @@ class SudoEntitlementsAdminClientUnitTest {
                                                 "Entitlement",
                                                 "expendable_entitlement",
                                                 "expendable_description",
-                                                2,
+                                                2.0,
                                             ),
                                         ),
                                     ),
@@ -1742,7 +1742,7 @@ class SudoEntitlementsAdminClientUnitTest {
                 val entitlement = it.variables().input().expendableEntitlements().first()
                 assertEquals("expendable_entitlement", entitlement.name())
                 assertEquals("expendable_description", entitlement.description())
-                assertEquals(2, entitlement.value())
+                assertEquals(2L, entitlement.value().toLong())
                 assertEquals("request_id", it.variables().input().requestId())
             },
         )

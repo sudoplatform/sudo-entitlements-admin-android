@@ -40,6 +40,8 @@ open class SudoEntitlementsAdminException(message: String? = null, cause: Throwa
         private const val GRAPHQL_ERROR_LIMIT_EXCEEDED_ERROR = "sudoplatform.LimitExceededError"
         private const val GRAPHQL_ERROR_NEGATIVE_ENTITLEMENT_ERROR =
             "sudoplatform.entitlements.NegativeEntitlementError"
+        private const val GRAPHQL_ERROR_OVERFLOWED_ENTITLEMENT_ERROR =
+            "sudoplatform.entitlements.OverflowedEntitlementError"
         private const val GRAPHQL_ERROR_NO_ENTITLEMENTS_ERROR =
             "sudoplatform.NoEntitlementsError"
         private const val GRAPHQL_ERROR_SERVICE_ERROR = "sudoplatform.ServiceError"
@@ -78,6 +80,7 @@ open class SudoEntitlementsAdminException(message: String? = null, cause: Throwa
                 )
                 GRAPHQL_ERROR_LIMIT_EXCEEDED_ERROR -> LimitExceededException(message)
                 GRAPHQL_ERROR_NEGATIVE_ENTITLEMENT_ERROR -> NegativeEntitlementException(message)
+                GRAPHQL_ERROR_OVERFLOWED_ENTITLEMENT_ERROR -> OverflowedEntitlementException(message)
                 GRAPHQL_ERROR_NO_ENTITLEMENTS_ERROR -> NoEntitlementsException(message)
                 else -> GraphQLException(message)
             }
@@ -189,9 +192,15 @@ open class SudoEntitlementsAdminException(message: String? = null, cause: Throwa
         SudoEntitlementsAdminException(message = message, cause = cause)
 
     /**
-     * Indicates that an operation would result in negative entitlements for user which is not permittd
+     * Indicates that an operation would result in negative entitlements for user which is not permitted
      */
     class NegativeEntitlementException(message: String? = null, cause: Throwable? = null) :
+        SudoEntitlementsAdminException(message = message, cause = cause)
+
+    /**
+     * Indicates that an operation would result in overflowed entitlement value for user
+     */
+    class OverflowedEntitlementException(message: String? = null, cause: Throwable? = null) :
         SudoEntitlementsAdminException(message = message, cause = cause)
 
     /**

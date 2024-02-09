@@ -484,7 +484,7 @@ class DefaultSudoEntitlementsAdminClient(
                 output.description(),
                 output.entitlements().map {
                     val entitlement = it.fragments().entitlement()
-                    Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
+                    Entitlement(entitlement.name(), entitlement.description(), entitlement.value().toLong())
                 },
             )
         } else {
@@ -503,7 +503,7 @@ class DefaultSudoEntitlementsAdminClient(
             AddEntitlementsSetInput.builder().name(name).description(description).entitlements(
                 entitlements.map {
                     EntitlementInput.builder().name(it.name).description(it.description)
-                        .value(it.value).build()
+                        .value(it.value.toDouble()).build()
                 },
             ).build()
 
@@ -529,7 +529,7 @@ class DefaultSudoEntitlementsAdminClient(
             output.description(),
             output.entitlements().map {
                 val entitlement = it.fragments().entitlement()
-                Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
+                Entitlement(entitlement.name(), entitlement.description(), entitlement.value().toLong())
             },
         )
     }
@@ -567,7 +567,7 @@ class DefaultSudoEntitlementsAdminClient(
                     Entitlement(
                         entitlement.name(),
                         entitlement.description(),
-                        entitlement.value(),
+                        entitlement.value().toLong(),
                     )
                 },
             )
@@ -606,11 +606,11 @@ class DefaultSudoEntitlementsAdminClient(
                 entitlements.entitlementsSequenceName(),
                 entitlements.entitlements().map {
                     val entitlement = it.fragments().entitlement()
-                    Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
+                    Entitlement(entitlement.name(), entitlement.description(), entitlement.value().toLong())
                 },
                 entitlements.expendableEntitlements().map {
                     val entitlement = it.fragments().entitlement()
-                    Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
+                    Entitlement(entitlement.name(), entitlement.description(), entitlement.value().toLong())
                 },
                 entitlements
                     .transitionsRelativeToEpochMs()?.let {
@@ -630,9 +630,9 @@ class DefaultSudoEntitlementsAdminClient(
                 val consumption = it.fragments().entitlementConsumption()
                 EntitlementConsumption(
                     consumption.name(),
-                    consumption.value(),
-                    consumption.available(),
-                    consumption.consumed(),
+                    consumption.value().toLong(),
+                    consumption.available().toLong(),
+                    consumption.consumed().toLong(),
                     consumption.firstConsumedAtEpochMs()?.let { at ->
                         Date(
                             at.toLong(),
@@ -659,7 +659,7 @@ class DefaultSudoEntitlementsAdminClient(
             SetEntitlementsSetInput.builder().name(name).description(description).entitlements(
                 entitlements.map {
                     EntitlementInput.builder().name(it.name).description(it.description)
-                        .value(it.value).build()
+                        .value(it.value.toDouble()).build()
                 },
             ).build()
 
@@ -685,7 +685,7 @@ class DefaultSudoEntitlementsAdminClient(
             output.description(),
             output.entitlements().map {
                 val entitlement = it.fragments().entitlement()
-                Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
+                Entitlement(entitlement.name(), entitlement.description(), entitlement.value().toLong())
             },
         )
     }
@@ -715,7 +715,7 @@ class DefaultSudoEntitlementsAdminClient(
                 output.description(),
                 output.entitlements().map {
                     val entitlement = it.fragments().entitlement()
-                    Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
+                    Entitlement(entitlement.name(), entitlement.description(), entitlement.value().toLong())
                 },
             )
         } else {
@@ -733,7 +733,7 @@ class DefaultSudoEntitlementsAdminClient(
             ApplyEntitlementsToUserInput.builder().externalId(externalId).entitlements(
                 entitlements.map {
                     EntitlementInput.builder().name(it.name).description(it.description)
-                        .value(it.value).build()
+                        .value(it.value.toDouble()).build()
                 },
             ).build()
 
@@ -763,11 +763,11 @@ class DefaultSudoEntitlementsAdminClient(
             output.entitlementsSequenceName(),
             output.entitlements().map {
                 val entitlement = it.fragments().entitlement()
-                Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
+                Entitlement(entitlement.name(), entitlement.description(), entitlement.value().toLong())
             },
             output.expendableEntitlements().map {
                 val entitlement = it.fragments().entitlement()
-                Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
+                Entitlement(entitlement.name(), entitlement.description(), entitlement.value().toLong())
             },
             output
                 .transitionsRelativeToEpochMs()?.let {
@@ -791,7 +791,7 @@ class DefaultSudoEntitlementsAdminClient(
                             .entitlements(
                                 it.entitlements.map {
                                     EntitlementInput.builder().name(it.name).description(it.description)
-                                        .value(it.value).build()
+                                        .value(it.value.toDouble()).build()
                                 },
                             ).build()
                     },
@@ -826,11 +826,11 @@ class DefaultSudoEntitlementsAdminClient(
                         entitlementsSetName = userEntitlements.entitlementsSetName(),
                         entitlements = userEntitlements.entitlements().map {
                             val entitlement = it.fragments().entitlement()
-                            Entitlement(name = entitlement.name(), description = entitlement.description(), value = entitlement.value())
+                            Entitlement(name = entitlement.name(), description = entitlement.description(), value = entitlement.value().toLong())
                         },
                         expendableEntitlements = userEntitlements.expendableEntitlements().map {
                             val entitlement = it.fragments().entitlement()
-                            Entitlement(name = entitlement.name(), description = entitlement.description(), value = entitlement.value())
+                            Entitlement(name = entitlement.name(), description = entitlement.description(), value = entitlement.value().toLong())
                         },
                         transitionsRelativeTo = userEntitlements.transitionsRelativeToEpochMs()?.let {
                             Date(it.toLong())
@@ -886,11 +886,11 @@ class DefaultSudoEntitlementsAdminClient(
             output.entitlementsSequenceName(),
             output.entitlements().map {
                 val entitlement = it.fragments().entitlement()
-                Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
+                Entitlement(entitlement.name(), entitlement.description(), entitlement.value().toLong())
             },
             output.expendableEntitlements().map {
                 val entitlement = it.fragments().entitlement()
-                Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
+                Entitlement(entitlement.name(), entitlement.description(), entitlement.value().toLong())
             },
             output
                 .transitionsRelativeToEpochMs()?.let {
@@ -945,11 +945,11 @@ class DefaultSudoEntitlementsAdminClient(
                         entitlementsSetName = userEntitlements.entitlementsSetName(),
                         entitlements = userEntitlements.entitlements().map {
                             val entitlement = it.fragments().entitlement()
-                            Entitlement(name = entitlement.name(), description = entitlement.description(), value = entitlement.value())
+                            Entitlement(name = entitlement.name(), description = entitlement.description(), value = entitlement.value().toLong())
                         },
                         expendableEntitlements = userEntitlements.expendableEntitlements().map {
                             val entitlement = it.fragments().entitlement()
-                            Entitlement(name = entitlement.name(), description = entitlement.description(), value = entitlement.value())
+                            Entitlement(name = entitlement.name(), description = entitlement.description(), value = entitlement.value().toLong())
                         },
                         transitionsRelativeTo = userEntitlements.transitionsRelativeToEpochMs()?.let {
                             Date(it.toLong())
@@ -982,7 +982,7 @@ class DefaultSudoEntitlementsAdminClient(
                 .expendableEntitlements(
                     expendableEntitlements.map {
                         EntitlementInput.builder().name(it.name).description(it.description)
-                            .value(it.value).build()
+                            .value(it.value.toDouble()).build()
                     },
                 )
                 .requestId(requestId)
@@ -1014,11 +1014,11 @@ class DefaultSudoEntitlementsAdminClient(
             output.entitlementsSequenceName(),
             output.entitlements().map {
                 val entitlement = it.fragments().entitlement()
-                Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
+                Entitlement(entitlement.name(), entitlement.description(), entitlement.value().toLong())
             },
             output.expendableEntitlements().map {
                 val entitlement = it.fragments().entitlement()
-                Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
+                Entitlement(entitlement.name(), entitlement.description(), entitlement.value().toLong())
             },
             output
                 .transitionsRelativeToEpochMs()?.let {
@@ -1262,11 +1262,11 @@ class DefaultSudoEntitlementsAdminClient(
             output.entitlementsSequenceName(),
             output.entitlements().map {
                 val entitlement = it.fragments().entitlement()
-                Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
+                Entitlement(entitlement.name(), entitlement.description(), entitlement.value().toLong())
             },
             output.expendableEntitlements().map {
                 val entitlement = it.fragments().entitlement()
-                Entitlement(entitlement.name(), entitlement.description(), entitlement.value())
+                Entitlement(entitlement.name(), entitlement.description(), entitlement.value().toLong())
             },
             output
                 .transitionsRelativeToEpochMs()?.let {
@@ -1321,11 +1321,11 @@ class DefaultSudoEntitlementsAdminClient(
                         entitlementsSetName = userEntitlements.entitlementsSetName(),
                         entitlements = userEntitlements.entitlements().map {
                             val entitlement = it.fragments().entitlement()
-                            Entitlement(name = entitlement.name(), description = entitlement.description(), value = entitlement.value())
+                            Entitlement(name = entitlement.name(), description = entitlement.description(), value = entitlement.value().toLong())
                         },
                         expendableEntitlements = userEntitlements.expendableEntitlements().map {
                             val entitlement = it.fragments().entitlement()
-                            Entitlement(name = entitlement.name(), description = entitlement.description(), value = entitlement.value())
+                            Entitlement(name = entitlement.name(), description = entitlement.description(), value = entitlement.value().toLong())
                         },
                         transitionsRelativeTo = userEntitlements.transitionsRelativeToEpochMs()?.let {
                             Date(it.toLong())

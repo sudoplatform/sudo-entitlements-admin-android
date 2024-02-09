@@ -20,16 +20,16 @@ data class EntitlementConsumption(
     /**
      * Value of the entitlement.
      */
-    val value: Int,
+    val value: Long,
     /**
      * Remaining amount of entitlement.
      */
-    val available: Int,
+    val available: Long,
 
     /**
      * Consumed amount of entitlement.
      */
-    val consumed: Int,
+    val consumed: Long,
 
     /**
      * The time at which this entitlement was first consumed.

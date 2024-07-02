@@ -39,12 +39,6 @@
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: https://developer.android.com/jetpack/androidx/releases/lifecycle#2.3.1
-- artifact: org.jetbrains.kotlin:kotlin-stdlib-common:+
-  name: Kotlin Stdlib Common
-  copyrightHolder: Jetbrains, Inc.
-  license: The Apache License, Version 2.0
-  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
-  url: https://kotlinlang.org/
 - artifact: com.amazonaws:aws-android-sdk-appsync:+
   name: AWS Android SDK - AppSync GraphQL
   copyrightHolder: Amazon
@@ -258,12 +252,6 @@
   license: The Apache Software License, Version 2.0
   licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
   url: http://developer.android.com/tools/extras/support-library.html
-- artifact: org.jetbrains.kotlin:kotlin-stdlib-jdk8:+
-  name: Kotlin Stdlib Jdk8
-  copyrightHolder: Jetbrains, Inc.
-  license: The Apache License, Version 2.0
-  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
-  url: https://kotlinlang.org/
 - artifact: com.amazonaws:aws-android-sdk-s3:+
   name: AWS SDK for Android - Amazon S3
   copyrightHolder: Amazon.com

@@ -1,18 +1,20 @@
 /*
- * Copyright © 2022 Anonyome Labs, Inc. All rights reserved.
+ * Copyright © 2024 Anonyome Labs, Inc. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
  */
 
 package com.sudoplatform.sudoentitlementsadmin
 
-import com.apollographql.apollo.api.Error
+import com.amplifyframework.api.graphql.GraphQLResponse
+import com.sudoplatform.sudouser.exceptions.GRAPHQL_ERROR_TYPE
+import com.sudoplatform.sudouser.exceptions.HTTP_STATUS_CODE_KEY
+import java.net.HttpURLConnection
 
 open class SudoEntitlementsAdminException(message: String? = null, cause: Throwable? = null) :
     RuntimeException(message, cause) {
 
     companion object {
-        private const val GRAPHQL_ERROR_TYPE = "errorType"
         private const val GRAPHQL_ERROR_ALREADY_UPDATED_ERROR =
             "sudoplatform.entitlements.AlreadyUpdatedError"
         private const val GRAPHQL_ERROR_BULK_OPERATION_DUPLICATE_USERS_ERROR =
@@ -89,8 +91,16 @@ open class SudoEntitlementsAdminException(message: String? = null, cause: Throwa
         /**
          * Convert from a GraphQL [Error] into a custom exception of type [SudoEntitlementsAdminException]
          */
-        fun Error.toSudoEntitlementsAdminException(): SudoEntitlementsAdminException {
-            return sudoEntitlementsAdminException(errorString = this.customAttributes()[GRAPHQL_ERROR_TYPE] as String)
+        fun GraphQLResponse.Error.toSudoEntitlementsAdminException(): SudoEntitlementsAdminException {
+            val httpStatusCode = this.extensions?.get(HTTP_STATUS_CODE_KEY) as Int?
+            val errorString = this.extensions?.get(GRAPHQL_ERROR_TYPE) as String
+            return if (httpStatusCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                FailedException("$this")
+            } else if (httpStatusCode != null && httpStatusCode >= HttpURLConnection.HTTP_INTERNAL_ERROR) {
+                FailedException("$this")
+            } else {
+                sudoEntitlementsAdminException(errorString = errorString)
+            }
         }
     }
 

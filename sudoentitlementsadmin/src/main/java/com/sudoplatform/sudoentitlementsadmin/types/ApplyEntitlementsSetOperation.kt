@@ -21,4 +21,9 @@ data class ApplyEntitlementsSetOperation(
      * Name of the entitlements set to apply
      */
     val entitlementsSetName: String,
+
+    /**
+     * If specified, version of any current entitlements that must be matched
+     */
+    val version: Double? = null,
 )

@@ -227,6 +227,7 @@ interface SudoEntitlementsAdminClient {
      *
      * @param externalId External IDP user ID of user to retrieve entitlements for.
      * @param entitlements The entitlements to apply to the user.
+     * @param version If specified, version of any current entitlements that must be matched
      *
      * @returns The effective entitlements for the user
      */
@@ -234,6 +235,7 @@ interface SudoEntitlementsAdminClient {
     suspend fun applyEntitlementsToUser(
         externalId: String,
         entitlements: List<Entitlement>,
+        version: Double? = null,
     ): UserEntitlements
 
     /**
@@ -259,6 +261,7 @@ interface SudoEntitlementsAdminClient {
      *
      * @param externalId External IDP user ID of user to retrieve entitlements for.
      * @param entitlementSetName Name of the entitlements set to apply to the user.
+     * @param version If specified, version of any current entitlements that must be matched
      *
      * @returns The effective entitlements for the user.
      */
@@ -266,6 +269,7 @@ interface SudoEntitlementsAdminClient {
     suspend fun applyEntitlementsSetToUser(
         externalId: String,
         entitlementSetName: String,
+        version: Double? = null,
     ): UserEntitlements
 
     /**
@@ -382,6 +386,7 @@ interface SudoEntitlementsAdminClient {
      *
      * @param externalId External IDP user ID of user to apply entitlements sequence to.
      * @param entitlementSequenceName Name of the entitlements sequence to apply to the user.
+     * @param version If specified, version of any current entitlements that must be matched
      *
      * @returns The effective entitlements for the user.
      */
@@ -389,6 +394,7 @@ interface SudoEntitlementsAdminClient {
     suspend fun applyEntitlementsSequenceToUser(
         externalId: String,
         entitlementSequenceName: String,
+        version: Double? = null,
     ): UserEntitlements
 
     /**
@@ -455,7 +461,6 @@ class DefaultSudoEntitlementsAdminClient(
     init {
         val configManager = DefaultSudoConfigManager(context)
 
-        @Suppress("UNCHECKED_CAST")
         val adminServiceConfig =
             config?.opt(CONFIG_NAMESPACE_ADMIN_CONSOLE_PROJECT_SERVICE) as JSONObject?
                 ?: configManager.getConfigSet(CONFIG_NAMESPACE_ADMIN_CONSOLE_PROJECT_SERVICE)
@@ -781,6 +786,7 @@ class DefaultSudoEntitlementsAdminClient(
     override suspend fun applyEntitlementsToUser(
         externalId: String,
         entitlements: List<Entitlement>,
+        version: Double?,
     ): UserEntitlements {
         this.logger.info("Applying entitlements to a user.")
 
@@ -791,6 +797,7 @@ class DefaultSudoEntitlementsAdminClient(
                 entitlements.map {
                     EntitlementInput(name = it.name, description = Optional.presentIfNotNull(it.description), value = it.value.toDouble())
                 },
+                version = Optional.presentIfNotNull(version),
             )
         val response = this.graphQlClient.mutate<ApplyEntitlementsToUserMutation, ApplyEntitlementsToUserMutation.Data>(
             ApplyEntitlementsToUserMutation.OPERATION_DOCUMENT,
@@ -845,6 +852,7 @@ class DefaultSudoEntitlementsAdminClient(
                         it.entitlements.map {
                             EntitlementInput(name = it.name, description = Optional.presentIfNotNull(it.description), value = it.value.toDouble())
                         },
+                        version = Optional.presentIfNotNull(it.version),
                     )
                 },
             )
@@ -906,11 +914,16 @@ class DefaultSudoEntitlementsAdminClient(
     override suspend fun applyEntitlementsSetToUser(
         externalId: String,
         entitlementSetName: String,
+        version: Double?,
     ): UserEntitlements {
         this.logger.info("Applying an entitlements set to a user.")
 
         val input =
-            ApplyEntitlementsSetToUserInput(externalId = externalId, entitlementsSetName = entitlementSetName)
+            ApplyEntitlementsSetToUserInput(
+                externalId = externalId,
+                entitlementsSetName = entitlementSetName,
+                version = Optional.presentIfNotNull(version),
+            )
 
         val response = this.graphQlClient.mutate<ApplyEntitlementsSetToUserMutation, ApplyEntitlementsSetToUserMutation.Data>(
             ApplyEntitlementsSetToUserMutation.OPERATION_DOCUMENT,
@@ -959,7 +972,11 @@ class DefaultSudoEntitlementsAdminClient(
         val input =
             ApplyEntitlementsSetToUsersInput(
                 operations.map {
-                    ApplyEntitlementsSetToUserInput(externalId = it.externalId, entitlementsSetName = it.entitlementsSetName)
+                    ApplyEntitlementsSetToUserInput(
+                        externalId = it.externalId,
+                        entitlementsSetName = it.entitlementsSetName,
+                        version = Optional.presentIfNotNull(it.version),
+                    )
                 },
             )
 
@@ -1271,11 +1288,16 @@ class DefaultSudoEntitlementsAdminClient(
     override suspend fun applyEntitlementsSequenceToUser(
         externalId: String,
         entitlementSequenceName: String,
+        version: Double?,
     ): UserEntitlements {
         this.logger.info("Applying an entitlements sequence.")
 
         val input =
-            ApplyEntitlementsSequenceToUserInput(externalId = externalId, entitlementsSequenceName = entitlementSequenceName)
+            ApplyEntitlementsSequenceToUserInput(
+                externalId = externalId,
+                entitlementsSequenceName = entitlementSequenceName,
+                version = Optional.presentIfNotNull(version),
+            )
         val response = this.graphQlClient.mutate<ApplyEntitlementsSequenceToUserMutation, ApplyEntitlementsSequenceToUserMutation.Data>(
             ApplyEntitlementsSequenceToUserMutation.OPERATION_DOCUMENT,
             mapOf("input" to input),
@@ -1323,7 +1345,11 @@ class DefaultSudoEntitlementsAdminClient(
         val input =
             ApplyEntitlementsSequenceToUsersInput(
                 operations.map {
-                    ApplyEntitlementsSequenceToUserInput(externalId = it.externalId, entitlementsSequenceName = it.entitlementsSequenceName)
+                    ApplyEntitlementsSequenceToUserInput(
+                        externalId = it.externalId,
+                        entitlementsSequenceName = it.entitlementsSequenceName,
+                        version = Optional.presentIfNotNull(it.version),
+                    )
                 },
             )
 

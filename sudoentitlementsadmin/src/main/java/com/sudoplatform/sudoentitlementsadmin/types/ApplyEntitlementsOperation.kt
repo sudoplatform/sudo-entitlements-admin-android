@@ -21,4 +21,9 @@ data class ApplyEntitlementsOperation(
      * List of entitlements to apply
      */
     val entitlements: List<Entitlement>,
+
+    /**
+     * If specified, version of any current entitlements that must be matched
+     */
+    val version: Double? = null,
 )

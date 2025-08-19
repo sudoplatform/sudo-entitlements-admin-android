@@ -14,12 +14,10 @@ data class Entitlement(
      * Name of the entitlement.
      */
     val name: String,
-
     /**
      * Description, if any, of the entitlement.
      */
     val description: String?,
-
     /**
      * Value of the entitlement.
      */

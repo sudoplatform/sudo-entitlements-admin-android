@@ -16,12 +16,10 @@ data class ApplyEntitlementsOperation(
      * External ID of the user to apply entitlements to
      */
     val externalId: String,
-
     /**
      * List of entitlements to apply
      */
     val entitlements: List<Entitlement>,
-
     /**
      * If specified, version of any current entitlements that must be matched
      */

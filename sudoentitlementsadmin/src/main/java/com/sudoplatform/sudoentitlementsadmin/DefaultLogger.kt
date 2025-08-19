@@ -14,7 +14,6 @@ import com.sudoplatform.sudologging.Logger
  * Default logger.
  */
 class DefaultLogger {
-
     companion object {
         val instance = Logger("SudoEntitlementsAdmin", AndroidUtilsLogDriver(LogLevel.INFO))
     }

@@ -16,12 +16,10 @@ data class ApplyEntitlementsSequenceOperation(
      * External ID of the user to apply the entitlements sequence to
      */
     val externalId: String,
-
     /**
      * Name of the entitlements sequence to apply
      */
     val entitlementsSequenceName: String,
-
     /**
      * If specified, version of any current entitlements that must be matched
      */

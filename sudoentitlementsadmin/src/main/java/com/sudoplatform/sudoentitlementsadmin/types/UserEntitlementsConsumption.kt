@@ -14,7 +14,6 @@ data class UserEntitlementsConsumption(
      * User's entitlements.
      */
     val entitlements: UserEntitlements,
-
     /**
      * Entitlement consumption information for each of a user's
      * entitlements. If there is no entry for an entitlement,

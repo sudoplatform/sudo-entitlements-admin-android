@@ -11,7 +11,7 @@ import com.amazonaws.regions.Regions
 import com.amplifyframework.api.ApiCategory
 import com.amplifyframework.api.ApiCategoryConfiguration
 import com.amplifyframework.api.aws.AWSApiPlugin
-import com.apollographql.apollo3.api.Optional
+import com.apollographql.apollo.api.Optional
 import com.sudoplatform.sudoconfigmanager.DefaultSudoConfigManager
 import com.sudoplatform.sudoentitlementsadmin.SudoEntitlementsAdminException.Companion.toSudoEntitlementsAdminException
 import com.sudoplatform.sudoentitlementsadmin.graphql.AddEntitlementsSequenceMutation
@@ -77,15 +77,16 @@ import java.util.Date
  * Interface encapsulating a library of functions for Entitlements Admin API.
  */
 interface SudoEntitlementsAdminClient {
-
     companion object {
         /**
          * Creates a [Builder] for [SudoEntitlementsAdminClient].
          * @param context Android app context.
          * @param apiKey API key to use for authentication.
          */
-        fun builder(context: Context, apiKey: String) =
-            Builder(context, apiKey)
+        fun builder(
+            context: Context,
+            apiKey: String,
+        ) = Builder(context, apiKey)
     }
 
     /**
@@ -93,7 +94,10 @@ interface SudoEntitlementsAdminClient {
      * @param context Android app context.
      * @param apiKey API key to use for authentication.
      */
-    class Builder(private val context: Context, private val apiKey: String) {
+    class Builder(
+        private val context: Context,
+        private val apiKey: String,
+    ) {
         private var graphQLClient: GraphQLClient? = null
         private var config: JSONObject? = null
         private var logger: Logger = DefaultLogger.instance
@@ -102,37 +106,39 @@ interface SudoEntitlementsAdminClient {
          * Provide a [GraphQLClient] for the [SudoEntitlementsAdminClient]. This is mainly
          * used for unit testing.
          */
-        fun setGraphQLClient(graphQLClient: GraphQLClient?) = also {
-            this.graphQLClient = graphQLClient
-        }
+        fun setGraphQLClient(graphQLClient: GraphQLClient?) =
+            also {
+                this.graphQLClient = graphQLClient
+            }
 
         /**
          * Provide a config object used mainly for unit testing.
          */
-        fun setConfig(config: JSONObject) = also {
-            this.config = config
-        }
+        fun setConfig(config: JSONObject) =
+            also {
+                this.config = config
+            }
 
         /**
          * Provide the implementation of the [Logger] used for logging. If a value is not supplied
          * a default implementation will be used.
          */
-        fun setLogger(logger: Logger) = also {
-            this.logger = logger
-        }
+        fun setLogger(logger: Logger) =
+            also {
+                this.logger = logger
+            }
 
         /**
          * Constructs and returns an [SudoEntitlementsAdminClient].
          */
-        fun build(): SudoEntitlementsAdminClient {
-            return DefaultSudoEntitlementsAdminClient(
+        fun build(): SudoEntitlementsAdminClient =
+            DefaultSudoEntitlementsAdminClient(
                 this.context,
                 this.apiKey,
                 this.config,
                 this.logger,
                 this.graphQLClient,
             )
-        }
     }
 
     /**
@@ -190,9 +196,7 @@ interface SudoEntitlementsAdminClient {
      * @returns Entitlements consumption for the user.
      */
     @Throws(SudoEntitlementsAdminException::class)
-    suspend fun getEntitlementsForUser(
-        externalId: String,
-    ): UserEntitlementsConsumption?
+    suspend fun getEntitlementsForUser(externalId: String): UserEntitlementsConsumption?
 
     /**
      * Update an entitlements set.
@@ -250,9 +254,7 @@ interface SudoEntitlementsAdminClient {
      * @returns Array of results
      */
     @Throws(SudoEntitlementsAdminException::class)
-    suspend fun applyEntitlementsToUsers(
-        operations: List<ApplyEntitlementsOperation>,
-    ): List<UserEntitlementsResult>
+    suspend fun applyEntitlementsToUsers(operations: List<ApplyEntitlementsOperation>): List<UserEntitlementsResult>
 
     /**
      * Apply entitlements set to a user.
@@ -284,9 +286,7 @@ interface SudoEntitlementsAdminClient {
      * @returns Array of results
      */
     @Throws(SudoEntitlementsAdminException::class)
-    suspend fun applyEntitlementsSetToUsers(
-        operations: List<ApplyEntitlementsSetOperation>,
-    ): List<UserEntitlementsResult>
+    suspend fun applyEntitlementsSetToUsers(operations: List<ApplyEntitlementsSetOperation>): List<UserEntitlementsResult>
 
     /**
      * Apply an expendable entitlements delta to a user. If a record for the user's
@@ -317,9 +317,7 @@ interface SudoEntitlementsAdminClient {
      *          of the specified name has been defined.
      */
     @Throws(SudoEntitlementsAdminException::class)
-    suspend fun getEntitlementsSequence(
-        name: String,
-    ): EntitlementsSequence?
+    suspend fun getEntitlementsSequence(name: String): EntitlementsSequence?
 
     /**
      * List all entitlements sequences.
@@ -331,9 +329,7 @@ interface SudoEntitlementsAdminClient {
      * @returns Paginated list of entitlements sequences.
      */
     @Throws(SudoEntitlementsAdminException::class)
-    suspend fun listEntitlementsSequences(
-        nextToken: String?,
-    ): ListOutput<EntitlementsSequence>
+    suspend fun listEntitlementsSequences(nextToken: String?): ListOutput<EntitlementsSequence>
 
     /**
      * Add a new entitlements sequence.
@@ -375,9 +371,7 @@ interface SudoEntitlementsAdminClient {
      * @returns The entitlements sequence removed or undefined if entitlements sequence was not present
      */
     @Throws(SudoEntitlementsAdminException::class)
-    suspend fun removeEntitlementsSequence(
-        name: String,
-    ): EntitlementsSequence?
+    suspend fun removeEntitlementsSequence(name: String): EntitlementsSequence?
 
     /**
      * Apply entitlements sequence directly to a user.
@@ -409,9 +403,7 @@ interface SudoEntitlementsAdminClient {
      * @returns Array of results
      */
     @Throws(SudoEntitlementsAdminException::class)
-    suspend fun applyEntitlementsSequenceToUsers(
-        operations: List<ApplyEntitlementsSequenceOperation>,
-    ): List<UserEntitlementsResult>
+    suspend fun applyEntitlementsSequenceToUsers(operations: List<ApplyEntitlementsSequenceOperation>): List<UserEntitlementsResult>
 
     /**
      * Remove an entitled user. Entitlements and consumption records related
@@ -442,7 +434,6 @@ class DefaultSudoEntitlementsAdminClient(
     private val logger: Logger = DefaultLogger.instance,
     graphQLClient: GraphQLClient? = null,
 ) : SudoEntitlementsAdminClient {
-
     companion object {
         private const val CONFIG_NAMESPACE_ADMIN_CONSOLE_PROJECT_SERVICE =
             "adminConsoleProjectService"
@@ -451,7 +442,7 @@ class DefaultSudoEntitlementsAdminClient(
         private const val CONFIG_API_URL = "apiUrl"
     }
 
-    override val version: String = "10.0.0"
+    override val version: String = "11.0.0"
 
     /**
      * Wrapped GraphQLClient used for calling service API.
@@ -478,33 +469,35 @@ class DefaultSudoEntitlementsAdminClient(
         if (graphQLClient !== null) {
             this.graphQlClient = graphQLClient
         } else {
-            val graphqlConfig = JSONObject(
-                """
-                {
-                    'plugins': {
-                        'awsAPIPlugin': {
-                            '$CONFIG_NAMESPACE_ADMIN_CONSOLE_PROJECT_SERVICE': {
-                                'endpointType': 'GraphQL',
-                                'endpoint': '$apiUrl',
-                                'region': '${Regions.fromName(region)}',
-                                'authorizationType': 'API_KEY',
-                                'apiKey': "$apiKey"
+            val graphqlConfig =
+                JSONObject(
+                    """
+                    {
+                        'plugins': {
+                            'awsAPIPlugin': {
+                                '$CONFIG_NAMESPACE_ADMIN_CONSOLE_PROJECT_SERVICE': {
+                                    'endpointType': 'GraphQL',
+                                    'endpoint': '$apiUrl',
+                                    'region': '${Regions.fromName(region)}',
+                                    'authorizationType': 'API_KEY',
+                                    'apiKey': "$apiKey"
+                                }
                             }
                         }
-                    }
-                } 
-                """.trimIndent(),
-            )
+                    } 
+                    """.trimIndent(),
+                )
 
             val apiCategoryConfiguration = ApiCategoryConfiguration()
             apiCategoryConfiguration.populateFromJSON(graphqlConfig)
             val apiCategory = ApiCategory()
-            val awsApiPlugin = AWSApiPlugin
-                .builder()
-                .configureClient(
-                    CONFIG_NAMESPACE_ADMIN_CONSOLE_PROJECT_SERVICE,
-                ) { builder -> builder.apply { addInterceptor(ConvertClientErrorsInterceptor()) } }
-                .build()
+            val awsApiPlugin =
+                AWSApiPlugin
+                    .builder()
+                    .configureClient(
+                        CONFIG_NAMESPACE_ADMIN_CONSOLE_PROJECT_SERVICE,
+                    ) { builder -> builder.apply { addInterceptor(ConvertClientErrorsInterceptor()) } }
+                    .build()
 
             apiCategory.addPlugin(awsApiPlugin)
             apiCategory.configure(apiCategoryConfiguration, context)
@@ -520,10 +513,11 @@ class DefaultSudoEntitlementsAdminClient(
 
         val input = GetEntitlementsSetInput(name)
 
-        val response = this.graphQlClient.query<GetEntitlementsSetQuery, GetEntitlementsSetQuery.Data>(
-            GetEntitlementsSetQuery.OPERATION_DOCUMENT,
-            mapOf("input" to input),
-        )
+        val response =
+            this.graphQlClient.query<GetEntitlementsSetQuery, GetEntitlementsSetQuery.Data>(
+                GetEntitlementsSetQuery.OPERATION_DOCUMENT,
+                mapOf("input" to input),
+            )
 
         if (response.hasErrors()) {
             throw response.errors.first().toSudoEntitlementsAdminException()
@@ -535,7 +529,8 @@ class DefaultSudoEntitlementsAdminClient(
                 Date(output.createdAtEpochMs.toLong()),
                 Date(
                     output
-                        .updatedAtEpochMs.toLong(),
+                        .updatedAtEpochMs
+                        .toLong(),
                 ),
                 output.version,
                 output.name,
@@ -561,28 +556,36 @@ class DefaultSudoEntitlementsAdminClient(
             AddEntitlementsSetInput(
                 name = name,
                 description = Optional.presentIfNotNull(description),
-                entitlements = entitlements.map {
-                    EntitlementInput(name = it.name, description = Optional.presentIfNotNull(it.description), value = it.value.toDouble())
-                },
+                entitlements =
+                    entitlements.map {
+                        EntitlementInput(
+                            name = it.name,
+                            description = Optional.presentIfNotNull(it.description),
+                            value = it.value.toDouble(),
+                        )
+                    },
             )
 
-        val response = this.graphQlClient.mutate<AddEntitlementsSetMutation, AddEntitlementsSetMutation.Data>(
-            AddEntitlementsSetMutation.OPERATION_DOCUMENT,
-            mapOf("input" to input),
-        )
+        val response =
+            this.graphQlClient.mutate<AddEntitlementsSetMutation, AddEntitlementsSetMutation.Data>(
+                AddEntitlementsSetMutation.OPERATION_DOCUMENT,
+                mapOf("input" to input),
+            )
 
         if (response.hasErrors()) {
             throw response.errors.first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data?.addEntitlementsSet?.entitlementsSet
-            ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
+        val output =
+            response.data?.addEntitlementsSet?.entitlementsSet
+                ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
 
         return EntitlementsSet(
             Date(output.createdAtEpochMs.toLong()),
             Date(
                 output
-                    .updatedAtEpochMs.toLong(),
+                    .updatedAtEpochMs
+                    .toLong(),
             ),
             output.version,
             output.name,
@@ -597,39 +600,43 @@ class DefaultSudoEntitlementsAdminClient(
     override suspend fun listEntitlementsSets(nextToken: String?): ListOutput<EntitlementsSet> {
         this.logger.info("Listing entitlements sets.")
 
-        val response = this.graphQlClient.query<ListEntitlementsSetsQuery, ListEntitlementsSetsQuery.Data>(
-            ListEntitlementsSetsQuery.OPERATION_DOCUMENT,
-            mapOf("nextToken" to nextToken),
-        )
+        val response =
+            this.graphQlClient.query<ListEntitlementsSetsQuery, ListEntitlementsSetsQuery.Data>(
+                ListEntitlementsSetsQuery.OPERATION_DOCUMENT,
+                mapOf("nextToken" to nextToken),
+            )
 
         if (response.hasErrors()) {
             throw response.errors.first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data?.listEntitlementsSets
-            ?: throw SudoEntitlementsAdminException.FailedException("Query completed successfully but result was missing.")
+        val output =
+            response.data?.listEntitlementsSets
+                ?: throw SudoEntitlementsAdminException.FailedException("Query completed successfully but result was missing.")
 
-        val items = output.items.map { it ->
-            val entitlementsSet = it.entitlementsSet
-            EntitlementsSet(
-                Date(entitlementsSet.createdAtEpochMs.toLong()),
-                Date(
-                    entitlementsSet
-                        .updatedAtEpochMs.toLong(),
-                ),
-                entitlementsSet.version,
-                entitlementsSet.name,
-                entitlementsSet.description,
-                entitlementsSet.entitlements.map {
-                    val entitlement = it.entitlement
-                    Entitlement(
-                        entitlement.name,
-                        entitlement.description,
-                        entitlement.value.toLong(),
-                    )
-                },
-            )
-        }
+        val items =
+            output.items.map { it ->
+                val entitlementsSet = it.entitlementsSet
+                EntitlementsSet(
+                    Date(entitlementsSet.createdAtEpochMs.toLong()),
+                    Date(
+                        entitlementsSet
+                            .updatedAtEpochMs
+                            .toLong(),
+                    ),
+                    entitlementsSet.version,
+                    entitlementsSet.name,
+                    entitlementsSet.description,
+                    entitlementsSet.entitlements.map {
+                        val entitlement = it.entitlement
+                        Entitlement(
+                            entitlement.name,
+                            entitlement.description,
+                            entitlement.value.toLong(),
+                        )
+                    },
+                )
+            }
 
         return ListOutput(items, output.nextToken)
     }
@@ -638,24 +645,27 @@ class DefaultSudoEntitlementsAdminClient(
         this.logger.info("Retrieving user entitlements.")
 
         val input = GetEntitlementsForUserInput(externalId)
-        val response = this.graphQlClient.query<GetEntitlementsForUserQuery, GetEntitlementsForUserQuery.Data>(
-            GetEntitlementsForUserQuery.OPERATION_DOCUMENT,
-            mapOf("input" to input),
-        )
+        val response =
+            this.graphQlClient.query<GetEntitlementsForUserQuery, GetEntitlementsForUserQuery.Data>(
+                GetEntitlementsForUserQuery.OPERATION_DOCUMENT,
+                mapOf("input" to input),
+            )
 
         if (response.hasErrors()) {
             throw response.errors.first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data?.getEntitlementsForUser?.externalEntitlementsConsumption
-            ?: return null
+        val output =
+            response.data?.getEntitlementsForUser?.externalEntitlementsConsumption
+                ?: return null
         val entitlements = output.entitlements.externalUserEntitlements
         return UserEntitlementsConsumption(
             UserEntitlements(
                 Date(entitlements.createdAtEpochMs.toLong()),
                 Date(
                     entitlements
-                        .updatedAtEpochMs.toLong(),
+                        .updatedAtEpochMs
+                        .toLong(),
                 ),
                 entitlements.version,
                 entitlements.externalId,
@@ -671,7 +681,8 @@ class DefaultSudoEntitlementsAdminClient(
                     Entitlement(entitlement.name, entitlement.description, entitlement.value.toLong())
                 },
                 entitlements
-                    .transitionsRelativeToEpochMs?.let {
+                    .transitionsRelativeToEpochMs
+                    ?.let {
                         Date(
                             it.toLong(),
                         )
@@ -713,31 +724,39 @@ class DefaultSudoEntitlementsAdminClient(
     ): EntitlementsSet {
         this.logger.info("Updating an entitlements set.")
 
-        val input = SetEntitlementsSetInput(
-            name = name,
-            description = Optional.presentIfNotNull(description),
-            entitlements =
-            entitlements.map {
-                EntitlementInput(name = it.name, description = Optional.presentIfNotNull(it.description), value = it.value.toDouble())
-            },
-        )
-        val response = this.graphQlClient.mutate<SetEntitlementsSetMutation, SetEntitlementsSetMutation.Data>(
-            SetEntitlementsSetMutation.OPERATION_DOCUMENT,
-            mapOf("input" to input),
-        )
+        val input =
+            SetEntitlementsSetInput(
+                name = name,
+                description = Optional.presentIfNotNull(description),
+                entitlements =
+                    entitlements.map {
+                        EntitlementInput(
+                            name = it.name,
+                            description = Optional.presentIfNotNull(it.description),
+                            value = it.value.toDouble(),
+                        )
+                    },
+            )
+        val response =
+            this.graphQlClient.mutate<SetEntitlementsSetMutation, SetEntitlementsSetMutation.Data>(
+                SetEntitlementsSetMutation.OPERATION_DOCUMENT,
+                mapOf("input" to input),
+            )
 
         if (response.hasErrors()) {
             throw response.errors.first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data?.setEntitlementsSet?.entitlementsSet
-            ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
+        val output =
+            response.data?.setEntitlementsSet?.entitlementsSet
+                ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
 
         return EntitlementsSet(
             Date(output.createdAtEpochMs.toLong()),
             Date(
                 output
-                    .updatedAtEpochMs.toLong(),
+                    .updatedAtEpochMs
+                    .toLong(),
             ),
             output.version,
             output.name,
@@ -753,10 +772,11 @@ class DefaultSudoEntitlementsAdminClient(
         this.logger.info("Removing an entitlements set.")
 
         val input = RemoveEntitlementsSetInput(name)
-        val response = this.graphQlClient.mutate<RemoveEntitlementsSetMutation, RemoveEntitlementsSetMutation.Data>(
-            RemoveEntitlementsSetMutation.OPERATION_DOCUMENT,
-            mapOf("input" to input),
-        )
+        val response =
+            this.graphQlClient.mutate<RemoveEntitlementsSetMutation, RemoveEntitlementsSetMutation.Data>(
+                RemoveEntitlementsSetMutation.OPERATION_DOCUMENT,
+                mapOf("input" to input),
+            )
 
         if (response.hasErrors()) {
             throw response.errors.first().toSudoEntitlementsAdminException()
@@ -768,7 +788,8 @@ class DefaultSudoEntitlementsAdminClient(
                 Date(output.createdAtEpochMs.toLong()),
                 Date(
                     output
-                        .updatedAtEpochMs.toLong(),
+                        .updatedAtEpochMs
+                        .toLong(),
                 ),
                 output.version,
                 output.name,
@@ -794,28 +815,35 @@ class DefaultSudoEntitlementsAdminClient(
             ApplyEntitlementsToUserInput(
                 externalId = externalId,
                 entitlements =
-                entitlements.map {
-                    EntitlementInput(name = it.name, description = Optional.presentIfNotNull(it.description), value = it.value.toDouble())
-                },
+                    entitlements.map {
+                        EntitlementInput(
+                            name = it.name,
+                            description = Optional.presentIfNotNull(it.description),
+                            value = it.value.toDouble(),
+                        )
+                    },
                 version = Optional.presentIfNotNull(version),
             )
-        val response = this.graphQlClient.mutate<ApplyEntitlementsToUserMutation, ApplyEntitlementsToUserMutation.Data>(
-            ApplyEntitlementsToUserMutation.OPERATION_DOCUMENT,
-            mapOf("input" to input),
-        )
+        val response =
+            this.graphQlClient.mutate<ApplyEntitlementsToUserMutation, ApplyEntitlementsToUserMutation.Data>(
+                ApplyEntitlementsToUserMutation.OPERATION_DOCUMENT,
+                mapOf("input" to input),
+            )
 
         if (response.hasErrors()) {
             throw response.errors.first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data?.applyEntitlementsToUser?.externalUserEntitlements
-            ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
+        val output =
+            response.data?.applyEntitlementsToUser?.externalUserEntitlements
+                ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
 
         return UserEntitlements(
             Date(output.createdAtEpochMs.toLong()),
             Date(
                 output
-                    .updatedAtEpochMs.toLong(),
+                    .updatedAtEpochMs
+                    .toLong(),
             ),
             output.version,
             output.externalId,
@@ -831,7 +859,8 @@ class DefaultSudoEntitlementsAdminClient(
                 Entitlement(entitlement.name, entitlement.description, entitlement.value.toLong())
             },
             output
-                .transitionsRelativeToEpochMs?.let {
+                .transitionsRelativeToEpochMs
+                ?.let {
                     Date(
                         it.toLong(),
                     )
@@ -849,61 +878,87 @@ class DefaultSudoEntitlementsAdminClient(
                     ApplyEntitlementsToUserInput(
                         externalId = it.externalId,
                         entitlements =
-                        it.entitlements.map {
-                            EntitlementInput(name = it.name, description = Optional.presentIfNotNull(it.description), value = it.value.toDouble())
-                        },
+                            it.entitlements.map {
+                                EntitlementInput(
+                                    name = it.name,
+                                    description = Optional.presentIfNotNull(it.description),
+                                    value = it.value.toDouble(),
+                                )
+                            },
                         version = Optional.presentIfNotNull(it.version),
                     )
                 },
             )
 
-        val response = this.graphQlClient.mutate<
-            ApplyEntitlementsToUsersMutation,
-            ApplyEntitlementsToUsersMutation.Data,
+        val response =
+            this.graphQlClient.mutate<
+                ApplyEntitlementsToUsersMutation,
+                ApplyEntitlementsToUsersMutation.Data,
             >(
-            ApplyEntitlementsToUsersMutation.OPERATION_DOCUMENT,
-            mapOf("input" to input),
-        )
+                ApplyEntitlementsToUsersMutation.OPERATION_DOCUMENT,
+                mapOf("input" to input),
+            )
 
         if (response.hasErrors()) {
             throw response.errors.first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data?.applyEntitlementsToUsers
-            ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
+        val output =
+            response.data?.applyEntitlementsToUsers
+                ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
 
         return output.map { it ->
             val userEntitlements = it.onExternalUserEntitlements?.externalUserEntitlements
             val error = it.onExternalUserEntitlementsError?.externalUserEntitlementsError
             if (userEntitlements != null) {
                 UserEntitlementsResult.Success(
-                    value = UserEntitlements(
-                        createdAt = Date(userEntitlements.createdAtEpochMs.toLong()),
-                        updatedAt = Date(userEntitlements.updatedAtEpochMs.toLong()),
-                        version = userEntitlements.version,
-                        externalId = userEntitlements.externalId,
-                        owner = userEntitlements.owner,
-                        entitlementsSequenceName = userEntitlements.entitlementsSequenceName,
-                        entitlementsSetName = userEntitlements.entitlementsSetName,
-                        entitlements = userEntitlements.entitlements.map {
-                            val entitlement = it.entitlement
-                            Entitlement(name = entitlement.name, description = entitlement.description, value = entitlement.value.toLong())
-                        },
-                        expendableEntitlements = userEntitlements.expendableEntitlements.map {
-                            val entitlement = it.entitlement
-                            Entitlement(name = entitlement.name, description = entitlement.description, value = entitlement.value.toLong())
-                        },
-                        transitionsRelativeTo = userEntitlements.transitionsRelativeToEpochMs?.let {
-                            Date(it.toLong())
-                        },
-                        accountState = if (userEntitlements.accountState == AccountStates.ACTIVE) AccountState.ACTIVE else AccountState.LOCKED,
-                    ),
+                    value =
+                        UserEntitlements(
+                            createdAt = Date(userEntitlements.createdAtEpochMs.toLong()),
+                            updatedAt = Date(userEntitlements.updatedAtEpochMs.toLong()),
+                            version = userEntitlements.version,
+                            externalId = userEntitlements.externalId,
+                            owner = userEntitlements.owner,
+                            entitlementsSequenceName = userEntitlements.entitlementsSequenceName,
+                            entitlementsSetName = userEntitlements.entitlementsSetName,
+                            entitlements =
+                                userEntitlements.entitlements.map {
+                                    val entitlement = it.entitlement
+                                    Entitlement(
+                                        name = entitlement.name,
+                                        description = entitlement.description,
+                                        value = entitlement.value.toLong(),
+                                    )
+                                },
+                            expendableEntitlements =
+                                userEntitlements.expendableEntitlements.map {
+                                    val entitlement = it.entitlement
+                                    Entitlement(
+                                        name = entitlement.name,
+                                        description = entitlement.description,
+                                        value = entitlement.value.toLong(),
+                                    )
+                                },
+                            transitionsRelativeTo =
+                                userEntitlements.transitionsRelativeToEpochMs?.let {
+                                    Date(it.toLong())
+                                },
+                            accountState =
+                                if (userEntitlements.accountState ==
+                                    AccountStates.ACTIVE
+                                ) {
+                                    AccountState.ACTIVE
+                                } else {
+                                    AccountState.LOCKED
+                                },
+                        ),
                 )
             } else if (error != null) {
                 UserEntitlementsResult.Failure(
-                    error = SudoEntitlementsAdminException.sudoEntitlementsAdminException(
-                        error.error,
-                    ),
+                    error =
+                        SudoEntitlementsAdminException.sudoEntitlementsAdminException(
+                            error.error,
+                        ),
                 )
             } else {
                 UserEntitlementsResult.Failure(SudoEntitlementsAdminException.FailedException("Unknown result type ${it.__typename}"))
@@ -925,23 +980,26 @@ class DefaultSudoEntitlementsAdminClient(
                 version = Optional.presentIfNotNull(version),
             )
 
-        val response = this.graphQlClient.mutate<ApplyEntitlementsSetToUserMutation, ApplyEntitlementsSetToUserMutation.Data>(
-            ApplyEntitlementsSetToUserMutation.OPERATION_DOCUMENT,
-            mapOf("input" to input),
-        )
+        val response =
+            this.graphQlClient.mutate<ApplyEntitlementsSetToUserMutation, ApplyEntitlementsSetToUserMutation.Data>(
+                ApplyEntitlementsSetToUserMutation.OPERATION_DOCUMENT,
+                mapOf("input" to input),
+            )
 
         if (response.hasErrors()) {
             throw response.errors.first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data?.applyEntitlementsSetToUser?.externalUserEntitlements
-            ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
+        val output =
+            response.data?.applyEntitlementsSetToUser?.externalUserEntitlements
+                ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
 
         return UserEntitlements(
             Date(output.createdAtEpochMs.toLong()),
             Date(
                 output
-                    .updatedAtEpochMs.toLong(),
+                    .updatedAtEpochMs
+                    .toLong(),
             ),
             output.version,
             output.externalId,
@@ -957,7 +1015,8 @@ class DefaultSudoEntitlementsAdminClient(
                 Entitlement(entitlement.name, entitlement.description, entitlement.value.toLong())
             },
             output
-                .transitionsRelativeToEpochMs?.let {
+                .transitionsRelativeToEpochMs
+                ?.let {
                     Date(
                         it.toLong(),
                     )
@@ -980,50 +1039,72 @@ class DefaultSudoEntitlementsAdminClient(
                 },
             )
 
-        val response = this.graphQlClient.mutate<ApplyEntitlementsSetToUsersMutation, ApplyEntitlementsSetToUsersMutation.Data>(
-            ApplyEntitlementsSetToUsersMutation.OPERATION_DOCUMENT,
-            mapOf("input" to input),
-        )
+        val response =
+            this.graphQlClient.mutate<ApplyEntitlementsSetToUsersMutation, ApplyEntitlementsSetToUsersMutation.Data>(
+                ApplyEntitlementsSetToUsersMutation.OPERATION_DOCUMENT,
+                mapOf("input" to input),
+            )
 
         if (response.hasErrors()) {
             throw response.errors.first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data?.applyEntitlementsSetToUsers
-            ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
+        val output =
+            response.data?.applyEntitlementsSetToUsers
+                ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
 
         return output.map { it ->
             val userEntitlements = it.onExternalUserEntitlements?.externalUserEntitlements
             val error = it.onExternalUserEntitlementsError?.externalUserEntitlementsError
             if (userEntitlements != null) {
                 UserEntitlementsResult.Success(
-                    value = UserEntitlements(
-                        createdAt = Date(userEntitlements.createdAtEpochMs.toLong()),
-                        updatedAt = Date(userEntitlements.updatedAtEpochMs.toLong()),
-                        version = userEntitlements.version,
-                        externalId = userEntitlements.externalId,
-                        owner = userEntitlements.owner,
-                        entitlementsSequenceName = userEntitlements.entitlementsSequenceName,
-                        entitlementsSetName = userEntitlements.entitlementsSetName,
-                        entitlements = userEntitlements.entitlements.map {
-                            val entitlement = it.entitlement
-                            Entitlement(name = entitlement.name, description = entitlement.description, value = entitlement.value.toLong())
-                        },
-                        expendableEntitlements = userEntitlements.expendableEntitlements.map {
-                            val entitlement = it.entitlement
-                            Entitlement(name = entitlement.name, description = entitlement.description, value = entitlement.value.toLong())
-                        },
-                        transitionsRelativeTo = userEntitlements.transitionsRelativeToEpochMs?.let {
-                            Date(it.toLong())
-                        },
-                        accountState = if (userEntitlements.accountState == AccountStates.ACTIVE) AccountState.ACTIVE else AccountState.LOCKED,
-                    ),
+                    value =
+                        UserEntitlements(
+                            createdAt = Date(userEntitlements.createdAtEpochMs.toLong()),
+                            updatedAt = Date(userEntitlements.updatedAtEpochMs.toLong()),
+                            version = userEntitlements.version,
+                            externalId = userEntitlements.externalId,
+                            owner = userEntitlements.owner,
+                            entitlementsSequenceName = userEntitlements.entitlementsSequenceName,
+                            entitlementsSetName = userEntitlements.entitlementsSetName,
+                            entitlements =
+                                userEntitlements.entitlements.map {
+                                    val entitlement = it.entitlement
+                                    Entitlement(
+                                        name = entitlement.name,
+                                        description = entitlement.description,
+                                        value = entitlement.value.toLong(),
+                                    )
+                                },
+                            expendableEntitlements =
+                                userEntitlements.expendableEntitlements.map {
+                                    val entitlement = it.entitlement
+                                    Entitlement(
+                                        name = entitlement.name,
+                                        description = entitlement.description,
+                                        value = entitlement.value.toLong(),
+                                    )
+                                },
+                            transitionsRelativeTo =
+                                userEntitlements.transitionsRelativeToEpochMs?.let {
+                                    Date(it.toLong())
+                                },
+                            accountState =
+                                if (userEntitlements.accountState ==
+                                    AccountStates.ACTIVE
+                                ) {
+                                    AccountState.ACTIVE
+                                } else {
+                                    AccountState.LOCKED
+                                },
+                        ),
                 )
             } else if (error != null) {
                 UserEntitlementsResult.Failure(
-                    error = SudoEntitlementsAdminException.sudoEntitlementsAdminException(
-                        error.error,
-                    ),
+                    error =
+                        SudoEntitlementsAdminException.sudoEntitlementsAdminException(
+                            error.error,
+                        ),
                 )
             } else {
                 UserEntitlementsResult.Failure(SudoEntitlementsAdminException.FailedException("Unknown result type ${it.__typename}"))
@@ -1042,28 +1123,35 @@ class DefaultSudoEntitlementsAdminClient(
             ApplyExpendableEntitlementsToUserInput(
                 externalId = externalId,
                 expendableEntitlements =
-                expendableEntitlements.map {
-                    EntitlementInput(name = it.name, description = Optional.presentIfNotNull(it.description), value = it.value.toDouble())
-                },
+                    expendableEntitlements.map {
+                        EntitlementInput(
+                            name = it.name,
+                            description = Optional.presentIfNotNull(it.description),
+                            value = it.value.toDouble(),
+                        )
+                    },
                 requestId = requestId,
             )
-        val response = this.graphQlClient.mutate<ApplyExpendableEntitlementsToUserMutation, ApplyExpendableEntitlementsToUserMutation.Data>(
-            ApplyExpendableEntitlementsToUserMutation.OPERATION_DOCUMENT,
-            mapOf("input" to input),
-        )
+        val response =
+            this.graphQlClient.mutate<ApplyExpendableEntitlementsToUserMutation, ApplyExpendableEntitlementsToUserMutation.Data>(
+                ApplyExpendableEntitlementsToUserMutation.OPERATION_DOCUMENT,
+                mapOf("input" to input),
+            )
 
         if (response.hasErrors()) {
             throw response.errors.first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data?.applyExpendableEntitlementsToUser?.externalUserEntitlements
-            ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
+        val output =
+            response.data?.applyExpendableEntitlementsToUser?.externalUserEntitlements
+                ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
 
         return UserEntitlements(
             Date(output.createdAtEpochMs.toLong()),
             Date(
                 output
-                    .updatedAtEpochMs.toLong(),
+                    .updatedAtEpochMs
+                    .toLong(),
             ),
             output.version,
             output.externalId,
@@ -1079,7 +1167,8 @@ class DefaultSudoEntitlementsAdminClient(
                 Entitlement(entitlement.name, entitlement.description, entitlement.value.toLong())
             },
             output
-                .transitionsRelativeToEpochMs?.let {
+                .transitionsRelativeToEpochMs
+                ?.let {
                     Date(
                         it.toLong(),
                     )
@@ -1092,10 +1181,11 @@ class DefaultSudoEntitlementsAdminClient(
         this.logger.info("Retrieving an entitlements sequence.")
 
         val input = GetEntitlementsSequenceInput(name)
-        val response = this.graphQlClient.query<GetEntitlementsSequenceQuery, GetEntitlementsSequenceQuery.Data>(
-            GetEntitlementsSequenceQuery.OPERATION_DOCUMENT,
-            mapOf("input" to input),
-        )
+        val response =
+            this.graphQlClient.query<GetEntitlementsSequenceQuery, GetEntitlementsSequenceQuery.Data>(
+                GetEntitlementsSequenceQuery.OPERATION_DOCUMENT,
+                mapOf("input" to input),
+            )
 
         if (response.hasErrors()) {
             throw response.errors.first().toSudoEntitlementsAdminException()
@@ -1107,7 +1197,8 @@ class DefaultSudoEntitlementsAdminClient(
                 Date(output.createdAtEpochMs.toLong()),
                 Date(
                     output
-                        .updatedAtEpochMs.toLong(),
+                        .updatedAtEpochMs
+                        .toLong(),
                 ),
                 output.version,
                 output.name,
@@ -1125,35 +1216,39 @@ class DefaultSudoEntitlementsAdminClient(
     override suspend fun listEntitlementsSequences(nextToken: String?): ListOutput<EntitlementsSequence> {
         this.logger.info("Listing entitlements sequences.")
 
-        val response = this.graphQlClient.query<ListEntitlementsSequencesQuery, ListEntitlementsSequencesQuery.Data>(
-            ListEntitlementsSequencesQuery.OPERATION_DOCUMENT,
-            mapOf("nextToken" to nextToken),
-        )
+        val response =
+            this.graphQlClient.query<ListEntitlementsSequencesQuery, ListEntitlementsSequencesQuery.Data>(
+                ListEntitlementsSequencesQuery.OPERATION_DOCUMENT,
+                mapOf("nextToken" to nextToken),
+            )
 
         if (response.hasErrors()) {
             throw response.errors.first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data?.listEntitlementsSequences?.entitlementsSequencesConnection
-            ?: throw SudoEntitlementsAdminException.FailedException("Query completed successfully but result was missing.")
+        val output =
+            response.data?.listEntitlementsSequences?.entitlementsSequencesConnection
+                ?: throw SudoEntitlementsAdminException.FailedException("Query completed successfully but result was missing.")
 
-        val items = output.items.map { it ->
-            val sequence = it.entitlementsSequence
-            EntitlementsSequence(
-                Date(sequence.createdAtEpochMs.toLong()),
-                Date(
-                    sequence
-                        .updatedAtEpochMs.toLong(),
-                ),
-                sequence.version,
-                sequence.name,
-                sequence.description,
-                sequence.transitions.map {
-                    val transition = it.entitlementsSequenceTransition
-                    EntitlementsSequenceTransition(transition.entitlementsSetName, transition.duration)
-                },
-            )
-        }
+        val items =
+            output.items.map { it ->
+                val sequence = it.entitlementsSequence
+                EntitlementsSequence(
+                    Date(sequence.createdAtEpochMs.toLong()),
+                    Date(
+                        sequence
+                            .updatedAtEpochMs
+                            .toLong(),
+                    ),
+                    sequence.version,
+                    sequence.name,
+                    sequence.description,
+                    sequence.transitions.map {
+                        val transition = it.entitlementsSequenceTransition
+                        EntitlementsSequenceTransition(transition.entitlementsSetName, transition.duration)
+                    },
+                )
+            }
 
         return ListOutput(items, output.nextToken)
     }
@@ -1170,28 +1265,34 @@ class DefaultSudoEntitlementsAdminClient(
                 name = name,
                 description = Optional.presentIfNotNull(description),
                 transitions =
-                transitions.map {
-                    EntitlementsSequenceTransitionInput(entitlementsSetName = it.entitlementsSetName, duration = Optional.presentIfNotNull(it.duration))
-                },
+                    transitions.map {
+                        EntitlementsSequenceTransitionInput(
+                            entitlementsSetName = it.entitlementsSetName,
+                            duration = Optional.presentIfNotNull(it.duration),
+                        )
+                    },
             )
 
-        val response = this.graphQlClient.mutate<AddEntitlementsSequenceMutation, AddEntitlementsSequenceMutation.Data>(
-            AddEntitlementsSequenceMutation.OPERATION_DOCUMENT,
-            mapOf("input" to input),
-        )
+        val response =
+            this.graphQlClient.mutate<AddEntitlementsSequenceMutation, AddEntitlementsSequenceMutation.Data>(
+                AddEntitlementsSequenceMutation.OPERATION_DOCUMENT,
+                mapOf("input" to input),
+            )
 
         if (response.hasErrors()) {
             throw response.errors.first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data?.addEntitlementsSequence?.entitlementsSequence
-            ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
+        val output =
+            response.data?.addEntitlementsSequence?.entitlementsSequence
+                ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
 
         return EntitlementsSequence(
             Date(output.createdAtEpochMs.toLong()),
             Date(
                 output
-                    .updatedAtEpochMs.toLong(),
+                    .updatedAtEpochMs
+                    .toLong(),
             ),
             output.version,
             output.name,
@@ -1215,31 +1316,34 @@ class DefaultSudoEntitlementsAdminClient(
                 name = name,
                 description = Optional.presentIfNotNull(description),
                 transitions =
-                transitions.map {
-                    EntitlementsSequenceTransitionInput(
-                        entitlementsSetName = it.entitlementsSetName,
-                        duration = Optional.presentIfNotNull(it.duration),
-                    )
-                },
+                    transitions.map {
+                        EntitlementsSequenceTransitionInput(
+                            entitlementsSetName = it.entitlementsSetName,
+                            duration = Optional.presentIfNotNull(it.duration),
+                        )
+                    },
             )
 
-        val response = this.graphQlClient.mutate<SetEntitlementsSequenceMutation, SetEntitlementsSequenceMutation.Data>(
-            SetEntitlementsSequenceMutation.OPERATION_DOCUMENT,
-            mapOf("input" to input),
-        )
+        val response =
+            this.graphQlClient.mutate<SetEntitlementsSequenceMutation, SetEntitlementsSequenceMutation.Data>(
+                SetEntitlementsSequenceMutation.OPERATION_DOCUMENT,
+                mapOf("input" to input),
+            )
 
         if (response.hasErrors()) {
             throw response.errors.first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data?.setEntitlementsSequence?.entitlementsSequence
-            ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
+        val output =
+            response.data?.setEntitlementsSequence?.entitlementsSequence
+                ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
 
         return EntitlementsSequence(
             Date(output.createdAtEpochMs.toLong()),
             Date(
                 output
-                    .updatedAtEpochMs.toLong(),
+                    .updatedAtEpochMs
+                    .toLong(),
             ),
             output.version,
             output.name,
@@ -1255,10 +1359,11 @@ class DefaultSudoEntitlementsAdminClient(
         this.logger.info("Removing an entitlements sequence.")
 
         val input = RemoveEntitlementsSequenceInput(name)
-        val response = this.graphQlClient.mutate<RemoveEntitlementsSequenceMutation, RemoveEntitlementsSequenceMutation.Data>(
-            RemoveEntitlementsSequenceMutation.OPERATION_DOCUMENT,
-            mapOf("input" to input),
-        )
+        val response =
+            this.graphQlClient.mutate<RemoveEntitlementsSequenceMutation, RemoveEntitlementsSequenceMutation.Data>(
+                RemoveEntitlementsSequenceMutation.OPERATION_DOCUMENT,
+                mapOf("input" to input),
+            )
 
         if (response.hasErrors()) {
             throw response.errors.first().toSudoEntitlementsAdminException()
@@ -1270,7 +1375,8 @@ class DefaultSudoEntitlementsAdminClient(
                 Date(output.createdAtEpochMs.toLong()),
                 Date(
                     output
-                        .updatedAtEpochMs.toLong(),
+                        .updatedAtEpochMs
+                        .toLong(),
                 ),
                 output.version,
                 output.name,
@@ -1298,23 +1404,26 @@ class DefaultSudoEntitlementsAdminClient(
                 entitlementsSequenceName = entitlementSequenceName,
                 version = Optional.presentIfNotNull(version),
             )
-        val response = this.graphQlClient.mutate<ApplyEntitlementsSequenceToUserMutation, ApplyEntitlementsSequenceToUserMutation.Data>(
-            ApplyEntitlementsSequenceToUserMutation.OPERATION_DOCUMENT,
-            mapOf("input" to input),
-        )
+        val response =
+            this.graphQlClient.mutate<ApplyEntitlementsSequenceToUserMutation, ApplyEntitlementsSequenceToUserMutation.Data>(
+                ApplyEntitlementsSequenceToUserMutation.OPERATION_DOCUMENT,
+                mapOf("input" to input),
+            )
 
         if (response.hasErrors()) {
             throw response.errors.first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data?.applyEntitlementsSequenceToUser?.externalUserEntitlements
-            ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
+        val output =
+            response.data?.applyEntitlementsSequenceToUser?.externalUserEntitlements
+                ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
 
         return UserEntitlements(
             Date(output.createdAtEpochMs.toLong()),
             Date(
                 output
-                    .updatedAtEpochMs.toLong(),
+                    .updatedAtEpochMs
+                    .toLong(),
             ),
             output.version,
             output.externalId,
@@ -1330,7 +1439,8 @@ class DefaultSudoEntitlementsAdminClient(
                 Entitlement(entitlement.name, entitlement.description, entitlement.value.toLong())
             },
             output
-                .transitionsRelativeToEpochMs?.let {
+                .transitionsRelativeToEpochMs
+                ?.let {
                     Date(
                         it.toLong(),
                     )
@@ -1339,7 +1449,9 @@ class DefaultSudoEntitlementsAdminClient(
         )
     }
 
-    override suspend fun applyEntitlementsSequenceToUsers(operations: List<ApplyEntitlementsSequenceOperation>): List<UserEntitlementsResult> {
+    override suspend fun applyEntitlementsSequenceToUsers(
+        operations: List<ApplyEntitlementsSequenceOperation>,
+    ): List<UserEntitlementsResult> {
         this.logger.info("Applying entitlements sequences to users.")
 
         val input =
@@ -1353,50 +1465,72 @@ class DefaultSudoEntitlementsAdminClient(
                 },
             )
 
-        val response = this.graphQlClient.mutate<ApplyEntitlementsSequenceToUsersMutation, ApplyEntitlementsSequenceToUsersMutation.Data>(
-            ApplyEntitlementsSequenceToUsersMutation.OPERATION_DOCUMENT,
-            mapOf("input" to input),
-        )
+        val response =
+            this.graphQlClient.mutate<ApplyEntitlementsSequenceToUsersMutation, ApplyEntitlementsSequenceToUsersMutation.Data>(
+                ApplyEntitlementsSequenceToUsersMutation.OPERATION_DOCUMENT,
+                mapOf("input" to input),
+            )
 
         if (response.hasErrors()) {
             throw response.errors.first().toSudoEntitlementsAdminException()
         }
 
-        val output = response.data?.applyEntitlementsSequenceToUsers
-            ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
+        val output =
+            response.data?.applyEntitlementsSequenceToUsers
+                ?: throw SudoEntitlementsAdminException.FailedException("Mutation completed successfully but result was missing.")
 
         return output.map { it ->
             val userEntitlements = it.onExternalUserEntitlements?.externalUserEntitlements
             val error = it.onExternalUserEntitlementsError?.externalUserEntitlementsError
             if (userEntitlements != null) {
                 UserEntitlementsResult.Success(
-                    value = UserEntitlements(
-                        createdAt = Date(userEntitlements.createdAtEpochMs.toLong()),
-                        updatedAt = Date(userEntitlements.updatedAtEpochMs.toLong()),
-                        version = userEntitlements.version,
-                        externalId = userEntitlements.externalId,
-                        owner = userEntitlements.owner,
-                        entitlementsSequenceName = userEntitlements.entitlementsSequenceName,
-                        entitlementsSetName = userEntitlements.entitlementsSetName,
-                        entitlements = userEntitlements.entitlements.map {
-                            val entitlement = it.entitlement
-                            Entitlement(name = entitlement.name, description = entitlement.description, value = entitlement.value.toLong())
-                        },
-                        expendableEntitlements = userEntitlements.expendableEntitlements.map {
-                            val entitlement = it.entitlement
-                            Entitlement(name = entitlement.name, description = entitlement.description, value = entitlement.value.toLong())
-                        },
-                        transitionsRelativeTo = userEntitlements.transitionsRelativeToEpochMs?.let {
-                            Date(it.toLong())
-                        },
-                        accountState = if (userEntitlements.accountState == AccountStates.ACTIVE) AccountState.ACTIVE else AccountState.LOCKED,
-                    ),
+                    value =
+                        UserEntitlements(
+                            createdAt = Date(userEntitlements.createdAtEpochMs.toLong()),
+                            updatedAt = Date(userEntitlements.updatedAtEpochMs.toLong()),
+                            version = userEntitlements.version,
+                            externalId = userEntitlements.externalId,
+                            owner = userEntitlements.owner,
+                            entitlementsSequenceName = userEntitlements.entitlementsSequenceName,
+                            entitlementsSetName = userEntitlements.entitlementsSetName,
+                            entitlements =
+                                userEntitlements.entitlements.map {
+                                    val entitlement = it.entitlement
+                                    Entitlement(
+                                        name = entitlement.name,
+                                        description = entitlement.description,
+                                        value = entitlement.value.toLong(),
+                                    )
+                                },
+                            expendableEntitlements =
+                                userEntitlements.expendableEntitlements.map {
+                                    val entitlement = it.entitlement
+                                    Entitlement(
+                                        name = entitlement.name,
+                                        description = entitlement.description,
+                                        value = entitlement.value.toLong(),
+                                    )
+                                },
+                            transitionsRelativeTo =
+                                userEntitlements.transitionsRelativeToEpochMs?.let {
+                                    Date(it.toLong())
+                                },
+                            accountState =
+                                if (userEntitlements.accountState ==
+                                    AccountStates.ACTIVE
+                                ) {
+                                    AccountState.ACTIVE
+                                } else {
+                                    AccountState.LOCKED
+                                },
+                        ),
                 )
             } else if (error != null) {
                 UserEntitlementsResult.Failure(
-                    error = SudoEntitlementsAdminException.sudoEntitlementsAdminException(
-                        error.error,
-                    ),
+                    error =
+                        SudoEntitlementsAdminException.sudoEntitlementsAdminException(
+                            error.error,
+                        ),
                 )
             } else {
                 UserEntitlementsResult.Failure(SudoEntitlementsAdminException.FailedException("Unknown result type ${it.__typename}"))
@@ -1409,10 +1543,11 @@ class DefaultSudoEntitlementsAdminClient(
 
         val input =
             RemoveEntitledUserInput(externalId)
-        val response = this.graphQlClient.mutate<RemoveEntitledUserMutation, RemoveEntitledUserMutation.Data>(
-            RemoveEntitledUserMutation.OPERATION_DOCUMENT,
-            mapOf("input" to input),
-        )
+        val response =
+            this.graphQlClient.mutate<RemoveEntitledUserMutation, RemoveEntitledUserMutation.Data>(
+                RemoveEntitledUserMutation.OPERATION_DOCUMENT,
+                mapOf("input" to input),
+            )
 
         if (response.hasErrors()) {
             throw response.errors.first().toSudoEntitlementsAdminException()

@@ -16,12 +16,10 @@ data class ApplyEntitlementsSetOperation(
      * External ID of the user to apply the entitlements set to
      */
     val externalId: String,
-
     /**
      * Name of the entitlements set to apply
      */
     val entitlementsSetName: String,
-
     /**
      * If specified, version of any current entitlements that must be matched
      */

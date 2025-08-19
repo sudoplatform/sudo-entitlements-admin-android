@@ -11,7 +11,7 @@ package com.sudoplatform.sudoentitlementsadmin.types
  * exposing a list of [items] and [nextToken] to allow for pagination by calling for the next
  * set of paginated results.
  */
-data class ListOutput<T> (
+data class ListOutput<T>(
     /**
      * Items returned from a list query output.
      */

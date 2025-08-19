@@ -16,7 +16,6 @@ data class EntitlementConsumption(
      * Name of the entitlement.
      */
     val name: String,
-
     /**
      * Value of the entitlement.
      */
@@ -25,17 +24,14 @@ data class EntitlementConsumption(
      * Remaining amount of entitlement.
      */
     val available: Long,
-
     /**
      * Consumed amount of entitlement.
      */
     val consumed: Long,
-
     /**
      * The time at which this entitlement was first consumed.
      */
     val firstConsumedAt: Date?,
-
     /**
      * The most recent time at which this entitlement was consumed.
      */

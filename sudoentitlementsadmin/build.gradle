@@ -12,14 +12,12 @@ jacoco {
 android {
     namespace 'com.sudoplatform.sudoentitlementsadmin'
 
-    compileSdk 34
+    compileSdkVersion 35
 
     defaultConfig {
         minSdkVersion 26
-        targetSdkVersion 34
-        versionCode 1
-        versionName "10.0.0"
-
+        targetSdkVersion 35
+        versionName "11.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments clearPackageData: 'true'
     }
@@ -52,6 +50,7 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
+        coreLibraryDesugaringEnabled true
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
@@ -78,24 +77,18 @@ android {
 }
 
 ext {
-    coroutine_version = '1.7.3'
+    coroutine_version = '1.10.2'
 }
 
 dependencies {
-    configurations.all {
-        resolutionStrategy {
-            force 'com.fasterxml.jackson.core:jackson-databind:2.13.2'
-            force 'junit:junit:4.13.2'
-            force 'org.jsoup:jsoup:1.14.2'
-        }
-    }
+    // Core library desugaring
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
 
     // Kotlin
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
-    implementation "org.jetbrains.kotlin:kotlin-reflect:2.0.0"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
-    // AWS
     //
     // AWS SDKs do not follow semantic versioning rules so we need to strictly specify AWS SDK versions.
     // Follow the process at https://anonyome.atlassian.net/wiki/spaces/PLA/pages/840073287/AWS+Android+SDK+versions+to+use+for+platform+SDKs
@@ -105,25 +98,27 @@ dependencies {
     // Amplify
     implementation "com.amplifyframework:core-kotlin:$amplify_version"
     implementation "com.amplifyframework:aws-api-appsync:$amplify_version"
+    implementation "com.amplifyframework:core-kotlin:$amplify_version"
+    implementation "com.amplifyframework:aws-api-appsync:$amplify_version"
     implementation "com.amplifyframework:aws-api:$amplify_version"
 
-    // apollo codegen
-    implementation("com.apollographql.apollo3:apollo-runtime:4.0.0-beta.7")
+    // Apollo Codegen
+    implementation("com.apollographql.apollo:apollo-runtime:4.3.2")
 
-    // Sudo Platform SDKs.
-    implementation 'com.sudoplatform:sudologging:5.0.0'
-    implementation 'com.sudoplatform:sudoconfigmanager:8.0.0'
-    implementation 'com.sudoplatform:sudouser:20.0.0'
+    // Sudo Platform
+    implementation 'com.sudoplatform:sudologging:6.0.0'
+    implementation 'com.sudoplatform:sudoconfigmanager:9.0.0'
+    implementation 'com.sudoplatform:sudouser:21.0.0'
 
     // Testing
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.mockito:mockito-core:5.12.0'
-    testImplementation 'org.mockito.kotlin:mockito-kotlin:5.3.1'
-    testImplementation 'org.json:json:20240303'
+    testImplementation 'org.mockito:mockito-core:5.19.0'
+    testImplementation 'org.mockito.kotlin:mockito-kotlin:6.0.0'
+    testImplementation 'org.json:json:20250517'
 
-    androidTestImplementation 'androidx.test:runner:1.6.1'
-    androidTestImplementation 'androidx.test:rules:1.6.1'
-    androidTestImplementation "io.kotlintest:kotlintest-assertions:$kotlintest_version"
+    androidTestImplementation 'androidx.test:runner:1.7.0'
+    androidTestImplementation 'androidx.test:rules:1.7.0'
+    androidTestImplementation "io.kotlintest:kotlintest-assertions:3.4.2"
 }
 
 task jacocoTestReport(type: JacocoReport, dependsOn: "testDebugUnitTest") {
@@ -178,15 +173,9 @@ afterEvaluate {
         suppressionFile file("../dependency-suppression.xml").toString()
         failBuildOnCVSS 0
         skipConfigurations = getConfigurationsToSkip(configurations)
-        cve {
-            urlModified = "https://anonyome-nist-cve-mirror.s3.amazonaws.com/nvdcve-1.1-modified.json.gz"
-            urlBase = "https://anonyome-nist-cve-mirror.s3.amazonaws.com/nvdcve-1.1-%d.json.gz"
-            startYear = 2002
-            waitTime = 0
+        nvd {
+            datafeedUrl = "https://anonyome-nist-cve-mirror.s3.amazonaws.com/"
         }
-    }
-    tasks.named("sourceReleaseJar") {
-        dependsOn("generateServiceApolloSources")
     }
 }
 
@@ -215,7 +204,7 @@ tasks.register("checkLicenseHaveRequiredFields") {
                     errors.append("License entry '${artifact.artifact}' is missing required element `$field`\n")
                 }
             }
-            if (artifact["license"] == null && artifact["licenseUrl" == null]) {
+            if (artifact["license"] == null && artifact["licenseUrl"] == null) {
                 errors.append("License entry '${artifact.artifact}' must have one of [license,licenseUrl]\n")
             }
         }
@@ -230,22 +219,32 @@ checkLicenses.finalizedBy checkLicenseHaveRequiredFields
 apply plugin: 'org.jmailen.kotlinter'
 
 kotlinter {
-    ignoreFailures = false
     reporters = ['checkstyle', 'plain']
 }
+
+import org.jmailen.gradle.kotlinter.tasks.FormatTask
+import org.jmailen.gradle.kotlinter.tasks.LintTask
+
 // Exclude the apollographql-generated classes from linting
-tasks.formatKotlinMain {
+tasks.withType(FormatTask) {
     exclude { it.file.path.contains("generated/")}
 }
 
-tasks.lintKotlinMain {
+tasks.withType(LintTask) {
     exclude { it.file.path.contains("generated/")}
 }
 
-apply plugin: "com.apollographql.apollo3"
+apply plugin: "com.apollographql.apollo"
 apollo {
     service("service") {
         packageName.set("com.sudoplatform.sudoentitlementsadmin.graphql")
+    }
+}
+
+// Configure Apollo tasks to handle incremental build issues
+afterEvaluate {
+    tasks.withType(Task).matching { it.name.contains("generateServiceApolloSources") }.configureEach {
+        doNotTrackState("Apollo source generation can have incremental build issues with missing output files")
     }
 }
 
@@ -279,4 +278,3 @@ if(project.findProperty("tag") &&
 else if (project.file("${rootProject.projectDir}/util/publish-internal-android.gradle").exists()) {
     apply from: "${rootProject.projectDir}/util/publish-internal-android.gradle"
 }
-

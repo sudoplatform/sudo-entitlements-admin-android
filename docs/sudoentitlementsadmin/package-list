@@ -188,4 +188,3 @@ $dokka.location:com.sudoplatform.sudoentitlementsadmin/SudoEntitlementsAdminExce
 $dokka.location:com.sudoplatform.sudoentitlementsadmin/SudoEntitlementsAdminException/SudoEntitlementsAdminException/#kotlin.String?#kotlin.Throwable?/PointingToDeclaration/sudoentitlementsadmin/com.sudoplatform.sudoentitlementsadmin/-sudo-entitlements-admin-exception/-sudo-entitlements-admin-exception.html
 com.sudoplatform.sudoentitlementsadmin
 com.sudoplatform.sudoentitlementsadmin.types
-

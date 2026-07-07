@@ -108,7 +108,7 @@ dependencies {
     // Sudo Platform
     implementation 'com.sudoplatform:sudologging:6.0.0'
     implementation 'com.sudoplatform:sudoconfigmanager:9.0.0'
-    implementation 'com.sudoplatform:sudouser:21.0.0'
+    implementation 'com.sudoplatform:sudouser:21.1.1'
 
     // Testing
     testImplementation 'junit:junit:4.13.2'
